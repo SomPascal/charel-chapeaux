@@ -1,0 +1,36 @@
+[
+    {
+        "name": "bootstrap",
+        "version": "4.6.0"
+    },
+
+    {
+        "name": "chart.js",
+        "version": "2.9.4"
+    },
+
+    {
+        "name": "datatables", 
+        "version": "1.10.24"
+    }, 
+
+    {
+        "name": "fontawesome-free",
+        "version": "5.15.3"
+    },
+
+    {
+        "name": "jquery",
+        "version": "3.6.0"
+    },
+
+    {
+        "name": "jquery-easing",
+        "version": "1"
+    },
+
+    {
+        "name": "swiper",
+        "version": "11.1.1"
+    }
+]

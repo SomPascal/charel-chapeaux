@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\Shield\SessionAuth;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -34,6 +35,7 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'session-auth'  => SessionAuth::class
     ];
 
     /**
@@ -70,12 +72,26 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
+            'csrf',
+            'invalidchars',
+            'session-auth' => [
+                'except' => [
+                    'logout',
+                    'admin/en/login',
+                    'admin/fr/login',
+                    'login',
+                    '/',
+                    '/en',
+                    '/fr',
+                    'auth/a/*',
+                    'item*',
+                    '__hot-reload'
+                ]
+            ]
         ],
         'after' => [
             // 'honeypot',
-            // 'secureheaders',
+            'secureheaders',
         ],
     ];
 

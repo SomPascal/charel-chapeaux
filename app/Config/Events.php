@@ -46,10 +46,10 @@ Events::on('pre_system', static function (): void {
         Events::on('DBQuery', 'CodeIgniter\Debug\Toolbar\Collectors\Database::collect');
         Services::toolbar()->respond();
         // Hot Reload route - for framework use on the hot reloader.
-        if (ENVIRONMENT === 'development') {
-            Services::routes()->get('__hot-reload', static function (): void {
-                (new HotReloader())->run();
-            });
-        }
+        // if (ENVIRONMENT === 'development') {
+        //     Services::routes()->get('__hot-reload', static function (): void {
+        //         (new HotReloader())->run();
+        //     });
+        // }
     }
 });

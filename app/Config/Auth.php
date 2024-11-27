@@ -15,6 +15,7 @@ namespace Config;
 
 use CodeIgniter\Shield\Config\Auth as ShieldAuth;
 use CodeIgniter\Shield\Authentication\Actions\ActionInterface;
+use CodeIgniter\Shield\Authentication\Actions\EmailActivator;
 use CodeIgniter\Shield\Authentication\AuthenticatorInterface;
 use CodeIgniter\Shield\Authentication\Authenticators\AccessTokens;
 use CodeIgniter\Shield\Authentication\Authenticators\HmacSha256;
@@ -46,8 +47,8 @@ class Auth extends ShieldAuth
      * --------------------------------------------------------------------
      */
     public array $views = [
-        'login'                       => '\CodeIgniter\Shield\Views\login',
-        'register'                    => '\CodeIgniter\Shield\Views\register',
+        'login'                       => 'Admin/Form/login',
+        'register'                    => 'Admin/Form/register',
         'layout'                      => '\CodeIgniter\Shield\Views\layout',
         'action_email_2fa'            => '\CodeIgniter\Shield\Views\email_2fa_show',
         'action_email_2fa_verify'     => '\CodeIgniter\Shield\Views\email_2fa_verify',
@@ -74,9 +75,9 @@ class Auth extends ShieldAuth
      * to apply any logic you may need.
      */
     public array $redirects = [
-        'register'          => '/',
-        'login'             => '/',
-        'logout'            => 'login',
+        'register'          => 'admin.index',
+        'login'             => 'admin.index',
+        'logout'            => '/',
         'force_reset'       => '/',
         'permission_denied' => '/',
         'group_denied'      => '/',
@@ -98,7 +99,7 @@ class Auth extends ShieldAuth
      * @var array<string, class-string<ActionInterface>|null>
      */
     public array $actions = [
-        'register' => null,
+        'register' => EmailActivator::class,
         'login'    => null,
     ];
 
@@ -176,7 +177,7 @@ class Auth extends ShieldAuth
      * could be modified as the only method of login once an account
      * has been set up.
      */
-    public bool $allowMagicLinkLogins = true;
+    public bool $allowMagicLinkLogins = false;
 
     /**
      * --------------------------------------------------------------------
@@ -267,7 +268,7 @@ class Auth extends ShieldAuth
      */
     public array $passwordValidators = [
         CompositionValidator::class,
-        NothingPersonalValidator::class,
+        // NothingPersonalValidator::class,
         DictionaryValidator::class,
         // PwnedValidator::class,
     ];
@@ -459,6 +460,7 @@ class Auth extends ShieldAuth
      */
     public function registerRedirect(): string
     {
+        dd('ho');
         $url = setting('Auth.redirects')['register'];
 
         return $this->getUrl($url);
@@ -470,6 +472,7 @@ class Auth extends ShieldAuth
      */
     public function forcePasswordResetRedirect(): string
     {
+        dd('ho');
         $url = setting('Auth.redirects')['force_reset'];
 
         return $this->getUrl($url);
@@ -481,6 +484,7 @@ class Auth extends ShieldAuth
      */
     public function permissionDeniedRedirect(): string
     {
+        dd('ho');
         $url = setting('Auth.redirects')['permission_denied'];
 
         return $this->getUrl($url);
@@ -492,6 +496,7 @@ class Auth extends ShieldAuth
      */
     public function groupDeniedRedirect(): string
     {
+        dd('ho');
         $url = setting('Auth.redirects')['group_denied'];
 
         return $this->getUrl($url);
@@ -506,6 +511,7 @@ class Auth extends ShieldAuth
      */
     protected function getUrl(string $url): string
     {
+        dd('ok');
         // To accommodate all url patterns
         $final_url = '';
 

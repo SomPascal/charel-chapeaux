@@ -57,7 +57,7 @@ class Routing extends BaseRouting
      *
      * Default: 'index'
      */
-    public string $defaultMethod = 'index';
+    public string $defaultMethod = 'home';
 
     /**
      * For Auto Routing.
@@ -103,7 +103,7 @@ class Routing extends BaseRouting
      *
      * Default: false
      */
-    public bool $prioritize = false;
+    public bool $prioritize = true;
 
     /**
      * For Defined Routes.
