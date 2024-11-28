@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Filters\SendCSRFToken;
 use App\Filters\Shield\SessionAuth;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
@@ -26,16 +27,17 @@ class Filters extends BaseFilters
      * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
-        'cors'          => Cors::class,
-        'forcehttps'    => ForceHTTPS::class,
-        'pagecache'     => PageCache::class,
-        'performance'   => PerformanceMetrics::class,
-        'session-auth'  => SessionAuth::class
+        'csrf'            => CSRF::class,
+        'toolbar'         => DebugToolbar::class,
+        'honeypot'        => Honeypot::class,
+        'invalidchars'    => InvalidChars::class,
+        'secureheaders'   => SecureHeaders::class,
+        'cors'            => Cors::class,
+        'forcehttps'      => ForceHTTPS::class,
+        'pagecache'       => PageCache::class,
+        'performance'     => PerformanceMetrics::class,
+        'session-auth'    => SessionAuth::class,
+        'send-csrf-token' => SendCSRFToken::class
     ];
 
     /**
@@ -88,11 +90,12 @@ class Filters extends BaseFilters
                     'item*',
                     '__hot-reload'
                 ]
-            ]
+            ],
         ],
         'after' => [
             // 'honeypot',
             'secureheaders',
+            'send-csrf-token'
         ],
     ];
 

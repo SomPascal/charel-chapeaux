@@ -460,7 +460,6 @@ class Auth extends ShieldAuth
      */
     public function registerRedirect(): string
     {
-        dd('ho');
         $url = setting('Auth.redirects')['register'];
 
         return $this->getUrl($url);
@@ -472,7 +471,6 @@ class Auth extends ShieldAuth
      */
     public function forcePasswordResetRedirect(): string
     {
-        dd('ho');
         $url = setting('Auth.redirects')['force_reset'];
 
         return $this->getUrl($url);
@@ -484,7 +482,6 @@ class Auth extends ShieldAuth
      */
     public function permissionDeniedRedirect(): string
     {
-        dd('ho');
         $url = setting('Auth.redirects')['permission_denied'];
 
         return $this->getUrl($url);
@@ -496,7 +493,6 @@ class Auth extends ShieldAuth
      */
     public function groupDeniedRedirect(): string
     {
-        dd('ho');
         $url = setting('Auth.redirects')['group_denied'];
 
         return $this->getUrl($url);
@@ -511,7 +507,6 @@ class Auth extends ShieldAuth
      */
     protected function getUrl(string $url): string
     {
-        dd('ok');
         // To accommodate all url patterns
         $final_url = '';
 

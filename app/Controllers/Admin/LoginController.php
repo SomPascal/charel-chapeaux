@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\Config\Services;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Controllers\LoginController as ShieldLoginController;
@@ -22,6 +23,19 @@ class LoginController extends ShieldLoginController
         // Validate here first, since some things,
         // like the password, can only be validated properly here.
         $rules = $this->getValidationRules();
+
+        $throttler = Services::throttler();
+        $throttlerConfig = config('Config\Throttler');
+
+        if (! $throttler->check(
+            key: md5(sprintf('login-%s', $this->request->getIPAddress())), 
+            capacity: $throttlerConfig->login['capacity'], 
+            seconds: $throttlerConfig->login['seconds']
+            )
+        ) {
+            return $this->failTooManyRequests()
+            ->setHeader(X_RETRY_AFTER, $throttler->getTokenTime());
+        }
 
         if (! $this->validateData(
             $this->request->getJsonVar(assoc: true), 

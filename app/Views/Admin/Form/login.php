@@ -28,6 +28,8 @@
                  method="post" 
                  action="<?= url_to('admin.att-login') ?>"
                 >
+                    <p class="alert alert-danger d-none"></p>
+                    
                     <div class="form-group">
                         <input 
                             type="email" 
@@ -82,7 +84,6 @@
                                 class="custom-control-input" 
                                 id="remember"
                                 checked
-                                required
                             />
 
                             <label 

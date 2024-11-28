@@ -72,6 +72,34 @@ const checkField = (field, fieldId)=> {
 
 /**
  * 
+ * @param {HTMLFormElement} form 
+ * @param {String} message 
+ */
+const setAlert = (form, message, flag=true)=> {
+    let alert = form.querySelector('.alert')
+
+    if (flag) {
+        alert.classList.remove('d-none')
+        alert.innerHTML = message
+    }
+    else {
+        alert.classList.add('d-none')
+        alert.innerHTML = ''
+    }
+}
+
+/**
+ * 
+ * @param {HTMLFormElement} form 
+ */
+const clearPassword = (form)=> {
+    form.querySelectorAll('input[type="password"]').forEach(input => {
+        input.value = ''
+    })
+}
+
+/**
+ * 
  * @description Allow to enable the feature: Show and hide password
  * @param {HTMLFormElement} form 
  * @returns void
@@ -87,7 +115,25 @@ const showPasswords = (form) => {
     })
 }
 
+/**
+ * 
+ * @param {HTMLFormElement} form 
+ * @param {Boolean} flag 
+ */
+const disable = (form, flag=true)=> {
+    [
+        ...form.querySelectorAll('input'),
+        ...form.querySelectorAll('button'),
+        ...form.querySelectorAll('select'),
+        ...form.querySelectorAll('textarea')
+    ].forEach(el => el.disabled = flag)
+}
+
 export {
     showPasswords,
-    checkField
+    checkField,
+    setAlert,
+    setErrMsg,
+    disable,
+    clearPassword
 }
