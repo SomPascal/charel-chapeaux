@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
+    <?= csrf_meta() ?>
 
 </head>
 
