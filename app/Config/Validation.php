@@ -49,4 +49,9 @@ class Validation extends BaseConfig
         'new-password'          => 'required|min_length[6]|max_length[124]|differs[current-password]|strong_password',
         'new-password-confirm'  => 'required|matches[new-password]'
     ];
+
+    public array $changeUsername = [
+        'username' => 'required|min_length[3]|max_length[30]|regex_match[/^([a-zA-Z][a-zA-Z0-9\s]{2,29})$/]|is_unique[users.username]',
+        'password' => 'required|min_length[6]|max_length[124]'
+    ];
 }

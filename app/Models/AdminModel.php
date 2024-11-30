@@ -59,6 +59,14 @@ class AdminModel extends Model
         ->findAll();
     }
 
+    public function changeUsername(int $admin_id, string $username): bool
+    {
+        return $this->update($admin_id, [
+            'updated_at' => Time::now(),
+            'username' => $username
+        ]);
+    }
+
     public function changePassword(int $admin_id, string $password): bool
     {
         return db_connect()->table('auth_identities')

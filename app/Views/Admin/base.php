@@ -34,11 +34,6 @@
             <div id="content">
                 <?= $this->include('Admin/Parts/navbar') ?>
 
-                <?php if(session()->has('success')): ?>
-                    <p class="alert alert-success">
-                        <?= esc(session()->get('success')) ?>
-                    </p>
-                <?php endif ?>
                 <?= $this->renderSection('content') ?>
             </div>
             <!-- End of Main Content -->

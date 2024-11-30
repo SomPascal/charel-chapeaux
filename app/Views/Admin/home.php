@@ -30,6 +30,12 @@
                 </button>
             </div>
 
+            <?php if(session()->has('success')): ?>
+                <p class="alert alert-success m-3">
+                    <?= esc(session()->get('success')) ?>
+                </p>
+            <?php endif ?>
+
             <p>
                 Il y'a actuellement <?= esc(count($admins)) ?> 
                 administrateur(s).

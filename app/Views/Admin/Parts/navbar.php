@@ -70,7 +70,7 @@
                     Inviter un Admin
                 </a>
 
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="<?= esc(route_to('admin.change-username')) ?>">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                     Changer le nom d'utilisateur
                 </a>

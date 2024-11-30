@@ -7,7 +7,32 @@ v.validators.email.message = '^Entrez un email valid'
 v.validators.length.tooLong = '^Ce champ est trop long (%{count} charactères au plus)'
 v.validators.length.tooShort = '^Ce champ est trop court (%{count} charactères au moins)'
 
+/**
+ * 
+ * @param {String} value 
+ * @param {*} options 
+ * @param {*} key 
+ * @param {*} attributes 
+ */
+v.validators.username = function (value) {
+    let res = undefined
+    
+    if (! /^([a-zA-Z][a-zA-Z0-9\s]{2,29})$/.test(value)) {
+        res = '^Veuillez entrer un nom d\'utilisateur valide.'
+    }
+    return res
+}
+
 const rules = {
+    'username': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 30
+        },
+        'username': {},
+    },
+
     'email': {
         'presence': {'allowEmpty': false},
         'email': true,

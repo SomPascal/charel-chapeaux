@@ -13,6 +13,12 @@ class Throttler extends BaseConfig
 
     public array $changePassword = [
         'capacity' => 5,
+        'seconds'  => 30*SECOND,
+        'cost'     => 2
+    ];
+
+    public array $changeUsername = [
+        'capacity' => 5,
         'seconds'  => 30*SECOND
     ];
 }

@@ -1,68 +1,57 @@
-import { checkField, clearPassword, disable, setAlert, setErrMsg, showPasswords } from "./Utils/form.js"
+import { 
+    checkField, 
+    clearPassword, 
+    disable, 
+    setAlert, 
+    setErrMsg, 
+    showPasswords 
+} from "./Utils/form.js"
+
 import { env, getCsrfToken, setCsrfToken } from "./Utils/util.js"
 
 document.addEventListener('DOMContentLoaded', ()=> {
-    const changePasswordForm = document.querySelector('#change-password')
+    const changeUsernameForm = document.querySelector('#change-username')
 
-    const currentPassword = document.querySelector('#current-password')
-    const newPassword = document.querySelector('#new-password')
-    const newPasswordConfirm = document.querySelector('#new-password-confirm')
+    const newUsername = document.querySelector('#username')
+    const password = document.querySelector('#password')
 
-    if (! changePasswordForm) {
+    if (! changeUsernameForm) {
         return
     }
 
-    showPasswords(changePasswordForm)
+    showPasswords(changeUsernameForm)
 
-    currentPassword.addEventListener('blur', ()=> {
-        checkField(currentPassword, 'current-password')
+    newUsername.addEventListener('blur', ()=> {
+        checkField(newUsername, 'username')
     })
 
-    newPassword.addEventListener('blur', ()=> {
-        checkField(newPassword, 'new-password')
+    password.addEventListener('blur', ()=> {
+        checkField(password, 'password')
     })
-
-    newPasswordConfirm.addEventListener('blur', ()=> {
-        checkField(
-            newPasswordConfirm, 
-            'new-password-confirm',
-            true,
-            newPassword,
-            'new-password'
-        )
-    })
-
-    changePasswordForm.addEventListener('submit', (e)=> {
+    
+    changeUsernameForm.addEventListener('submit', (e)=> {
         e.preventDefault()
 
         let data
 
-        if (!
-            (checkField(currentPassword, 'current-password') && 
-            checkField(newPassword, 'new-password') && 
-            checkField(
-                newPasswordConfirm, 
-                'new-password-confirm',
-                true,
-                newPassword,
-                'new-password'
-            ))
-        ) 
+        if (! 
+            (checkField(newUsername, 'username') && 
+            checkField(password, 'password'))
+        )
         {
-            return
+            return    
         }
-
-        disable(changePasswordForm)
-        setAlert(changePasswordForm, '', false)
-
+        
         data = {
-            'current-password': currentPassword.value?.trim() ?? '',
-            'new-password': newPassword.value?.trim() ?? '',
-            'new-password-confirm': newPasswordConfirm.value?.trim() ?? ''
+            'username': newUsername.value?.trim() ?? '',
+            'password': password.value?.trim() ?? ''
         }
 
-        fetch(changePasswordForm.getAttribute('action'), {
-            'method': changePasswordForm.getAttribute('method'),
+        disable(changeUsernameForm)
+        setAlert(changeUsernameForm, '', false)
+
+        fetch(changeUsernameForm.getAttribute('action'), {
+            'method': changeUsernameForm.getAttribute('method'),
             'cache': 'no-cache',
             'headers': {
                 'Accept': 'application/json',
@@ -75,9 +64,9 @@ document.addEventListener('DOMContentLoaded', ()=> {
         .then(response => {
             let sec 
 
+            disable(changeUsernameForm, false)
             setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
-            disable(changePasswordForm, false)
-            clearPassword(changePasswordForm)
+            clearPassword(changeUsernameForm)
 
             switch (response.status) {
                 case env.HTTP_OK:
@@ -92,14 +81,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
                     sec = response.headers.get(env.X_RETRY_AFTER) ?? 5
 
                     setAlert(
-                        changePasswordForm,
+                        changeUsernameForm,
                         `Trop de requetes. Réessayez dans ${sec} secondes.`
                     )
                     break
 
                 case env.HTTP_FORBIDDEN:
                     setAlert(
-                        changePasswordForm, 
+                        changeUsernameForm, 
                         'Une erreur est survenue. Veuillez recharger la page.'
                     )
 
@@ -107,7 +96,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
                 
                 case env.HTTP_INTERNAL_SERVER_ERROR:
                     setAlert(
-                        changePasswordForm,
+                        changeUsernameForm,
                         'Une erreur est survenue. Veuillez rééssayer de nouveau'
                     )
 
@@ -115,7 +104,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
                 case env.HTTP_UNAUTHORIZED:
                     setAlert(
-                        changePasswordForm,
+                        changeUsernameForm,
                         response.statusText
                     )
 
@@ -123,12 +112,11 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
                 default:
                     setAlert(
-                        changePasswordForm,
+                        changeUsernameForm,
                         'Une erreur est survenue. Veuillez réessayez'
                     )
 
                     break
-                    
             }
         })
         .then(json => {

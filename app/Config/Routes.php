@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Admin\ChangePasswordController;
+use App\Controllers\Admin\ChangeUsernameController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -30,8 +31,9 @@ $routes->group('admin', function(RouteCollection $routes) {
     
     $routes->get('{locale}/change-password', [ChangePasswordController::class, 'changePswd'], ['as' => 'admin.change-pswd']);
     $routes->post('change-password', [ChangePasswordController::class, 'attemptChangePswd'], ['as' => 'admin.att-change-pswd']);
-
-    $routes->get('logout', [LoginController::class, 'logoutAction'], ['as' => 'admin.logout']);
+    
+    $routes->get('{locale}/change-username', [ChangeUsernameController::class, 'changeUsername'], ['as' => 'admin.change-username']);
+    $routes->post('change-username', [ChangeUsernameController::class, 'attemptChangeUsername'], ['as' => 'admin.att-change-username']);
 
     $routes->get('/', [DashboardController::class, 'index'], ['as' => 'admin.index']);
 
