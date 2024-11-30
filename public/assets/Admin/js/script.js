@@ -1,4 +1,6 @@
 import { Admin, AdminBag } from "./Components/Admin.js";
+import { disable, setAlert } from "./Utils/form.js";
+import { copyLink, env, getCsrfToken, setCsrfToken } from "./Utils/util.js";
 
 let admins = new AdminBag()
 
@@ -185,10 +187,90 @@ function showAdminDetails () {
     
 }
 
+const generateInviteLink = ()=>{
+    const generateLinkForm = document.querySelector('#invite-link-form')
+
+    if (! generateLinkForm)
+    {
+        return
+    }
+
+    const inviteLinkField = document.querySelector('#invite-link-field')
+    const inviteLinkRole = document.querySelector('#invite-link-role')
+    const copyInviteLink = document.querySelector('#copy-invite-link')
+
+    generateLinkForm.addEventListener('submit', (e)=> {
+        e.preventDefault()
+
+        disable(generateLinkForm)
+        setAlert(generateLinkForm, '', false)
+
+        const data = {'role': inviteLinkRole.value}
+
+        fetch(generateLinkForm.getAttribute('action'), {
+            'cache': 'no-cache',
+            'method': generateLinkForm.getAttribute('method'),
+            'headers': {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': getCsrfToken()
+            },
+            'body': JSON.stringify(data)
+        })
+        .then(response => {
+            let sec 
+
+            setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
+            disable(generateLinkForm, false)
+
+            if (response.status == env.HTTP_CREATED) {
+                return response.json()
+            }
+            else if (response.status == env.HTTP_TOO_MANY_REQUEST)
+            {
+                sec = response.headers.get(env.X_RETRY_AFTER)
+
+                setAlert(
+                    generateLinkForm,
+                    `Trop d'essaies. Veuillez réessayer dans ${sec} seconds.`
+                )
+
+                return
+            }
+            else {
+                setAlert(
+                    generateLinkForm,
+                    'Une erreur est survenue, veuillez essayer de nouveau.'
+                )
+            }
+        })
+        .then(json => {
+            if (json == undefined) {
+                return
+            }
+
+            inviteLinkField.value = json.url 
+            copyInviteLink.removeAttribute('disabled')
+        })
+    })
+
+    copyInviteLink.addEventListener('click', ()=> {
+        let oldBtn = copyInviteLink.innerHTML
+        copyLink(inviteLinkField.value)
+
+        
+        setTimeout(()=> {
+            copyInviteLink.innerHTML = '<span class="icon"><i class="fa fa-check"></i></span><span class="text">Copied</span>'
+        }, 1500)
+    })
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     document.querySelector('#sidebarToggleTop')?.click()
     setAdmins()
     showAdminDetails()
+    generateInviteLink()
     
     // swiperTestimonials()
     swiperCapsPopulary()

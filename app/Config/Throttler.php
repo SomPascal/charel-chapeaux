@@ -21,4 +21,11 @@ class Throttler extends BaseConfig
         'capacity' => 5,
         'seconds'  => 30*SECOND
     ];
+
+    public array $inviteAdmin = [
+        'capacity' => 5,
+        'seconds'  => MINUTE
+    ];
+
+
 }

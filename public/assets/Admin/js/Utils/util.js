@@ -26,6 +26,24 @@ const setCsrfToken = (csrfToken)=> {
 }
 
 /**
+ * 
+ * @param {String} link 
+ */
+const copyLink = (link) => {
+    let res
+
+    navigator.clipboard.writeText(link)
+    .then(()=> {
+        res = true
+    })
+    .catch(()=> {
+        res = false
+    })
+
+    return res
+}
+
+/**
  * @returns {String}
  */
 const getCsrfToken = ()=> {
@@ -35,5 +53,6 @@ const getCsrfToken = ()=> {
 export {
     env,
     setCsrfToken,
-    getCsrfToken
+    getCsrfToken,
+    copyLink
 }

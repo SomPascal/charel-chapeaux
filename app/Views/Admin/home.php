@@ -15,23 +15,26 @@
                 Administrateurs
             </h1>
 
-            <button 
-                data-toggle="modal"
-                data-target="#add-admin-modal"
-                class="btn btn-sm btn-primary btn-icon-split"
-            >
-                <span class="icon">
-                    <i class="fa fa-user-plus"></i>
-                </span>
-
-                <span class="text">
-                    Ajouter
-                </span>
-            </button>
+            <?php if (auth()->user()->inGroup('superadmin')): ?>
+                <button 
+                 data-toggle="modal"
+                 data-target="#invitation-link"
+                 class="btn btn-sm btn-primary btn-icon-split"
+                >
+                    <span class="icon">
+                        <i class="fa fa-user-plus"></i>
+                    </span>
+    
+                    <span class="text">
+                        Ajouter
+                    </span>
+                </button>
+            <?php endif ?>
         </div>
 
         <?php if(session()->has('success')): ?>
             <p class="alert alert-success m-3">
+                <i class="fa fa-check"></i>
                 <?= esc(session()->get('success')) ?>
             </p>
         <?php endif ?>
@@ -705,6 +708,7 @@
     </div>
 
     <?= $this->include('Admin/Parts/admin-details-modal') ?>
+    <?= $this->include('Admin/Parts/invitation-link-modal') ?>
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>

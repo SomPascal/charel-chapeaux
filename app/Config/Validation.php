@@ -54,4 +54,8 @@ class Validation extends BaseConfig
         'username' => 'required|min_length[3]|max_length[30]|regex_match[/^([a-zA-Z][a-zA-Z0-9\s]{2,29})$/]|is_unique[users.username]',
         'password' => 'required|min_length[6]|max_length[124]'
     ];
+
+    public array $invite_admin = [
+        'role' => 'required|in_list[admin,superadmin]'
+    ];
 }

@@ -10,6 +10,7 @@ use App\Controllers\ItemController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
 use App\Controllers\DraftController;
+use App\Controllers\InviteAdminController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -51,6 +52,11 @@ $routes->group('admin', function(RouteCollection $routes) {
 $routes->get('/', [HomeController::class, 'index'], ['as' => 'index']);
 $routes->get('{locale}', [HomeController::class, 'home'], ['as' => 'home']);
 $routes->post('accept-cookie', [CookieController::class, 'accept'], ['as' => 'cookie.accept']);
+
+$routes->group('invite', function(RouteCollection $routes){
+    $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'invite.use']);
+    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'group:superadmin']);
+});
 
 $routes->group('item', function(RouteCollection $routes) {
     $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
