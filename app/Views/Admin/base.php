@@ -48,6 +48,7 @@
 
     <?= $this->include('Admin/Parts/scroll-to-top') ?>
     <?= $this->include('Admin/Parts/logout-modal') ?>
+    <?= $this->include('Admin/Parts/see-website') ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="/assets/Admin/vendor/jquery/jquery.min.js"></script>

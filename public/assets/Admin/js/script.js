@@ -174,9 +174,9 @@ function showAdminDetails () {
             btn.addEventListener('click', ()=> {
                 selects.forEach(sel => {
                     const el = document.querySelector(`#detail-${sel}`)
-                    // if (! el) {
-                    //     return 
-                    // }
+                    if (! el) {
+                        return 
+                    }
                     el.querySelector('span').innerHTML = ''
                 })
             })
