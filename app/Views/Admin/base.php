@@ -19,6 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="/assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/Admin/css/style.css">
     <?= csrf_meta() ?>
 
 </head>
@@ -33,7 +35,6 @@
             <!-- Main Content -->
             <div id="content">
                 <?= $this->include('Admin/Parts/navbar') ?>
-
                 <?= $this->renderSection('content') ?>
             </div>
             <!-- End of Main Content -->

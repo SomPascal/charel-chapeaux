@@ -1,3 +1,7 @@
+import { Admin, AdminBag } from "./Components/Admin.js";
+
+let admins = new AdminBag()
+
 const swiperTestimonials = ()=> {
     const swiper = new Swiper('#testimonials .swiper', {
         // Optional parameters
@@ -138,12 +142,54 @@ const handleDescModal = ()=> {
     expandDescModal()
 }
 
-const handleLinksModal = ()=> {
-    document.querySelectorAll('#site-links')
+const setAdmins = ()=> {    
+    admins = AdminBag.getAdmins()    
+}
+
+function showAdminDetails () {
+    const adminDetailsModal = document.querySelector('#admin-details')
+    const selects = ['id', 'invitedBy', 'username', 'email', 'registredAt']
+    let admin
+
+    document.querySelectorAll('[admin-card]').forEach(card => {
+        card.querySelector('[show-admin]').addEventListener('click', ()=> {
+            admin = admins.findById(card.getAttribute('admin-id'))
+            
+            if (admin == null)
+            {
+                adminDetailsModal.querySelector('.modal-body').innerHTML = '<p>Aucune donnée a afficher.</p>'
+                return
+            }
+        
+            selects.forEach(sel => {
+                const el = document.querySelector(`#detail-${sel}`)
+                if (! el) {
+                    return 
+                }
+                el.querySelector('span').innerHTML = admin[sel]
+            })
+        })
+
+        adminDetailsModal.querySelectorAll('button[data-dismiss]').forEach(btn => {
+            btn.addEventListener('click', ()=> {
+                selects.forEach(sel => {
+                    const el = document.querySelector(`#detail-${sel}`)
+                    // if (! el) {
+                    //     return 
+                    // }
+                    el.querySelector('span').innerHTML = ''
+                })
+            })
+        })
+    })
+    
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
     document.querySelector('#sidebarToggleTop')?.click()
+    setAdmins()
+    showAdminDetails()
+    
     // swiperTestimonials()
     swiperCapsPopulary()
     // handleDescModal()

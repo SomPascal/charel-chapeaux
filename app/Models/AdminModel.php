@@ -51,10 +51,13 @@ class AdminModel extends Model
     {
         return $this->select([
             'users.username AS username',
+            'auth_identities.secret AS email',
             'users.id AS id',
-            'auth_groups_users.group AS group'
+            'users.created_at AS created_at',
+            'auth_groups_users.group AS group',
         ])
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
+        ->join('auth_identities', 'auth_identities.user_id = users.id', 'left')
         ->limit(6)
         ->findAll();
     }

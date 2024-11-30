@@ -86,7 +86,7 @@
                  class="dropdown-item" 
                  href="#" 
                  data-toggle="modal" 
-                 data-target="#logoutModal"
+                 data-target="#logout-modal"
                 >
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Se déconnecter
