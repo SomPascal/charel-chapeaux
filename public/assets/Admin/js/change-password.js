@@ -1,52 +1,68 @@
 import { checkField, clearPassword, disable, setAlert, setErrMsg, showPasswords } from "./Utils/form.js"
 import { env, getCsrfToken, setCsrfToken } from "./Utils/util.js"
 
-const handleForm = ()=> {
+document.addEventListener('DOMContentLoaded', ()=> {
+    const changePasswordForm = document.querySelector('#change-password')
 
-    const loginForm = document.querySelector('#login')
-    
-    if (! loginForm) {
+    const currentPassword = document.querySelector('#current-password')
+    const newPassword = document.querySelector('#new-password')
+    const newPasswordConfirm = document.querySelector('#new-password-confirm')
+
+    if (! changePasswordForm) {
         return
     }
-    
-    showPasswords(loginForm)
-    
-    const email = document.querySelector('#email')
-    const password = document.querySelector('#password')
-    const remember = document.querySelector('#remember')
 
-    email.addEventListener('blur', (e)=> {
-        e.preventDefault()
+    showPasswords(changePasswordForm)
 
-        checkField(email, 'email')
+    currentPassword.addEventListener('blur', ()=> {
+        checkField(currentPassword, 'current-password')
     })
 
-    password.addEventListener('blur', (e)=> {
-        e.preventDefault()
-        checkField(password, 'password')
+    newPassword.addEventListener('blur', ()=> {
+        checkField(newPassword, 'new-password')
     })
 
-    loginForm.addEventListener('submit', (e)=> {
+    newPasswordConfirm.addEventListener('blur', ()=> {
+        checkField(
+            newPasswordConfirm, 
+            'new-password-confirm',
+            true,
+            newPassword,
+            'new-password'
+        )
+    })
+
+    changePasswordForm.addEventListener('submit', (e)=> {
         e.preventDefault()
 
         let data
-        
-        disable(loginForm)
-        setAlert(loginForm, '', false)
 
-        if (! (checkField(email, 'email') && checkField(password, 'password')))
+        if (!
+            (checkField(currentPassword, 'current-password') && 
+            checkField(newPassword, 'new-password') && 
+            checkField(
+                newPasswordConfirm, 
+                'new-password-confirm',
+                true,
+                newPassword,
+                'new-password'
+            ))
+        ) 
         {
             return
         }
 
+        disable(changePasswordForm)
+        setAlert(changePasswordForm, '', false)
+
         data = {
-            'email': email.value?.trim() ?? '',
-            'password': password.value?.trim() ?? '',
-            'remember': remember.checked ? 'on' : 'off'
+            'current-password': currentPassword.value?.trim() ?? '',
+            'new-password': newPassword.value?.trim() ?? '',
+            'new-password-confirm': newPasswordConfirm.value?.trim() ?? ''
         }
 
-        fetch(loginForm.getAttribute('action'), {
-            'method': loginForm.getAttribute('method'),
+        fetch(changePasswordForm.getAttribute('action'), {
+            'method': changePasswordForm.getAttribute('method'),
             'cache': 'no-cache',
             'headers': {
                 'Accept': 'application/json',
@@ -60,12 +76,12 @@ const handleForm = ()=> {
             let sec 
 
             setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
-            disable(loginForm, false)
-            clearPassword(loginForm)
+            disable(changePasswordForm, false)
+            clearPassword(changePasswordForm)
 
             switch (response.status) {
-                case env.HTTP_CREATED:
-                    window.location = response.headers.get(env.X_REDIRECT_TO)
+                case env.HTTP_OK:
+                    window.location = response.headers.get(env.X_REDIRECT_TO) ?? '/'
                     break
                 
                 case env.HTTP_BAD_REQUEST:
@@ -76,14 +92,14 @@ const handleForm = ()=> {
                     sec = response.headers.get(env.X_RETRY_AFTER) ?? 5
 
                     setAlert(
-                        loginForm,
+                        changePasswordForm,
                         `Trop de requetes. Réessayez dans ${sec} secondes.`
                     )
                     break
 
                 case env.HTTP_FORBIDDEN:
                     setAlert(
-                        loginForm, 
+                        changePasswordForm, 
                         'Une erreur est survenue. Veuillez recharger la page.'
                     )
 
@@ -91,7 +107,7 @@ const handleForm = ()=> {
                 
                 case env.HTTP_INTERNAL_SERVER_ERROR:
                     setAlert(
-                        loginForm,
+                        changePasswordForm,
                         'Une erreur est survenue. Veuillez rééssayer de nouveau'
                     )
 
@@ -99,7 +115,7 @@ const handleForm = ()=> {
 
                 case env.HTTP_UNAUTHORIZED:
                     setAlert(
-                        loginForm,
+                        changePasswordForm,
                         response.statusText
                     )
 
@@ -107,7 +123,7 @@ const handleForm = ()=> {
 
                 default:
                     setAlert(
-                        loginForm,
+                        changePasswordForm,
                         'Une erreur est survenue. Veuillez réessayez'
                     )
 
@@ -129,8 +145,4 @@ const handleForm = ()=> {
             }
         })
     })
-}
-
-document.addEventListener('DOMContentLoaded', ()=>{
-    handleForm()
 })

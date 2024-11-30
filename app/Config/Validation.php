@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Shield\Authentication\Passwords\ValidationRules;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
@@ -25,6 +26,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
+        ValidationRules::class
     ];
 
     /**
@@ -41,4 +43,10 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    public array $changePassword = [
+        'current-password'      => 'required|min_length[6]|max_length[124]',
+        'new-password'          => 'required|min_length[6]|max_length[124]|differs[current-password]|strong_password',
+        'new-password-confirm'  => 'required|matches[new-password]'
+    ];
 }

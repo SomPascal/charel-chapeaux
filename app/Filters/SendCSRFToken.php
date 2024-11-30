@@ -6,6 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LogLevel;
 
 class SendCSRFToken implements FilterInterface
 {
@@ -54,6 +55,10 @@ class SendCSRFToken implements FilterInterface
             return;
         }
 
+        log_message(
+            LogLevel::INFO,
+            'CSRF token sent via headers'
+        );
         return $response->setHeader(X_CSRF_TOKEN, csrf_hash());
     }
 }

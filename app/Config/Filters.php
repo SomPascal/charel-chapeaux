@@ -88,7 +88,8 @@ class Filters extends BaseFilters
                     '/fr',
                     'auth/a/*',
                     'item*',
-                    '__hot-reload'
+                    '__hot-reload',
+                    'draft'
                 ]
             ],
         ],

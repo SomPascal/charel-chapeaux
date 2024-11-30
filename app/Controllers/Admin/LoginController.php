@@ -7,6 +7,7 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Config\Services;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\Shield\Authentication\Authenticators\Session;
 use CodeIgniter\Shield\Controllers\LoginController as ShieldLoginController;
 
 class LoginController extends ShieldLoginController

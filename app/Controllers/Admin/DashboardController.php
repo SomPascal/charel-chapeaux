@@ -3,13 +3,19 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\AdminModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class DashboardController extends BaseController
 {
     public function home()
     {
-        return view('Admin/home');
+        $adminModel = model(AdminModel::class);
+        $admins = $adminModel->asObject()->getAdmins();
+
+        return view('Admin/home', [
+            'admins' => $admins
+        ]);
     }
 
     public function stats()

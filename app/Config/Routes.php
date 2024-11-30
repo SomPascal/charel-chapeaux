@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -7,11 +8,16 @@ use App\Controllers\HomeController;
 use App\Controllers\ItemController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
+use App\Controllers\DraftController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
  * @var RouteCollection $routes
  */
+
+$routes->environment('development', function(RouteCollection $routes){
+    $routes->get('draft', [DraftController::class, 'index']);
+});
 
 service('auth')->routes($routes);
 
@@ -21,6 +27,9 @@ $routes->group('admin', function(RouteCollection $routes) {
 
     $routes->get('{locale}/register', [RegisterController::class, 'register'], ['as' => 'admin.register']);
     $routes->post('register', [RegisterController::class, 'attemptRegister'], ['as' => 'admin.att-register']);
+    
+    $routes->get('{locale}/change-password', [ChangePasswordController::class, 'changePswd'], ['as' => 'admin.change-pswd']);
+    $routes->post('change-password', [ChangePasswordController::class, 'attemptChangePswd'], ['as' => 'admin.att-change-pswd']);
 
     $routes->get('logout', [LoginController::class, 'logoutAction'], ['as' => 'admin.logout']);
 

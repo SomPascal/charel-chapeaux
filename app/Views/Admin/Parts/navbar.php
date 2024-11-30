@@ -61,20 +61,33 @@
             </a>
 
             <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                aria-labelledby="userDropdown">
+            <div 
+             class="dropdown-menu dropdown-menu-right shadow animated--grow-in" 
+             aria-labelledby="userDropdown"
+            >
                 <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <i class="fas fa-share fa-sm fa-fw mr-2 text-gray-400"></i>
                     Inviter un Admin
                 </a>
 
+                <a class="dropdown-item" href="#">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Changer le nom d'utilisateur
+                </a>
+                
+                <a class="dropdown-item" href="<?= esc(route_to('admin.change-pswd')) ?>">
+                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                    Changer le mot de passe
+                </a>
+
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+
+                <a 
+                 class="dropdown-item" 
+                 href="#" 
+                 data-toggle="modal" 
+                 data-target="#logoutModal"
+                >
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Se déconnecter
                 </a>

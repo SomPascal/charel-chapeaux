@@ -31,214 +31,90 @@
             </div>
 
             <p>
-                Il y'a actuellement 04 administrateurs.
+                Il y'a actuellement <?= esc(count($admins)) ?> 
+                administrateur(s).
             </p>
 
-            <div class="row pb-5">
-                <div class="col-md-4 my-1">
-                    <div class="card border-left-secondary shadow">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h5 class="h5">
-                                        Chrystelle
-                                    </h5>
+            <?php if (count($admins) > 0): ?>
+                <div class="row pb-5">
+                    <?php foreach($admins as $admin): ?>
+                        <div class="col-md-4 my-1">
+                            <div class="card border-left-secondary shadow">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <h5 class="h5">
+                                                <?= esc($admin->username) ?>
+                                                <?= ($admin->id == user_id()) ? '(Moi)' : null ?>
+                                            </h5>
 
-                                    <p>
-                                        Invité par: 
-                                        <span class="text-primary">
-                                            <b>Moi</b>
-                                        </span>
-                                    </p>
+                                            <?php if (isset($admin->inviter_username)): ?>
+                                                <p>
+                                                    Invité par: 
+                                                    <span class="text-primary">
+                                                        <b><?= esc($admin->inviter_username) ?></b>
+                                                    </span>
+                                                </p>
+                                            <?php endif ?>
 
-                                    <div class="d-flex">
-                                        <button 
-                                            data-toggle="modal"
-                                            data-target="#ban-admin"
-                                            class="btn btn-sm btn-danger btn-icon-split m-1"
-                                        >
-                                            <span class="icon">
-                                                <i class="fa fa-trash"></i>
-                                            </span>
+                                            <?php if ($admin->id != user_id()): ?>
+                                                <div class="d-flex">
+                                                    <button 
+                                                        data-toggle="modal"
+                                                        data-target="#ban-admin"
+                                                        class="btn btn-sm btn-danger btn-icon-split m-1"
+                                                    >
+                                                        <span class="icon">
+                                                            <i class="fa fa-trash"></i>
+                                                        </span>
 
-                                            <span class="text">
-                                                Expulser
-                                            </span>
-                                        </button>
+                                                        <span class="text">
+                                                            Expulser
+                                                        </span>
+                                                    </button>
 
-                                        <!-- Role Modificator -->
-                                        <div class="btn-group btn-sm">
-                                            <button type="button" class="btn btn-sm btn-secondary disabled">
-                                                <i class="fa fa-user-edit"></i>
-                                                Role
-                                            </button>
+                                                    <!-- Role Modificator -->
+                                                    <div class="btn-group btn-sm">
+                                                        <button type="button" class="btn btn-sm btn-secondary disabled">
+                                                            <i class="fa fa-user-edit"></i>
+                                                            Role
+                                                        </button>
 
-                                            <button 
-                                                type="button" 
-                                                class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                                data-toggle="dropdown" 
-                                                aria-expanded="false"
-                                            >
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
+                                                            data-toggle="dropdown" 
+                                                            aria-expanded="false"
+                                                        >
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
 
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">
-                                                    Admin (Actuel)
-                                                </a>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="#">
+                                                                Admin (Actuel)
+                                                            </a>
 
-                                                <a class="dropdown-item" href="#">
-                                                    Super Admin
-                                                </a>
-                                            </div>
+                                                            <a class="dropdown-item" href="#">
+                                                                Super Admin
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endif ?>
+                                        </div>
+                                        
+                                        <div class="col-auto">
+                                            <?php if ($admin->group == 'superadmin'): ?>
+                                                <i class="fas fa-crown fa-2x text-warning-100"></i>
+                                            <?php endif ?>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="col-auto">
-                                    <i class="fas fa-crown fa-2x text-warning-100"></i>
-                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endforeach ?>
                 </div>
-
-                <div class="col-md-4 my-1">
-                    <div class="card border-left-secondary shadow">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h5 class="h5">
-                                        Chrystelle
-                                    </h5>
-
-                                    <p>
-                                        Invité par: 
-                                        <span class="text-primary">
-                                            <b>Moi</b>
-                                        </span>
-                                    </p>
-
-                                    <div class="d-flex">
-                                        <button 
-                                            data-toggle="modal"
-                                            data-target="#ban-admin"
-                                            class="btn btn-sm btn-danger btn-icon-split m-1"
-                                        >
-                                            <span class="icon">
-                                                <i class="fa fa-trash"></i>
-                                            </span>
-
-                                            <span class="text">
-                                                Expulser
-                                            </span>
-                                        </button>
-
-                                        <!-- Role Modificator -->
-                                        <div class="btn-group btn-sm">
-                                            <button type="button" class="btn btn-sm btn-secondary disabled">
-                                                <i class="fa fa-user-edit"></i>
-                                                Role
-                                            </button>
-
-                                            <button 
-                                                type="button" 
-                                                class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                                data-toggle="dropdown" 
-                                                aria-expanded="false"
-                                            >
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">
-                                                    Admin (Actuel)
-                                                </a>
-
-                                                <a class="dropdown-item" href="#">
-                                                    Super Admin
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-auto">
-                                    <i class="fas fa-crown fa-2x text-warning-100"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 my-1">
-                    <div class="card border-left-secondary shadow">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <h5 class="h5">
-                                        Chrystelle
-                                    </h5>
-
-                                    <p>
-                                        Invité par: 
-                                        <span class="text-primary">
-                                            <b>Moi</b>
-                                        </span>
-                                    </p>
-
-                                    <div class="d-flex">
-                                        <button 
-                                            data-toggle="modal"
-                                            data-target="#ban-admin"
-                                            class="btn btn-sm btn-danger btn-icon-split m-1"
-                                        >
-                                            <span class="icon">
-                                                <i class="fa fa-trash"></i>
-                                            </span>
-
-                                            <span class="text">
-                                                Expulser
-                                            </span>
-                                        </button>
-
-                                        <!-- Role Modificator -->
-                                        <div class="btn-group btn-sm">
-                                            <button type="button" class="btn btn-sm btn-secondary disabled">
-                                                <i class="fa fa-user-edit"></i>
-                                                Role
-                                            </button>
-
-                                            <button 
-                                                type="button" 
-                                                class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                                data-toggle="dropdown" 
-                                                aria-expanded="false"
-                                            >
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">
-                                                    Admin (Actuel)
-                                                </a>
-
-                                                <a class="dropdown-item" href="#">
-                                                    Super Admin
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-auto">
-                                    <!-- <i class="fas fa-crown fa-2x text-warning-100"></i> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif ?>
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">

@@ -13,7 +13,6 @@ const rules = {
         'email': true,
         'length': {
             'maximum': 254,
-            'tooLong': '^Trong long. La longueur maximale est de 254 caractères.'
         }
     },
 
@@ -21,9 +20,26 @@ const rules = {
         'presence': {'allowEmpty': false},
         'length': {
             'minimum': 6,
-            'tooShort': '',
-            'tooLong': '^Trong long. La longueur maximale est de 254 caractères.'
         }
+    },
+
+    'current-password': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 6,
+        }
+    },
+
+    'new-password': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 6,
+        }
+    },
+
+    'new-password-confirm': {
+        'presence': {'allowEmpty': false},
+        'equality': 'new-password'
     }
 }
 
@@ -46,16 +62,25 @@ const setErrMsg = (field, message, flag=true)=> {
 /**
  * 
  * @description check if the field has been well filled and show and error message otherwise
+ * 
  * @param {HTMLInputElement} field 
  * @param {String} fieldId 
+ * @param {Boolean} flag
+ * @param {HTMLInputElement} nextField
+ * @param {String} nextFieldId
  * @returns {Boolean}
  */
-const checkField = (field, fieldId)=> {
+const checkField = (field, fieldId, flag=false, nextField, nextFieldId)=> {
     let data = {}
     let errors
     let res
 
     data[fieldId] = field.value?.trim() ?? ''
+
+    if (flag) {
+        data[nextFieldId] = nextField.value?.trim() ?? ''
+    }
+
     errors = v(data, rules)
         
     if (errors == undefined || errors[fieldId] == undefined) {        
