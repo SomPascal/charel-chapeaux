@@ -81,8 +81,11 @@ class Filters extends BaseFilters
                     'logout',
                     'admin/en/login',
                     'admin/fr/login',
+
                     'admin/en/register',
                     'admin/fr/register',
+                    'admin/register',
+
                     'admin/login',
                     'login',
                     '/',

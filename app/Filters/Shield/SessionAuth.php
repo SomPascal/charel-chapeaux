@@ -84,7 +84,8 @@ class SessionAuth extends ShieldSessionAuth
             $session->setTempdata('beforeLoginUrl', current_url(), 300);
         }
 
-        return redirect()->route('admin.login');
+        return $request->isAJAX() ? $this->failUnauthorized() : 
+        redirect()->route('admin.login');
     }
 
     /**

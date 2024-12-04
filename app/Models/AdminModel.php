@@ -58,6 +58,9 @@ class AdminModel extends Model
         ])
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
         ->join('auth_identities', 'auth_identities.user_id = users.id', 'left')
+        ->where([
+            'auth_identities.type' => 'email_password'
+        ])
         ->limit(6)
         ->findAll();
     }

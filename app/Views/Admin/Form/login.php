@@ -8,9 +8,9 @@
     <div class="row">
         <div class="col-lg-6 d-none d-lg-block bg-login-image">
             <img 
-                class="img-fluid"
-                src="/assets/Admin/img/presentation-cap-1.jpg" 
-                alt="Charel Chapeaux"
+             class="img-fluid"
+             src="/assets/Admin/img/presentation-cap-1.jpg" 
+             alt="Charel Chapeaux"
             />
         </div>
 
@@ -89,13 +89,12 @@
                             <label 
                                 class="custom-control-label" 
                                 for="remember"
-                                >Remember Me</label>
+                                >Se souvenir de moi</label>
                         </div>
                     </div>
 
                     <button 
                         type="submit" 
-                        href="index.html"
                         class="btn btn-primary btn-user btn-block"
                     >
                         Login

@@ -24,6 +24,9 @@ v.validators.username = function (value) {
 }
 
 const rules = {
+    'code': {
+        'presence': {'allowEmpty': false},
+    },
     'username': {
         'presence': {'allowEmpty': false},
         'length': {
@@ -46,6 +49,11 @@ const rules = {
         'length': {
             'minimum': 6,
         }
+    },
+
+    'password-confirm': {
+        'presence': {'allowEmpty': false},
+        'equality': 'password'
     },
 
     'current-password': {

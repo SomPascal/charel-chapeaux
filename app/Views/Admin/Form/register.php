@@ -25,76 +25,115 @@
                     <?php endif ?>
                 </div>
 
-                <form class="user">
+                <form 
+                 action="<?= route_to('admin.att-register') ?>" 
+                 method="post"
+                 class="user" 
+                 id="register"
+                >
+                    <p class="mb-3 alert alert-danger d-none"></p>
+
                     <div class="form-group">
                         <input 
                             type="text" 
                             class="form-control form-control-user" 
-                            id="name"
+                            id="username"
                             required
-                            placeholder="Votre nom"
+                            placeholder="Nom d'utilisateur"
                         />
+
+                        <p class="invalid-feedback"></p>
                     </div>
 
                     <div class="form-group">
                         <input 
-                            type="email" 
-                            class="form-control form-control-user" 
-                            id="email" 
-                            required
-                            placeholder="Email Address"
+                         type="email" 
+                         class="form-control form-control-user" 
+                         id="email" 
+                         required
+                         placeholder="Email"
                         />
+
+                        <p class="invalid-feedback"></p>
                     </div>
 
                     <div class="form-group">
                         <input 
-                            type="password" 
-                            class="form-control form-control-user" 
-                            id="password" 
-                            placeholder="Mot de passe"
-                            required
+                         type="password" 
+                         class="form-control form-control-user" 
+                         id="password" 
+                         placeholder="Mot de passe"
+                         show-password
+                         required
                         />
+
+                        <p class="invalid-feedback"></p>
                     </div>
 
                     <div class="form-group">
                         <input 
-                            type="password" 
-                            class="form-control form-control-user" 
-                            id="password-verification" 
-                            placeholder="Entrez encore le mot de passe"
-                            required
+                         type="password" 
+                         class="form-control form-control-user" 
+                         id="password-confirm" 
+                         show-password
+                         placeholder="Encore le mot de passe"
+                         required
                         />
+
+                        <p class="invalid-feedback"></p>
                     </div>
 
-                        <!-- Show password  -->
-                        <div class="form-group">
+                    <!-- Show password  -->
+                    <div class="form-group">
                         <div class="custom-control custom-checkbox small">
                             <input 
-                                type="checkbox" 
-                                class="custom-control-input" 
-                                id="show-password"
-                                required
+                             type="checkbox" 
+                             class="custom-control-input" 
+                             id="show-password"
+                             show-password-trigger
+                             required
                             />
 
                             <label 
-                                class="custom-control-label" 
-                                for="show-password"
+                             class="custom-control-label" 
+                             for="show-password"
                             >
                                 Afficher le mot de passe
                             </label>
                         </div>
                     </div>
 
-                    <a href="login.html" class="btn btn-primary btn-user btn-block">
-                        Register Account
-                    </a>
+                    <!-- Remember Me  -->
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox small">
+                            <input 
+                             type="checkbox" 
+                             class="custom-control-input" 
+                             id="remember"
+                             checked
+                            />
+
+                            <label 
+                             class="custom-control-label" 
+                             for="remember"
+                            >Se souvenir de moi</label>
+                        </div>
+                    </div>
+
+                    <button 
+                     type="submit"
+                     class="btn btn-primary btn-user btn-block"
+                     id="submit"
+                    >
+                        S'enregister
+                    </button>
                 </form>
                 <hr>
 
                 <div class="text-center">
                     Vous avez déjà un compte ?
-                    <a href="login.html">
-                        Connectez-vous
+                    <a href="<?= route_to('admin.login') ?>">
+                        connectez-vous
                     </a>
                 </div>
             </div>
@@ -105,3 +144,7 @@
 <?php $this->section('title') ?>
     <title>Charel Chapeaux | S'enrégistrer</title>
 <?php $this->endSection('title') ?>
+
+<?php $this->section('script') ?>
+    <script type="module" src="/assets/admin/js/register.js"></script>
+<?php $this->endSection('script') ?>

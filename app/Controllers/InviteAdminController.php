@@ -68,13 +68,6 @@ class InviteAdminController extends BaseController
 
     public function use(string $link_id)
     {
-        // TODO: Check if the link really exist
-        $link = model(InvitationLinkModel::class)->getInfo($link_id);
-
-        if (! $link->exist()) {
-            throw new PageNotFoundException("Error Processing Request");
-        }
-
         // TODO: Check if the user is not connected as an admin or superadmin
         if (auth()->loggedIn()) {
             return redirect()
@@ -84,6 +77,17 @@ class InviteAdminController extends BaseController
                 'Vous ne pouvez plus utiliser ce lien. Vous etes déjà connecté.'
             );
         }
+        else if (session()->has('invitation.link')) {
+            return redirect()->route('admin.register');
+        }
+
+        // TODO: Check if the link really exist
+        $link = model(InvitationLinkModel::class)->getInfo($link_id);
+
+        if (! $link->exist()) {
+            throw new PageNotFoundException("Error Processing Request");
+        }
+
 
 
         // TODO: Check if the link has not been used yet
