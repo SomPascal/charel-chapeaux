@@ -81,6 +81,8 @@ class Filters extends BaseFilters
                     'logout',
                     'admin/en/login',
                     'admin/fr/login',
+                    'admin/en/register',
+                    'admin/fr/register',
                     'admin/login',
                     'login',
                     '/',
@@ -89,7 +91,8 @@ class Filters extends BaseFilters
                     'auth/a/*',
                     'item*',
                     '__hot-reload',
-                    'draft'
+                    'draft',
+                    'invite/use*'
                 ]
             ],
         ],

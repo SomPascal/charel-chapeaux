@@ -11,7 +11,7 @@ class RegisterController extends ShieldRegisterController
 {
     public function register()
     {
-        return 'register';
+        return view('Admin/Form/register');
     }
 
     public function attemptRegister(): Response

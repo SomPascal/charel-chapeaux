@@ -39,6 +39,13 @@
             </p>
         <?php endif ?>
 
+        <?php if(session()->has('error')): ?>
+            <p class="alert alert-danger m-3">
+                <i class="fa fa-times"></i>
+                <?= esc(session()->get('error')) ?>
+            </p>
+        <?php endif ?>
+
         <p>
             Il y'a actuellement <?= esc(count($admins)) ?> 
             administrateur(s).
