@@ -21,7 +21,7 @@ class RegisterController extends ShieldRegisterController
         if (auth()->loggedIn()) {
             return redirect()->route('admin.index');
         }
-        else if (! session()->has('invitation.link')) {
+        else if (! session()->has('used_invitation_link')) {
             return redirect()->to('/');
         }
         
@@ -54,7 +54,6 @@ class RegisterController extends ShieldRegisterController
             return $this->failValidationErrors($this->validator->getErrors());
         }
 
-
         // Save the user
         $allowedPostFields = array_keys($rules);
         $user              = $this->getUserEntity();
@@ -65,7 +64,9 @@ class RegisterController extends ShieldRegisterController
             $user->username = null;
         }
 
-        if (model(AdminModel::class)->amount() >= 6)
+        $adminModel = model(AdminModel::class);
+
+        if ($adminModel->amount() >= 6)
         {
             return $this->failServerError(
                 'Insufficient Storage',
@@ -83,16 +84,15 @@ class RegisterController extends ShieldRegisterController
         // To get the complete user object with ID, we need to get from the database
         $user = $users->findById($users->getInsertID());
 
-        $invitation_link = session()->get('invitation.link');
+        $used_invitation_link = session()->get('used_invitation_link');
 
-        if (! ($invitation_link instanceof InviteLinkEntity)) 
-        {
-            return $this->failServerError();
-        }
+        // Add to predefined group
+        $user->addGroup($used_invitation_link['role']);
 
-        // Add to default group
-        $user->addGroup($invitation_link->link_role);
-
+        $adminModel->setUsedInviteLink(
+            user_id: $user->id, 
+            used_link_id: $used_invitation_link['id']
+        );
 
         Events::trigger('register', $user);
 

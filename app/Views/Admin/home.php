@@ -100,7 +100,7 @@
                                                     Agrandir
                                                 </span>
                                             </button>
-                                            <?php if ($admin->id != user_id()): ?>
+                                            <?php if ($admin->id != user_id() && auth()->user()->inGroup('superadmin')): ?>
                                                 <button 
                                                     data-toggle="modal"
                                                     data-target="#eject-admin"
@@ -142,7 +142,7 @@
                                                     </div>
                                                 </div>
                                             <?php endif ?>
-                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <div class="col-auto">
@@ -156,6 +156,10 @@
                     </div>
                 <?php endforeach ?>
             </div>
+        <?php else: ?>
+            <p class="alert alert-danger w-100 text-uppercase text-center">
+                Pas d'administrateurs
+            </p>
         <?php endif ?>
 
         <!-- Page Heading -->

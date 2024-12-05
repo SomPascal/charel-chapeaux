@@ -56,12 +56,11 @@ class EmailActivatorAction extends EmailActivator
 
         $resendAfter = 0;
 
-        if (session()->has('otp.expire_at')) {
-
+        if (session()->has(OTP_EXPIRE_AT)) {
             /**
              * @var Time $expireAt
              */
-            $expireAt = session()->get('otp.expire_at');
+            $expireAt = session()->get(OTP_EXPIRE_AT);
             $resendAfter = $expireAt->timestamp - Time::now()->timestamp;
 
         }
@@ -75,10 +74,10 @@ class EmailActivatorAction extends EmailActivator
             $ipAddress = $request->getIPAddress();
             $userAgent = (string) $request->getUserAgent();
             $date      = Time::now()->toDateTimeString();
+            $email_sent = false;
     
             if (env('CI_ENVIRONMENT') == 'production') {
                 // Send the email
-                $email_sent = false;
                 $subject = 'Activez votre compte';
 
                 $emailContent = $this->view(
@@ -120,28 +119,31 @@ class EmailActivatorAction extends EmailActivator
                     $email->clear();
                 }
 
-                if ($email_sent === false) {
-                    return view('message', [
-                        'title' => 'Activation Échoué',
-                        'message' => 'Nous n\'avons pas pu envoyer un mail d\'activation pour votre compte.',
-                        'activationFail' => true
-                    ]);
-                }
-
-                session()->setTempdata(
-                    'otp.expire_at', 
-                    Time::now()->addMinutes(10),
-                    10*MINUTE
-                );
-    
-                $resendAfter = 10*MINUTE;
             }
             else {
                 log_message(
                     LogLevel::INFO,
                     'Votre code:' . $code
                 );
+
+                $email_sent = true;
             }
+
+            if ($email_sent === false) {
+                return view('message', [
+                    'title' => 'Activation Échoué',
+                    'message' => 'Nous n\'avons pas pu envoyer un mail d\'activation pour votre compte.',
+                    'activationFail' => true
+                ]);
+            }
+
+            session()->setTempdata(
+                OTP_EXPIRE_AT, 
+                Time::now()->addMinutes(10),
+                10*MINUTE
+            );
+
+            $resendAfter = 10*MINUTE;
         }
         
         // Display the info page

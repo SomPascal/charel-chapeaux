@@ -13,6 +13,8 @@ class DashboardController extends BaseController
         $adminModel = model(AdminModel::class);
         $admins = $adminModel->asObject()->getAdmins();
 
+        // dd($admins);
+
         return view('Admin/home', [
             'admins' => $admins
         ]);

@@ -14,7 +14,7 @@ class AdminModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'username'
+        'username', 'used_link_id', 'active'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -55,9 +55,13 @@ class AdminModel extends Model
             'users.id AS id',
             'users.created_at AS created_at',
             'auth_groups_users.group AS group',
+            'inviter.username AS inviter_username'
         ])
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
         ->join('auth_identities', 'auth_identities.user_id = users.id', 'left')
+        ->join('use_invitation_links', 'use_invitation_links.id = users.used_link_id', 'left')
+        ->join('invitation_links', 'invitation_links.id = use_invitation_links.link_id', 'left')
+        ->join('users AS inviter', 'inviter.id = invitation_links.inviter_id', 'left')
         ->where([
             'auth_identities.type' => 'email_password',
             'users.active' => true
@@ -101,5 +105,13 @@ class AdminModel extends Model
                 'auth_identities.last_used_at != ' => null
             ]        
         );
+    }
+
+    public function setUsedInviteLink($user_id, $used_link_id): bool
+    {
+        return $this->where('id', $user_id)
+        ->update(row: [
+            'used_link_id' => $used_link_id
+        ]);
     }
 }

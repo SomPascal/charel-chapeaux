@@ -16,7 +16,7 @@
             <?= esc($message ?? 'Le système a rencontré une erreur. Retournez à l\'acceuil.') ?>
           </p>
 
-          <?php if ($activationFail == true): ?>
+          <?php if (! empty($activationFail) && $activationFail == true): ?>
             <button class="btn btn-dark btn-lg" onclick="window.location.reload()">
               Réessayez 
               <i class="fa fa-refresh"></i>

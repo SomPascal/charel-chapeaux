@@ -26,15 +26,18 @@ class InviteLinkEntity extends Entity
         return Time::now()->isAfter($this->link_exp);
     }
 
-    public function activate(string $link_id): bool
+    public function activate(string $link_id): ?array
     {
-        return db_connect()->table('use_invitation_links')
-        ->insert([
+        $use_invitation_links = [
             'id' => uid(),
             'link_id' => $link_id,
             'ip' => request()->getIPAddress(),
             'user_agent' => request()->getUserAgent(),
             'created_at' => Time::now()
-        ]);
+        ];
+
+        return db_connect()
+        ->table('use_invitation_links')
+        ->insert($use_invitation_links) == false ? null : $use_invitation_links;
     }
 }

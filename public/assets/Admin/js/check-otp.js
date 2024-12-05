@@ -93,6 +93,9 @@ const handleForm = ()=> {
         let beginTime = Number(countdownField.innerHTML)
         let currentTime = beginTime
 
+        console.log(beginTime, currentTime, countdownField)
+        
+
         setInterval(() => {
             if (currentTime < 1) {
                 resendBtn.disabled = false

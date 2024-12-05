@@ -89,7 +89,6 @@ class InviteAdminController extends BaseController
         }
 
 
-
         // TODO: Check if the link has not been used yet
         $error_message = null;
 
@@ -106,11 +105,14 @@ class InviteAdminController extends BaseController
         }
 
         // TODO: Allow the visitor to signup for a moment
-        if (! $link->activate($link->link_id)) {
+        $use_activation_link = $link->activate($link->link_id);
+
+        if ($use_activation_link === null) {
             return view('message', [
                 'message' => 'Une erreur est survenue. Veuillez essayer de nouveau'
             ]);
         }
+        $use_activation_link['role'] = $link->link_role;
 
         session()->setTempdata(
             'register.access', 
@@ -119,8 +121,8 @@ class InviteAdminController extends BaseController
         );
 
         session()->setTempdata(
-            'invitation.link', 
-            $link,
+            'used_invitation_link', 
+            $use_activation_link,
             30*MINUTE
         );
 

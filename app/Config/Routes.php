@@ -28,7 +28,7 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->post('login', [LoginController::class, 'attemptLogin'], ['as' => 'admin.att-login']);
 
     $routes->get('{locale}/register', [RegisterController::class, 'register'], ['as' => 'admin.register']);
-    $routes->post('register', [RegisterController::class, 'attemptRegister'], ['as' => 'admin.att-register']);
+    $routes->post('att-register', [RegisterController::class, 'attemptRegister'], ['as' => 'admin.att-register']);
     
     $routes->get('{locale}/change-password', [ChangePasswordController::class, 'changePswd'], ['as' => 'admin.change-pswd']);
     $routes->post('change-password', [ChangePasswordController::class, 'attemptChangePswd'], ['as' => 'admin.att-change-pswd']);
