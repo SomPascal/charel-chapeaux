@@ -40,6 +40,7 @@
 <body class="homepage">
   <?= $this->include('Parts/svg-info') ?>
   <?= $this->include('Parts/preloader') ?>
+  <?= $this->include('Parts/admin-navbar') ?>
   <?= $this->include('Parts/navbar') ?>
 
   <?= $this->renderSection('content') ?>
