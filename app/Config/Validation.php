@@ -58,4 +58,9 @@ class Validation extends BaseConfig
     public array $invite_admin = [
         'role' => 'required|in_list[admin,superadmin]'
     ];
+
+    public array $change_role = [
+        'admin_id' => 'required',
+        'role' => 'required|in_list[superadmin,admin]'
+    ];
 }

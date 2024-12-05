@@ -52,110 +52,120 @@
         </p>
 
         <?php if (count($admins) > 0): ?>
-            <div class="row pb-5">
-                <?php foreach($admins as $admin): ?>
-                    <div class="col-md-4 my-1">
-                        <div 
-                            class="card border-left-secondary shadow" 
-                            email="<?= esc($admin->email, 'attr') ?>"
-                            username="<?= esc($admin->username, 'attr') ?>" 
-                            admin-id="<?= esc($admin->id, 'attr') ?>"
-                            invited-by=""
-                            myself="<?= $admin->id == user_id() ?>"
-                            group="<?= esc($admin->group, 'attr') ?>"
-                            created-at="<?= esc($admin->created_at, 'attr') ?>"
-                            admin-card
-                        >
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <h5 class="h5">
-                                            <?= esc($admin->username) ?>
-                                            <?= ($admin->id == user_id()) ? '(Moi)' : null ?>
-                                        </h5>
+            <?php foreach(array_chunk($admins, 2) as $chunked_admins): ?>
+                <div class="row mb-3">
+                    <?php foreach($chunked_admins as $admin): ?>
+                        <div class="col-md-6">
+                            <div 
+                                class="card border-left-secondary shadow mb-3" 
+                                email="<?= esc($admin->email, 'attr') ?>"
+                                username="<?= esc($admin->username, 'attr') ?>" 
+                                admin-id="<?= esc($admin->id, 'attr') ?>"
+                                invitedBy="<?= esc($admin->inviter_username, 'attr') ?>"
+                                myself="<?= $admin->id == user_id() ?>"
+                                group="<?= esc($admin->group, 'attr') ?>"
+                                created-at="<?= esc($admin->created_at, 'attr') ?>"
+                                admin-card
+                            >
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <h5 class="h5 d-flex flex-wrap justify-content-between">
+                                                <?= esc($admin->username) ?>
+                                                <?= ($admin->id == user_id()) ? '(Moi)' : null ?>
 
-                                        <?php if (isset($admin->inviter_username)): ?>
-                                            <p>
-                                                Invité par: 
-                                                <span class="text-primary">
-                                                    <b><?= esc($admin->inviter_username) ?></b>
-                                                </span>
-                                            </p>
-                                        <?php endif ?>
-
-                                        <div class="d-flex">
-                                            <button 
-                                                show-admin
-                                                class="btn 
-                                                btn-secondary 
-                                                btn-sm btn-icon-split m-1"
-                                                data-toggle="modal"
-                                                data-target="#admin-details"
-                                            >
-                                                <span class="icon">
-                                                    <i class="fa fa-expand-alt"></i>
-                                                </span>
-
-                                                <span class="text">
-                                                    Agrandir
-                                                </span>
-                                            </button>
-                                            <?php if ($admin->id != user_id() && auth()->user()->inGroup('superadmin')): ?>
+                                                <?php if (isset($admin->inviter_username)): ?>
+                                                    <p class="mb-0">
+                                                        Invité par: 
+                                                        <span class="text-primary">
+                                                            <b><?= esc($admin->inviter_username) ?></b>
+                                                        </span>
+                                                    </p>
+                                                <?php endif ?>
+                                            </h5>
+    
+    
+                                            <div class="d-flex flex-wrap">
                                                 <button 
+                                                    show-admin
+                                                    class="btn 
+                                                    btn-secondary 
+                                                    btn-sm btn-icon-split m-1"
                                                     data-toggle="modal"
-                                                    data-target="#eject-admin"
-                                                    class="btn btn-sm btn-danger btn-icon-split m-1"
+                                                    data-target="#admin-details"
                                                 >
                                                     <span class="icon">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-expand-alt"></i>
                                                     </span>
-
+    
                                                     <span class="text">
-                                                        Expulser
+                                                        Agrandir
                                                     </span>
                                                 </button>
-
-                                                <!-- Role Modificator -->
-                                                <div class="btn-group btn-sm">
-                                                    <button type="button" class="btn btn-sm btn-secondary disabled">
-                                                        <i class="fa fa-user-edit"></i>
-                                                        Role
-                                                    </button>
-
+                                                <?php if ($admin->id != user_id() && auth()->user()->inGroup('superadmin')): ?>
                                                     <button 
-                                                        type="button" 
-                                                        class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                                        data-toggle="dropdown" 
-                                                        aria-expanded="false"
+                                                        data-toggle="modal"
+                                                        data-target="#eject-admin"
+                                                        class="btn btn-sm btn-danger btn-icon-split m-1"
                                                     >
-                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        <span class="icon">
+                                                            <i class="fa fa-trash"></i>
+                                                        </span>
+    
+                                                        <span class="text">
+                                                            Expulser
+                                                        </span>
                                                     </button>
-
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">
-                                                            Admin (Actuel)
-                                                        </a>
-
-                                                        <a class="dropdown-item" href="#">
-                                                            Super Admin
-                                                        </a>
+    
+                                                    <!-- Role Modificator -->
+                                                    <div class="btn-group btn-sm" admin-role>
+                                                        <button type="button" class="btn btn-sm btn-secondary disabled">
+                                                            <i class="fa fa-user-edit"></i>
+                                                            Role
+                                                        </button>
+    
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
+                                                            data-toggle="dropdown" 
+                                                            aria-expanded="false"
+                                                        >
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+    
+                                                        <ul class="dropdown-menu">
+                                                            <?php foreach(config('Config\AuthGroups')->groups as $role => $desc): ?>
+                                                                <?php if(user_id() != $admin->id): ?>
+                                                                    <li 
+                                                                     data-toggle="modal"
+                                                                     data-target="#change-admin-role"
+                                                                     value="<?= esc($role) ?>"
+                                                                     class="cursor-pointer dropdown-item <?= ($admin->group == $role) ? 'disabled' : null ?>"
+                                                                     <?= ($admin->group == $role) ? 'disabled' : null ?> 
+                                                                    >
+                                                                        <?= esc($desc['title']) ?>
+                                                                        <?= ($admin->group == $role) ? '(Actuel)' : null ?>
+                                                                    </li>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        </ul>
                                                     </div>
-                                                </div>
+                                                <?php endif ?>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-auto">
+                                            <?php if ($admin->group == 'superadmin'): ?>
+                                                <i class="fas fa-crown fa-2x text-warning-100"></i>
                                             <?php endif ?>
                                         </div>
-                                    </div>
-                                    
-                                    <div class="col-auto">
-                                        <?php if ($admin->group == 'superadmin'): ?>
-                                            <i class="fas fa-crown fa-2x text-warning-100"></i>
-                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach ?>
-            </div>
+                    <?php endforeach ?>
+                </div>
+            <?php endforeach ?>
         <?php else: ?>
             <p class="alert alert-danger w-100 text-uppercase text-center">
                 Pas d'administrateurs
@@ -720,6 +730,7 @@
 
     <?= $this->include('Admin/Parts/admin-details-modal') ?>
     <?= $this->include('Admin/Parts/invitation-link-modal') ?>
+    <?= $this->include('Admin/Parts/change-admin-role-modal') ?>
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>

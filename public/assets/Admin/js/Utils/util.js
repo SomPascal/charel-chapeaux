@@ -51,9 +51,37 @@ const getCsrfToken = ()=> {
     return  csrfTag.getAttribute('content')
 }
 
+/**
+ * 
+ * @param {String} message 
+ * @param {String} type
+ */
+const setNotification = (message, type)=> {
+    const notification = document.querySelector('#notification')
+    const close = notification.querySelector('button')
+
+    if (! notification) {
+        return
+    }
+    notification.querySelector('p').innerHTML = message
+    notification.classList.add('show')
+    notification.classList.add(type)
+
+    close.onclick = ()=> {
+        notification.querySelector('p').innerHTML = ''
+        notification.classList.remove(type)
+        notification.remove('show')
+    }
+
+    setTimeout(() => {
+        close.click()
+    }, 2000)
+}
+
 export {
     env,
     setCsrfToken,
     getCsrfToken,
-    copyLink
+    copyLink,
+    setNotification
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use CodeIgniter\I18n\Time;
 use CodeIgniter\Model;
+use CodeIgniter\Shield\Models\UserModel;
 
 class AdminModel extends Model
 {
@@ -69,6 +70,13 @@ class AdminModel extends Model
         ->whereIn('auth_groups_users.group', ['admin', 'superadmin'])
         ->limit(6)
         ->findAll();
+    }
+
+    public function setGroup(string $user_id, $group): bool
+    {
+        return db_connect()->table('auth_groups_users')
+        ->where('user_id', $user_id)
+        ->update(set: ['group' => $group]);
     }
 
     public function amount(): int

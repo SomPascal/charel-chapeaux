@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\Admin\ChangePasswordController;
+use App\Controllers\Admin\ChangeRoleController;
 use App\Controllers\Admin\ChangeUsernameController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
@@ -47,6 +48,8 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->get('content', [DashboardController::class, 'content'], ['as' => 'admin.content']);
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);
     });
+
+    $routes->post('change-role', [ChangeRoleController::class, 'change'], ['as' => 'admin.role.change', 'filter' => 'group:superadmin']);
 });
 
 $routes->get('/', [HomeController::class, 'index'], ['as' => 'index']);
@@ -55,7 +58,7 @@ $routes->post('accept-cookie', [CookieController::class, 'accept'], ['as' => 'co
 
 $routes->group('invite', function(RouteCollection $routes){
     $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'invite.use']);
-    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'group:superadmin']);
+    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
 });
 
 $routes->group('item', function(RouteCollection $routes) {

@@ -12,6 +12,10 @@ textarea {
     resize: none;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .opacity-0 {
     opacity: 0;
 }
@@ -41,8 +45,22 @@ textarea {
     right: 70px;
 }
 
+.notification {
+    position: fixed;
+    left: 30px;
+    transition: .3s ease;
+
+    bottom: -100px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.notification.show {
+    bottom: 30px;
+    opacity: 1;
+    visibility: visible;
+}
+
 @media screen and (min-width: 780px) {
-    h2 {
-        color: red !important;
-    }
+
 }
