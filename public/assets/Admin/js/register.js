@@ -130,6 +130,12 @@ const handleForm = ()=> {
 
                     break
 
+                case env.HTTP_INSUFFICIENT_STORAGE:
+                    setAlert(
+                        registerForm,
+                        'La limite d\'administrateur a été atteinte.'
+                    )
+                    break
                 default:
                     setAlert(
                         registerForm,

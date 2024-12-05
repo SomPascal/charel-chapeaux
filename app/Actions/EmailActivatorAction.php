@@ -54,44 +54,103 @@ class EmailActivatorAction extends EmailActivator
             );
         }
 
-        # code...
-        $code = $this->createIdentity($user);
+        $resendAfter = 0;
 
-        /** @var IncomingRequest $request */
-        $request = service('request');
+        if (session()->has('otp.expire_at')) {
 
-        $ipAddress = $request->getIPAddress();
-        $userAgent = (string) $request->getUserAgent();
-        $date      = Time::now()->toDateTimeString();
+            /**
+             * @var Time $expireAt
+             */
+            $expireAt = session()->get('otp.expire_at');
+            $resendAfter = $expireAt->timestamp - Time::now()->timestamp;
 
-        if (env('CI_ENVIRONMENT') == 'production') {
-            // Send the email
-            helper('email');
-            $email = emailer(['mailType' => 'html'])
-                ->setFrom(setting('Email.fromEmail'), setting('Email.fromName') ?? '');
-            $email->setTo($userEmail);
-            $email->setSubject('Activer votre mail');
-            $email->setMessage($this->view(
-                setting('Auth.views')['action_email_activate_email'],
-                ['code'  => $code, 'ipAddress' => $ipAddress, 'userAgent' => $userAgent, 'date' => $date],
-                ['debug' => false]
-            ));
-    
-            if ($email->send(false) === false) {
-                throw new RuntimeException('Cannot send email for user: ' . $user->email . "\n" . $email->printDebugger(['headers']));
-            }
-    
-            // Clear the email
-            $email->clear();
         }
+        else {
+            # code...
+            $code = $this->createIdentity($user);
+    
+            /** @var IncomingRequest $request */
+            $request = service('request');
+    
+            $ipAddress = $request->getIPAddress();
+            $userAgent = (string) $request->getUserAgent();
+            $date      = Time::now()->toDateTimeString();
+    
+            if (env('CI_ENVIRONMENT') == 'production') {
+                // Send the email
+                $email_sent = false;
+                $subject = 'Activez votre compte';
 
-        log_message(
-            LogLevel::INFO,
-            'Votre code:' . $code
-        );
+                $emailContent = $this->view(
+                    setting('Auth.views')['action_email_activate_email'],
+                    [
+                        'code'  => $code, 
+                        'username' => $user->username,
+                        'ipAddress' => $ipAddress, 
+                        'userAgent' => $userAgent, 
+                        'date' => $date
+                    ],
+                    ['debug' => false]
+                );
 
+                if (env('mail.via', 'api') == 'api')
+                {
+                    helper('mailjet');
+
+                    $email_sent = mailjet(
+                        receiverEmail: $user->email,
+                        receiverName: $user->username,
+                        subject: $subject,
+                        textContent: '',
+                        htmlContent: $emailContent
+                    );
+                }
+                else {
+                    helper('email');
+
+                    $email = emailer(['mailType' => 'html'])
+                        ->setFrom(setting('Email.fromEmail'), setting('Email.fromName') ?? '');
+                    $email->setTo($user->email);
+                    $email->setSubject('Activer votre mail');
+                    $email->setMessage($emailContent);
+            
+                    $email_sent = $email->send(false);
+
+                    // Clear the email
+                    $email->clear();
+                }
+
+                if ($email_sent === false) {
+                    return view('message', [
+                        'title' => 'Activation Échoué',
+                        'message' => 'Nous n\'avons pas pu envoyer un mail d\'activation pour votre compte.',
+                        'activationFail' => true
+                    ]);
+                }
+
+                session()->setTempdata(
+                    'otp.expire_at', 
+                    Time::now()->addMinutes(10),
+                    10*MINUTE
+                );
+    
+                $resendAfter = 10*MINUTE;
+            }
+            else {
+                log_message(
+                    LogLevel::INFO,
+                    'Votre code:' . $code
+                );
+            }
+        }
+        
         // Display the info page
-        return $this->view(setting('Auth.views')['action_email_activate_show'], ['user' => $user]);
+        return $this->view(
+            setting('Auth.views')['action_email_activate_show'], [
+                'user' => $user,
+                'resendAfter' => $resendAfter
+            ]
+        );
     }
 
     /**

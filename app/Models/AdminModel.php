@@ -59,10 +59,24 @@ class AdminModel extends Model
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
         ->join('auth_identities', 'auth_identities.user_id = users.id', 'left')
         ->where([
-            'auth_identities.type' => 'email_password'
+            'auth_identities.type' => 'email_password',
+            'users.active' => true
         ])
+        ->whereIn('auth_groups_users.group', ['admin', 'superadmin'])
         ->limit(6)
         ->findAll();
+    }
+
+    public function amount(): int
+    {
+        return $this->select('COUNT(users.id) AS amount')
+        ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
+        ->whereIn(
+            'auth_groups_users.group',
+            ['admin', 'superadmin']
+        )
+        ->where(['active' => true])
+        ->find()[0]['amount'];
     }
 
     public function changeUsername(int $admin_id, string $username): bool

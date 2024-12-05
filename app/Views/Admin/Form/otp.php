@@ -65,10 +65,20 @@
                     <button 
                      type="button" 
                      class="btn btn-secondary btn-block rounded-pill" 
-                     onclick="window.location.reload()"
+                     resend-code 
+                     disabled
                     >
                         Resend Code
                     </button>
+                    <p>
+                        Vous pourrez renvoyer le code dans 
+                        <span 
+                         resend-after
+                        >
+                            <?= esc($resendAfter) ?>
+                        </span>
+                        secondes
+                    </p>
                 </form>
             </div>
         </div>

@@ -54,6 +54,10 @@ body {
   --bs-link-hover-color-rgb: 17, 17, 17;
 }
 
+*:disabled {
+  cursor: not-allowed;
+}
+
 body {
   letter-spacing: 0.03rem;
   overflow-y: auto;

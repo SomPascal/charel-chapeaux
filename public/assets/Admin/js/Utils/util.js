@@ -11,7 +11,8 @@ const env = {
     HTTP_FORBIDDEN: 403,
     HTTP_TOO_MANY_REQUEST: 429,
 
-    HTTP_INTERNAL_SERVER_ERROR: 500
+    HTTP_INTERNAL_SERVER_ERROR: 500,
+    HTTP_INSUFFICIENT_STORAGE: 507
 }
 
 const csrfTag = document.head.querySelector(`meta[name="${env.X_CSRF_TOKEN}"]`)

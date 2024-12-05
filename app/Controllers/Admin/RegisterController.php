@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Entities\InviteLinkEntity;
+use App\Models\AdminModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Events\Events;
 use CodeIgniter\HTTP\Response;
@@ -62,6 +63,14 @@ class RegisterController extends ShieldRegisterController
         // Workaround for email only registration/login
         if ($user->username === null) {
             $user->username = null;
+        }
+
+        if (model(AdminModel::class)->amount() >= 6)
+        {
+            return $this->failServerError(
+                'Insufficient Storage',
+                Response::HTTP_INSUFFICIENT_STORAGE
+            );
         }
 
         try {

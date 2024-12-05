@@ -1,7 +1,7 @@
 import { checkField, disable, setAlert } from "./Utils/form.js"
 import { env, getCsrfToken, setCsrfToken } from "./Utils/util.js"
 
-document.addEventListener('DOMContentLoaded', ()=>{
+const handleForm = ()=> {
     const verifyEmail = document.querySelector('#verify-email')
 
     if (! verifyEmail)
@@ -16,7 +16,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
     })
 
     code.addEventListener('keydown', (e)=> {        
-        if (! (/^([0-9]{1})$/.test(e.key) || e.keyCode == 8 || e.ctrlKey)) {
+        console.log(e);
+        
+        if (! (
+            /^([0-9]{1})$/.test(e.key) ||
+            e.keyCode == 8 || 
+            e.keyCode == 13 || 
+            e.ctrlKey == true
+        )) {
             e.preventDefault()
         }
     })
@@ -79,4 +86,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
             }
         })
     })
+
+    const countdown = ()=> {
+        const countdownField = verifyEmail.querySelector('p [resend-after]')
+        const resendBtn = verifyEmail.querySelector('button[resend-code]')
+        let beginTime = Number(countdownField.innerHTML)
+        let currentTime = beginTime
+
+        setInterval(() => {
+            if (currentTime < 1) {
+                resendBtn.disabled = false
+                countdownField.parentNode.innerHTML = 'Vous pouvez renvoyer le code'
+                return
+            }
+            countdownField.innerHTML = --currentTime
+        }, 1000)
+        resendBtn.addEventListener('click', ()=> window.location.reload())
+    }
+    countdown()
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+    handleForm()
 })

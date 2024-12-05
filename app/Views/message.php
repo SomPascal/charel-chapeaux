@@ -16,10 +16,17 @@
             <?= esc($message ?? 'Le système a rencontré une erreur. Retournez à l\'acceuil.') ?>
           </p>
 
-          <a href="<?= base_url(service('request')->getLocale()) ?>" class="btn btn-dark btn-lg">
-            <i class="fa fa-home"></i>
-            Accueil 
-          </a>
+          <?php if ($activationFail == true): ?>
+            <button class="btn btn-dark btn-lg" onclick="window.location.reload()">
+              Réessayez 
+              <i class="fa fa-refresh"></i>
+            </button>
+          <?php else: ?>
+            <a href="<?= base_url(service('request')->getLocale()) ?>" class="btn btn-dark btn-lg">
+              <i class="fa fa-home"></i>
+              Accueil 
+            </a>
+          <?php endif ?>
         </div>
       </div>
     </div>

@@ -1,4 +1,8 @@
-<?php $this->extend('base') ?>
+<?php
+
+use Config\Contact;
+
+ $this->extend('base') ?>
 
 <?php $this->section('title') ?>
   <title>
@@ -940,12 +944,12 @@
             
             <div class="col-md-6">
               <a 
-               href="tel:237699967512" 
+               href="tel:<?= esc(Contact::$phone, 'attr') ?>" 
                class="btn btn-dark w-100 m-2" 
                target="_blank"
               >
                 <i class="fa fa-phone"></i>
-                Appel : +237 699 96 75 12
+                Appel : <?= esc(Contact::$phone) ?>
               </a>
             </div>
           </div>
@@ -953,7 +957,7 @@
           <div class="row mb-5">
             <div class="col-md-6">
               <a 
-               href="https://facebook.com/profile.php?id=100063837618193" 
+               href="<?= esc(Contact::$facebook) ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >
@@ -963,7 +967,7 @@
             </div>
             <div class="col-md-6">
               <a 
-               href="https://instagram.com/charelchapeaux" 
+               href="<?= esc(Contact::$instagram) ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >
@@ -1037,7 +1041,7 @@
   </section>
 
   <a 
-   href="tel:237699967512" 
+   href="tel:<?= esc(Contact::$phone, 'attr') ?>" 
    class="call-cta-btn btn btn-dark"
   >
     <i class="fa fa-phone"></i>
