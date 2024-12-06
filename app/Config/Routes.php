@@ -3,6 +3,7 @@
 use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
+use App\Controllers\Admin\ContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -52,6 +53,7 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
         $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
         $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
+        $routes->post('contact', [ContactController::class, 'change'], ['as' => 'admin.change.contact']);
     });
 });
 

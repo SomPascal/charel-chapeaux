@@ -27,6 +27,11 @@ const rules = {
     'code': {
         'presence': {'allowEmpty': false},
     },
+
+    'contact-content': {
+        'presence': {'allowEmpty': false}
+    },
+
     'username': {
         'presence': {'allowEmpty': false},
         'length': {

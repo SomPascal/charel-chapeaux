@@ -82,11 +82,5 @@
     </div>
   </section>
 
-  <a 
-   href="tel:237699967512" 
-   class="call-cta-btn btn btn-dark"
-  >
-    <i class="fa fa-phone"></i>
-    Appelez-nous
-  </a>
-<?php $this->endSection('content') ?>
+  <?= $this->include('Parts/call-us-btn') ?>
+<?php $this->endSection('content') ?> 

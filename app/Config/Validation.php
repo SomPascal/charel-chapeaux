@@ -68,4 +68,9 @@ class Validation extends BaseConfig
         'admin_id' => 'required',
         'ban' => 'required|in_list[on,off]'
     ];
+
+    public array $change_contact = [
+        'content' => 'required',
+        'name' => 'required|in_list[phone,whatsapp,instagram,facebook,location,map]|max_length[300]'
+    ]; 
 }

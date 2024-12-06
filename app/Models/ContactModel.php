@@ -48,6 +48,12 @@ class ContactModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function setContact(string $name, string $content): bool
+    {
+        return $this->where('name', $name)
+        ->update(row: ['content' => $content]);
+    }
+
     public function get(): array
     {
         return $this->select(['name', 'content'])

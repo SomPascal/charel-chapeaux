@@ -936,7 +936,7 @@ use Config\Contact;
           <div class="row">
             <div class="col-md-6">
               <a 
-               href="htpps://wa.me/237699967512" 
+               href="htpps://wa.me/<?= esc(get_contact('whatsapp') ?? Contact::$whatsapp) ?>" 
                class="btn btn-dark w-100 m-2" 
                target="_blank"
               >
@@ -947,12 +947,12 @@ use Config\Contact;
             
             <div class="col-md-6">
               <a 
-               href="tel:<?= esc(Contact::$phone, 'attr') ?>" 
+               href="tel:<?= esc(get_contact('phone') ?? Contact::$phone) ?>" 
                class="btn btn-dark w-100 m-2" 
                target="_blank"
               >
                 <i class="fa fa-phone"></i>
-                Appel : <?= esc(Contact::$phone) ?>
+                Appel : <?= esc(get_contact('phone') ?? Contact::$phone) ?>
               </a>
             </div>
           </div>
@@ -960,7 +960,7 @@ use Config\Contact;
           <div class="row mb-5">
             <div class="col-md-6">
               <a 
-               href="<?= esc(Contact::$facebook) ?>" 
+               href="<?= esc(get_contact('facebook') ?? Contact::$facebook) ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >
@@ -970,7 +970,7 @@ use Config\Contact;
             </div>
             <div class="col-md-6">
               <a 
-               href="<?= esc(Contact::$instagram) ?>" 
+               href="<?= esc(get_contact('instragram') ?? Contact::$instagram) ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >
@@ -1042,14 +1042,6 @@ use Config\Contact;
       </div>
     </div>
   </section>
-
-  <a 
-   href="tel:<?= esc(get_contact('phone'), 'attr') ?>" 
-   class="call-cta-btn btn btn-dark"
-  >
-    <i class="fa fa-phone"></i>
-    Appelez-nous
-  </a>
 
 <?php $this->endSection('content') ?>
 

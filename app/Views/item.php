@@ -1,3 +1,7 @@
+<?php
+
+use Config\Contact;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -658,8 +662,8 @@
 
             <p>
               Avez-vous des questions ? 
-              <a href="tel:237699967512" class="item-anchor">
-                237 699 96 75 12
+              <a href="tel:<?= esc(get_contact('phone') ?? Contact::$phone) ?>" class="item-anchor">
+                <?= esc(get_contact('phone') ?? Contact::$phone) ?>
               </a>
             </p>
           </div>

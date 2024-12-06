@@ -2,7 +2,11 @@
 <html lang="<?= service('request')->getLocale() ?>">
 
 <head>
-  <?php $this->renderSection('title') ?>
+  <?php
+
+            use Config\Contact;
+
+ $this->renderSection('title') ?>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,13 +51,7 @@
 
   <?= $this->include('Parts/footer') ?>
 
-  <a 
-   href="tel:237699967512" 
-   class="call-cta-btn btn btn-dark"
-  >
-    <i class="fa fa-phone"></i>
-    Appelez-nous
-  </a>
+  <?= $this->include('Parts/call-us-btn') ?>
 
   <?= $this->include('Parts/cookies-info') ?>
   <?= $this->include('Parts/enlarge-wall') ?>
