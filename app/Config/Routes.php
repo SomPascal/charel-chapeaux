@@ -64,10 +64,11 @@ $routes->group('invite', function(RouteCollection $routes){
     $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
 });
 
+$routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
+
 $routes->group('item', function(RouteCollection $routes) {
-    $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
-    $routes->get('like', [ItemController::class, 'like'], ['as' => 'item.like']);
-    $routes->get('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
+    $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
+    $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
 });
 
 $routes->set404Override(sprintf('%s::%s', ErrorController::class, 'pageNotFound'));

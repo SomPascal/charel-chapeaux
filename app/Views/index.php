@@ -846,15 +846,18 @@ use Config\Contact;
               <br><br>
 
               <a 
-               href="https://maps.app.goo.gl/YhBaLaymwSvbmUYp7" 
+               href="<?= esc(get_contact('map')) ?>" 
                target="_blank"
               >
                 <i class="fa fa-map-pin"></i>
-                Express Union Biteng, Yaoundé, Cameroun
+                <?= esc(get_contact('location')) ?>
               </a>
               <br><br>
 
-              <a href="tel:237699967512" class="btn btn-lg btn-dark text-uppercase">
+              <a 
+               href="tel:237<?= esc(get_contact('phone')) ?>" 
+               class="btn btn-lg btn-dark text-uppercase"
+              >
                 Appelez-nous
               </a>
             </div>
@@ -920,7 +923,7 @@ use Config\Contact;
     <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
   </section>
 
-  <section class="newsletter bg-light" style="background: url(/assets/img/pattern-bg.png) no-repeat;">
+  <section id="contact-us" class="newsletter bg-light" style="background: url(/assets/img/pattern-bg.png) no-repeat;">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-8 py-5 my-5">
@@ -1041,7 +1044,7 @@ use Config\Contact;
   </section>
 
   <a 
-   href="tel:<?= esc(Contact::$phone, 'attr') ?>" 
+   href="tel:<?= esc(get_contact('phone'), 'attr') ?>" 
    class="call-cta-btn btn btn-dark"
   >
     <i class="fa fa-phone"></i>

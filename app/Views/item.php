@@ -222,7 +222,7 @@
                   >
                     <li>
                       <a 
-                        href="https://facebook.com/profile.php?id=100063837618193" 
+                        href="<?= esc(get_contact('whatsapp')) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -233,7 +233,7 @@
 
                     <li>
                       <a 
-                        href="https://instagram.com/charelchapeaux" 
+                        href="<?= esc(get_contact('whatsapp')) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -244,7 +244,7 @@
 
                     <li>
                       <a 
-                        href="https://wa.me/237699967512" 
+                        href="https://wa.me/<?= esc(get_contact('whatsapp'), 'attr') ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -274,7 +274,7 @@
                   >
                     <li>
                       <a 
-                        href="/" 
+                        href="<?= base_url(request()->getLocale()) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
