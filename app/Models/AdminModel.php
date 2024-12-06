@@ -90,6 +90,7 @@ class AdminModel extends Model
     public function amount(): int
     {
         return $this->select('COUNT(users.id) AS amount')
+        ->notBanned()
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
         ->whereIn(
             'auth_groups_users.group',
