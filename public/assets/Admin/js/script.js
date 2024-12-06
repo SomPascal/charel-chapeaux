@@ -278,6 +278,113 @@ const changeAdminGroup = ()=> {
     })
 }
 
+/**
+ * 
+ * @param {String} admin_id 
+ * @param {Boolean} ban 
+ * @returns {Boolean}
+ */
+const banFectch = async ({action, method}, admin_id, ban)=> {
+    let data = {
+        'admin_id': admin_id,
+        'ban': (ban == true) ? 'on' : 'off'
+    }
+    let start = false
+    let res
+
+    await fetch(action, {
+        'method': method,
+        'cache': 'no-cache',
+        'headers': {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': getCsrfToken(),
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify(data)
+    })
+    .then(response => {
+        console.log(response)
+        
+        setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
+        res = response.status == env.HTTP_OK
+    })
+
+    return res
+}
+
+const banAdmin =()=> {
+    const banAdminModal = document.querySelector('#ban-admin-modal')
+    const banAdminForm = banAdminModal.querySelector('form')
+
+    const close = banAdminModal.querySelector('button[data-dismiss]')
+    const alertInfo = banAdminModal.querySelector('.alert-warning')
+    let currentAdmin
+
+    /**
+     * 
+     * @param {String} message 
+     * @param {Boolean} flag
+     */
+    const setWarning = (username, flag=true)=> {        
+        if (flag) {
+            alertInfo.innerHTML = `Souhaitez vous vraiment expulser "${username}" ?`
+        }
+        else {
+            alertInfo.innerHTML = ''
+        }
+    }
+
+    document.querySelectorAll('[admin-card]').forEach(card => {        
+        card.querySelectorAll('[ban-admin]').forEach(btn => {
+            btn.addEventListener('click', ()=> {
+                currentAdmin = admins.findById(card.getAttribute('admin-id'))
+
+                if (! currentAdmin) {
+                    return
+                }
+                setWarning(currentAdmin.username)                
+            })
+        })
+
+        banAdminModal.querySelectorAll('[data-dismiss]')
+        .forEach(dismiss => {
+            dismiss.addEventListener('click', ()=> {
+                setWarning('', false)
+            })
+        })
+
+        banAdminForm.querySelector('button[type="submit"]')
+        .onclick = async (e)=> {
+            e.preventDefault()
+
+            disable(banAdminForm)
+
+            let done 
+
+            await banFectch({
+                action: banAdminForm.getAttribute('action'),
+                method: banAdminForm.getAttribute('method')
+            }, currentAdmin.id, true)
+            .then(r => done = r)
+            
+            if (done == true)
+            {
+                window.location.reload()
+            }
+            else {
+                alert('ho')
+                disable(banAdminForm, false)
+
+                setAlert(
+                    banAdminForm, 
+                    'Une erreur est survenue. Veuillez réessayer.'
+                )
+            }
+        }
+    })
+}
+
 const generateInviteLink = ()=>{
     const generateLinkForm = document.querySelector('#invite-link-form')
 
@@ -363,6 +470,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     showAdminDetails()
     generateInviteLink()
     changeAdminGroup()
+    banAdmin()
     
     // swiperTestimonials()
     swiperCapsPopulary()

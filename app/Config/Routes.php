@@ -1,7 +1,7 @@
 <?php
 
+use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
-use App\Controllers\Admin\ChangeRoleController;
 use App\Controllers\Admin\ChangeUsernameController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
@@ -49,7 +49,10 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);
     });
 
-    $routes->post('change-role', [ChangeRoleController::class, 'change'], ['as' => 'admin.role.change', 'filter' => 'group:superadmin']);
+    $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
+        $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
+        $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
+    });
 });
 
 $routes->get('/', [HomeController::class, 'index'], ['as' => 'index']);

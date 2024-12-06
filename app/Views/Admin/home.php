@@ -104,9 +104,11 @@
                                                 </button>
                                                 <?php if ($admin->id != user_id() && auth()->user()->inGroup('superadmin')): ?>
                                                     <button 
+                                                        type="button"
                                                         data-toggle="modal"
-                                                        data-target="#eject-admin"
+                                                        data-target="#ban-admin-modal"
                                                         class="btn btn-sm btn-danger btn-icon-split m-1"
+                                                        ban-admin
                                                     >
                                                         <span class="icon">
                                                             <i class="fa fa-trash"></i>

@@ -63,4 +63,9 @@ class Validation extends BaseConfig
         'admin_id' => 'required',
         'role' => 'required|in_list[superadmin,admin]'
     ];
+
+    public array $ban_admin = [
+        'admin_id' => 'required',
+        'ban' => 'required|in_list[on,off]'
+    ];
 }

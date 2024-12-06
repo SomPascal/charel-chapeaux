@@ -58,6 +58,7 @@ class AdminModel extends Model
             'auth_groups_users.group AS group',
             'inviter.username AS inviter_username'
         ])
+        ->notBanned()
         ->join('auth_groups_users', 'auth_groups_users.user_id = users.id', 'left')
         ->join('auth_identities', 'auth_identities.user_id = users.id', 'left')
         ->join('use_invitation_links', 'use_invitation_links.id = users.used_link_id', 'left')
@@ -70,6 +71,13 @@ class AdminModel extends Model
         ->whereIn('auth_groups_users.group', ['admin', 'superadmin'])
         ->limit(6)
         ->findAll();
+    }
+
+    public function notBanned(): self
+    {
+        return $this->where([
+            'users.status' => null
+        ]);
     }
 
     public function setGroup(string $user_id, $group): bool
