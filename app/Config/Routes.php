@@ -3,6 +3,7 @@
 use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
+use App\Controllers\Admin\ContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -52,6 +53,7 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
         $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
         $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
+        $routes->post('contact', [ContactController::class, 'change'], ['as' => 'admin.change.contact']);
     });
 });
 
@@ -64,10 +66,11 @@ $routes->group('invite', function(RouteCollection $routes){
     $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
 });
 
+$routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
+
 $routes->group('item', function(RouteCollection $routes) {
-    $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
-    $routes->get('like', [ItemController::class, 'like'], ['as' => 'item.like']);
-    $routes->get('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
+    $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
+    $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
 });
 
 $routes->set404Override(sprintf('%s::%s', ErrorController::class, 'pageNotFound'));

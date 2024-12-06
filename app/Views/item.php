@@ -1,3 +1,7 @@
+<?php
+
+use Config\Contact;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -222,7 +226,7 @@
                   >
                     <li>
                       <a 
-                        href="https://facebook.com/profile.php?id=100063837618193" 
+                        href="<?= esc(get_contact('whatsapp')) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -233,7 +237,7 @@
 
                     <li>
                       <a 
-                        href="https://instagram.com/charelchapeaux" 
+                        href="<?= esc(get_contact('whatsapp')) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -244,7 +248,7 @@
 
                     <li>
                       <a 
-                        href="https://wa.me/237699967512" 
+                        href="https://wa.me/<?= esc(get_contact('whatsapp'), 'attr') ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -274,7 +278,7 @@
                   >
                     <li>
                       <a 
-                        href="/" 
+                        href="<?= base_url(request()->getLocale()) ?>" 
                         class="dropdown-item item-anchor"
                         target="_blank"
                       >
@@ -658,8 +662,8 @@
 
             <p>
               Avez-vous des questions ? 
-              <a href="tel:237699967512" class="item-anchor">
-                237 699 96 75 12
+              <a href="tel:<?= esc(get_contact('phone') ?? Contact::$phone) ?>" class="item-anchor">
+                <?= esc(get_contact('phone') ?? Contact::$phone) ?>
               </a>
             </p>
           </div>

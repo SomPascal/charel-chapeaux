@@ -1,5 +1,5 @@
 import { Admin, AdminBag } from "./Components/Admin.js";
-import { disable, setAlert } from "./Utils/form.js";
+import { checkField, disable, setAlert } from "./Utils/form.js";
 import { copyLink, env, getCsrfToken, setCsrfToken, setNotification } from "./Utils/util.js";
 
 let admins = new AdminBag()
@@ -385,7 +385,7 @@ const banAdmin =()=> {
     })
 }
 
-const generateInviteLink = ()=>{
+const generateInviteLink = ()=> {
     const generateLinkForm = document.querySelector('#invite-link-form')
 
     if (! generateLinkForm)
@@ -464,6 +464,98 @@ const generateInviteLink = ()=>{
     })
 }
 
+const modifyContacts = ()=> {
+    const siteLinks = document.querySelector('#site-links')
+    const changeContactModal = document.querySelector('#change-contacts-modal')
+    const changeContactForm = changeContactModal.querySelector('form')
+    const changeContactFieldContent = changeContactForm.querySelector('input')
+
+    if (! siteLinks) {
+        return
+    }
+
+    /**
+     * 
+     * @param {String} text 
+     */
+    const setLabel = (text)=> {
+        let span = changeContactForm.querySelector('label[for="contact-content"] span')
+        span.innerHTML = text
+    }
+
+    /**
+     * 
+     * @param {HTMLDivElement} card 
+     */
+    const duplicateInitialValue = (card)=> {
+        changeContactFieldContent.value = card.querySelector('input').value
+    }
+
+    siteLinks.querySelectorAll('.card').forEach(card => {
+        card.querySelectorAll('.card-footer button').forEach(btn => {
+            btn.addEventListener('click', ()=> {
+                let type = card.getAttribute('type')
+
+                setLabel(type)
+                duplicateInitialValue(card)
+
+                changeContactFieldContent.addEventListener('blur', ()=> {
+                    checkField(changeContactFieldContent, 'contact-content')
+                })
+
+                changeContactForm.querySelector('button[type="submit"]')
+                .onclick = (e)=> {
+                    e.preventDefault()
+                    disable(changeContactModal)
+
+                    if (! checkField(changeContactFieldContent, 'contact-content')) 
+                    {
+                        return
+                    }
+                    
+                    let data = {
+                        'name': type,
+                        'content': changeContactFieldContent.value
+                    }
+                    
+                    fetch(changeContactForm.getAttribute('action'), {
+                        'cache': 'no-cache',
+                        'method': changeContactForm.getAttribute('method'),
+                        'headers': {
+                            'X-CSRF-TOKEN': getCsrfToken(),
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        'body': JSON.stringify(data)
+                    })
+                    .then(response =>  {
+                        setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
+                        disable(changeContactModal, false)
+                        
+                        if (response.ok) {
+                            window.location.reload()
+                        }
+                        else {
+                            setAlert(
+                                changeContactForm,
+                                'Une erreur est survenue. Essayez de nouveau'
+                            )
+                        }
+                    })
+                }
+
+                changeContactModal.querySelectorAll('[data-dismiss]')
+                .forEach(dismiss => {
+                    dismiss.addEventListener('click', ()=> {
+                        setLabel('')
+                    })
+                })
+            })
+        })
+    })
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     document.querySelector('#sidebarToggleTop')?.click()
     setAdmins()
@@ -471,6 +563,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
     generateInviteLink()
     changeAdminGroup()
     banAdmin()
+    modifyContacts()
     
     // swiperTestimonials()
     swiperCapsPopulary()
