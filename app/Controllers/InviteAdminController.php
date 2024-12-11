@@ -88,7 +88,6 @@ class InviteAdminController extends BaseController
             throw new PageNotFoundException("Error Processing Request");
         }
 
-
         // TODO: Check if the link has not been used yet
         $error_message = null;
 

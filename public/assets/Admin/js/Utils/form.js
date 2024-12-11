@@ -75,6 +75,14 @@ const rules = {
         }
     },
 
+    'category_name': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
     'new-password-confirm': {
         'presence': {'allowEmpty': false},
         'equality': 'new-password'

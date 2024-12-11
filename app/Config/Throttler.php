@@ -27,5 +27,9 @@ class Throttler extends BaseConfig
         'seconds'  => MINUTE
     ];
 
+    public array $addCategory = [
+        'capacity' => 5,
+        'seconds' => MINUTE
+    ];
 
 }

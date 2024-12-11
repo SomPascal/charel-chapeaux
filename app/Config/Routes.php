@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
@@ -39,12 +40,20 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->post('change-username', [ChangeUsernameController::class, 'attemptChangeUsername'], ['as' => 'admin.att-change-username']);
 
     $routes->get('/', [DashboardController::class, 'index'], ['as' => 'admin.index']);
+    $routes->get('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
+
+    $routes->group('category', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
+        $routes->post('create', [CategoryController::class, 'create'], ['as' => 'admin.category.create']);
+        $routes->post('update', [CategoryController::class, 'update'], ['as' => 'admin.category.update']);
+        $routes->post('delete', [CategoryController::class, 'delete'], ['as' => 'admin.category.delete']);
+    });
 
     $routes->group('{locale}', function(RouteCollection $routes) {
         $routes->get('/', [DashboardController::class, 'home'], ['as' => 'admin.home']);
         $routes->get('stats', [DashboardController::class, 'stats'], ['as' => 'admin.stats']);
         $routes->get('manage', [DashboardController::class, 'manage'], ['as' => 'admin.manage']);
         $routes->get('items', [DashboardController::class, 'items'], ['as' => 'admin.items']);
+        $routes->get('create', [ItemController::class, 'create'], ['as' => 'admin.item.create', 'filter' => 'group:admin,superadmin']);
     
         $routes->get('content', [DashboardController::class, 'content'], ['as' => 'admin.content']);
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);

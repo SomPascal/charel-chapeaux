@@ -4,7 +4,9 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\AdminModel;
+use App\Models\CategoryModel;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 
 class DashboardController extends BaseController
 {
@@ -13,11 +15,15 @@ class DashboardController extends BaseController
         $adminModel = model(AdminModel::class);
         $admins = $adminModel->asObject()->getAdmins();
 
-        // dd($admins);
-
         return view('Admin/home', [
             'admins' => $admins
         ]);
+    }
+
+    public function items(): string
+    {
+        
+        return view('Admin/items');
     }
 
     public function stats()
@@ -45,8 +51,4 @@ class DashboardController extends BaseController
         return 'admin id ' . $admin_id;
     }
 
-    public function items(): string
-    {
-        return 'items';
-    }
 }

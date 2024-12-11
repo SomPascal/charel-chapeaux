@@ -56,7 +56,7 @@ const getCsrfToken = ()=> {
  * @param {String} message 
  * @param {String} type
  */
-const setNotification = (message, type)=> {
+const setNotification = (message, type='alert-success')=> {
     const notification = document.querySelector('#notification')
     const close = notification.querySelector('button')
 
@@ -70,12 +70,12 @@ const setNotification = (message, type)=> {
     close.onclick = ()=> {
         notification.querySelector('p').innerHTML = ''
         notification.classList.remove(type)
-        notification.remove('show')
+        notification.classList.remove('show')
     }
 
     setTimeout(() => {
         close.click()
-    }, 2000)
+    }, 4000)
 }
 
 export {

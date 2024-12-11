@@ -73,4 +73,8 @@ class Validation extends BaseConfig
         'content' => 'required',
         'name' => 'required|in_list[phone,whatsapp,instagram,facebook,location,map]|max_length[300]'
     ]; 
+
+    public array $create_category = [
+        'category_name' => 'required|min_length[3]|max_length[124]|is_unique[category.name]'
+    ];
 }
