@@ -56,6 +56,7 @@ class CreateItemTable extends Migration
 
             'deleted_at' => [
                 'type' => 'datetime',
+                'null' => true
             ],
         ])
         ->createTable('item');

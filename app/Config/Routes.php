@@ -40,7 +40,6 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->post('change-username', [ChangeUsernameController::class, 'attemptChangeUsername'], ['as' => 'admin.att-change-username']);
 
     $routes->get('/', [DashboardController::class, 'index'], ['as' => 'admin.index']);
-    $routes->get('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
 
     $routes->group('category', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
         $routes->post('create', [CategoryController::class, 'create'], ['as' => 'admin.category.create']);
@@ -78,6 +77,7 @@ $routes->group('invite', function(RouteCollection $routes){
 $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
 
 $routes->group('item', function(RouteCollection $routes) {
+    $routes->post('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
     $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
     $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
 });

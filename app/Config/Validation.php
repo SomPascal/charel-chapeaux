@@ -77,4 +77,12 @@ class Validation extends BaseConfig
     public array $create_category = [
         'category_name' => 'required|min_length[3]|max_length[124]|is_unique[category.name]'
     ];
+
+    public array $store_item = [
+        'item-name' => 'required|min_length[3]|max_length[124]',
+        'categories' => 'required',
+        'item-description' => 'required|min_length[6]|max_length[200]',
+        'item-price' => 'required|numeric|is_natural',
+        // 'item-images' => 'required|uploaded[item-images]|is_image[item-images]|max_size[item-images,' . TWO_MB .']|mime_in[item-images,image/png,image/jpeg,image/jpg]'
+    ];
 }

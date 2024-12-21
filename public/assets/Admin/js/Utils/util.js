@@ -12,7 +12,11 @@ const env = {
     HTTP_TOO_MANY_REQUEST: 429,
 
     HTTP_INTERNAL_SERVER_ERROR: 500,
-    HTTP_INSUFFICIENT_STORAGE: 507
+    HTTP_INSUFFICIENT_STORAGE: 507,
+
+    IMAGE_MAX_SIZE: 2*1_048_576,
+    IMAGE_ALLOWED_EXTENSIONS: ['png', 'jpg', 'jpeg', 'gif'],
+    MAX_ITEM_PICS: 10
 }
 
 const csrfTag = document.head.querySelector(`meta[name="${env.X_CSRF_TOKEN}"]`)
@@ -78,10 +82,36 @@ const setNotification = (message, type='alert-success')=> {
     }, 4000)
 }
 
+const randomString = ()=> Math.random().toString(16).slice(2)
+
+/**
+ * @param {String} imagePreviewSelector
+ * @param {File} imageFile
+ * @returns {Boolean}
+ */
+const showImagePreview = (imagePreviewSelector, imageFile)=> {
+    let res = false
+    let imagePreview = document.querySelector(imagePreviewSelector)
+
+    if (! imageFile) {
+        imagePreview.src = ''
+        return res
+    }
+    const reader = new FileReader()
+
+    reader.onload = (e)=> {
+        imagePreview.src = e.target.result
+    }
+
+    reader.readAsDataURL(imageFile)
+}
+
 export {
     env,
     setCsrfToken,
     getCsrfToken,
     copyLink,
-    setNotification
+    setNotification,
+    randomString,
+    showImagePreview
 }

@@ -28,7 +28,7 @@
 </head>
 
 <body style="background-color: #f2f2f2;">
-    <section class="container">
+    <section id="create-form" class="container">
         <form 
          action="<?= route_to('admin.item.store') ?>" 
          method="post" 
@@ -49,8 +49,12 @@
             <div class="container-fluid mb-3">
                 <h3 class="text-uppercase h6">Images</h3>
     
-                <ul class="d-flex align-items-start w-100 rounded p-3 overflox-y-hidden overflow-x-auto" style="background-color: #eee;">
-                    <li class="shadow m-2 position-relative" style="width: 100px;">
+                <ul 
+                 class="d-flex align-items-start w-100 rounded p-3 overflox-y-hidden overflow-x-auto" 
+                 style="background-color: #ddd;"
+                 id="img-previews-box"
+                >
+                    <!-- <li class="shadow m-2 position-relative" style="width: 100px;">
                         <img 
                          src="/assets/images/items/chapeaux-3.jpg"
                          class="img-fluid rounded" 
@@ -108,7 +112,7 @@
                         <button type="button" class="btn btn-sm btn-danger shadow position-absolute" style="top: 5px;right: 5px;">
                             <i class="fa fa-times"></i>
                         </button>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
     
@@ -127,10 +131,11 @@
                             <input 
                              type="file" 
                              class="form-control" 
-                             multiple 
-                             id="item-images"
-                             required 
                              placeholder="Rajouter des images"
+                             accept="image/*"
+                             id="item-images"
+                             multiple 
+                             required 
                             />
 
                             <p class="invalid-feedback"></p>
@@ -149,6 +154,7 @@
                          minlength="3"
                          maxlength="124"
                          placeholder="Ex: Chapeau de marriage..."
+                         value="Chapeau de soiré"
                          required
                         />
 
@@ -156,16 +162,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="category" class="form-label">
+                        <label for="categories" class="form-label">
                             Catégorie
                         </label>
 
                         <div class="d-flex align-items-center gap-4" style="gap: 30px;">
                             <select id="categories" class="form-control">
-                                <option class="disabled" value="none" selected disabled aria-disabled="true">
-                                    Catégorie
-                                </option>
-
                                 <?php foreach($categories as $category): ?>
                                     <option value="<?= esc($category['code'], 'attr') ?>">
                                         <?= esc($category['name'])  ?>
@@ -195,9 +197,11 @@
                          id="item-description" 
                          cols="30" 
                          class="form-control"
-                         placeholder="Chapeaux afritude, parfait pour des cérémonies, con..." 
+                         placeholder="Chapeaux afritude, parfait pour des cérémonies, con..."
+                         minlength="6"
+                         maxlength="200" 
                          required
-                        ></textarea>
+                        >Chapeau classe parfait pour vos sorties.</textarea>
 
                         <p class="invalid-feedback"></p>
                     </div>
@@ -212,8 +216,11 @@
                          id="item-price" 
                          placeholder="Ex: 18 000"
                          class="form-control"
+                         value="10000"
                          required
                         />
+
+                        <p class="invalid-feedback"></p>
                     </div>
                 </div>
             </div>

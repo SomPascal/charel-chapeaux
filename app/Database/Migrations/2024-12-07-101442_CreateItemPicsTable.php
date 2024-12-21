@@ -38,6 +38,7 @@ class CreateItemPicsTable extends Migration
 
             'deleted_at' => [
                 'type' => 'datatime',
+                'null' => true
             ]
         ])
         ->createTable('item_pics');
