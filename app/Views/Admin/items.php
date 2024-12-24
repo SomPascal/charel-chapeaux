@@ -1,4 +1,9 @@
-<?php helper('text') ?>
+<?php
+
+use App\Models\CategoryModel;
+use App\Models\ItemModel;
+
+ helper('text') ?>
 <?php $this->extend('Admin/base') ?>
 
 <?php $this->section('content') ?>
@@ -363,7 +368,7 @@
 
         <div class="card show w-100 mb-4">
             <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
-                <div class="input-group w-75">
+                <div class="input-group w-75 mb-2">
                     <div class="input-group-prepend">
                         <span 
                         class="input-group-text" 
@@ -382,15 +387,79 @@
                     />
                 </div>
 
-                <a href="<?= route_to('admin.item.create') ?>" role="button" class="btn btn-sm btn-primary btn-icon-split m-2">
-                    <span class="icon">
-                        <i class="fa fa-plus"></i>
-                    </span>
+                <div class="d-flex">
+                    <a href="<?= route_to('admin.item.create') ?>" role="button" class="btn btn-sm btn-primary btn-icon-split m-2">
+                        <span class="icon">
+                            <i class="fa fa-plus"></i>
+                        </span>
 
-                    <span class="text">
-                        Ajouter
-                    </span>
-                </a>
+                        <span class="text">
+                            Ajouter
+                        </span>
+                    </a>
+
+                    <!-- Small button groups (default and split) -->
+                    <div class="btn-group btn-sm">
+                        <button 
+                         class="btn btn-secondary btn-sm dropdown-toggle" 
+                         type="button" 
+                         data-toggle="dropdown" 
+                         aria-expanded="false"
+                        >
+                            Catégories
+                        </button>
+
+                        <ul class="dropdown-menu" id="list-categories">
+                            <?php foreach($categories as $category): ?>
+                                <li class="dropdown-item" id="category-<?= esc($category->code) ?>">
+                                    <?= esc($category->name) ?>
+                                    (<?= esc($category->num_items ?? 0) ?>) 
+
+                                    <div>
+                                        <button 
+                                         type="button" 
+                                         class="btn btn-sm btn-danger" 
+                                         data-toggle="modal"
+                                         data-target="#delete-category-modal"
+                                         delete
+                                        >
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            <?php endforeach ?>
+
+                            <div class="dropdown-divider"></div>
+                            <li 
+                             <?= classes([
+                                'dropdown-item',
+                                'w-100',
+                                'disabled' => count($categories) > 10
+                             ]) ?>
+                            >
+                                <button 
+                                 class="btn btn-sm btn-secondary my-0 w-100"
+                                 <?= classes([
+                                    'btn',
+                                    'btn-sm',
+                                    'btn-secondary',
+                                    'my-0',
+                                    'w-100',
+                                    'disabled' => count($categories) > 10
+                                 ]) ?>
+
+                                 <?= attr(count($categories) > 10, 'disabled') ?>
+                                 data-toggle="modal"
+                                 data-target="#add-category"
+                                >
+                                    <i class="fa fa-plus"></i>
+                                    Ajouter
+                                </button>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -408,7 +477,7 @@
                                  ]) ?> 
                                  id="item-<?= esc($item->id, 'attr') ?>"
                                 >
-                                    <a href="#">
+                                    <a href="<?= route_to('item.show', $item->id) ?>" target="_blank">
                                         <img 
                                          src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
                                          class="card-img-top img-fluid" 
@@ -426,16 +495,21 @@
                                             <?php endif ?>
                                         </h6>
             
-                                        <div class="d-flex gap-0 flex-column fs-7">
+                                        <div class="d-flex gap-0 flex-row justify-content-between fs-7">
                                             <p class="mb-0">
                                                 <i class="fa fa-eye"></i>
                                                 <label>---</label>
                                             </p>
 
                                             <p class="mb-0">
-                                                Categorie: <?= esc($item->category ?? 'Autre') ?>
+                                                <i class="fa fa-heart"></i>
+                                                <label>---</label>
                                             </p>
+
                                         </div>
+                                        <p class="mb-0">
+                                            Categorie: <?= esc($item->category ?? 'Autre') ?>
+                                        </p>
             
                                         <p class="mb-0 fw-bold">
                                             <?= esc($item->price) ?> F
@@ -444,18 +518,12 @@
                                         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
                                             
                                             <button 
-                                             class="btn btn-sm btn-danger btn-icon-split m-1"
+                                             class="btn btn-sm btn-danger m-1"
                                              data-toggle="modal"
                                              data-target="#delete-item-modal"
                                              delete
                                             >
-                                                <span class="icon">
-                                                    <i class="fa fa-trash"></i>
-                                                </span>
-            
-                                                <span class="text">
-                                                    Supprimer
-                                                </span>
+                                                Supprimer
                                             </button>
 
                                             <button 
@@ -483,6 +551,8 @@
     </section>
 
     <?= $this->include('Admin/Parts/hide-item-modal') ?>
+    <?= $this->include('Admin/Parts/add-category-modal') ?>
+    <?= $this->include('Admin/Parts/delete-category-modal') ?>
     <?= $this->include('Admin/Parts/show-item-modal') ?>
     <?= $this->include('Admin/Parts/delete-item-modal') ?>
 <?php $this->endSection('content') ?>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ContactModel;
+use App\Models\ItemModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
@@ -11,7 +12,12 @@ class HomeController extends BaseController
 {
     public function home()
     {
-        return view('index');
+        $item_model = model(ItemModel::class);
+        // dd($item_model->get_items()->asObject()->findAll());
+
+        return view('index', [
+            'items' => $item_model->get_items()->asObject()->findAll()
+        ]);
     }
 
     public function index()

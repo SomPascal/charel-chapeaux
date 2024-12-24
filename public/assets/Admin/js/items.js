@@ -1,7 +1,9 @@
+import { addCategory, setVisibility } from "./Utils/admin.js"
 import { disable, setAlert } from "./Utils/form.js"
 import { env, getCsrfToken, setCsrfToken, setNotification } from "./Utils/util.js"
 
 const listItems = document.querySelector('#list-items')
+const listCategories = document.querySelector('#list-categories')
 
 const enableItemSwiper = ()=> {
     listItems.querySelectorAll('.swiper').forEach(list => {
@@ -33,43 +35,6 @@ const handleItemVisibility = ()=> {
     const showItemModal = document.querySelector('#show-item-modal')
     const deleteItemModal = document.querySelector('#delete-item-modal')
 
-    /**
-     * 
-     * @param {HTMLFormElement} form 
-     * @param {String} item_id
-     */
-    const setVisibility = (form, item_id)=> {
-        disable(form)
-
-        fetch(form.getAttribute('action'), {
-            'method': form.getAttribute('method'),
-            'cache': 'no-cache',
-            'headers': {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN': getCsrfToken()
-            },
-            'body': JSON.stringify({'item_id': item_id})
-        })
-        .then(response => {
-            setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
-            disable(form, false)
-
-            if (response.ok)
-            {
-                disable(form, true)
-                hideItemModal.querySelector('[data-dismiss]')?.click()
-                window.location.reload()
-            }
-            else {
-                setAlert(
-                    form,
-                    'Une erreur est survenue. Veuillez essayer de nouveau'
-                )
-            }
-        })
-    }
 
     listItems.querySelectorAll('.card').forEach(card => {
         const item_id = card.getAttribute('id').slice(5)
@@ -81,7 +46,7 @@ const handleItemVisibility = ()=> {
             .addEventListener('click', (e)=> {
                 e.preventDefault()
 
-                setVisibility(hideItemForm, item_id)
+                setVisibility(hideItemForm, item_id, 'item_id')
             })
         })
 
@@ -92,7 +57,7 @@ const handleItemVisibility = ()=> {
             .addEventListener('click', (e)=> {
                 e.preventDefault()
 
-                setVisibility(showItemForm, item_id)
+                setVisibility(showItemForm, item_id, 'item_id')
             })
         })
 
@@ -103,7 +68,30 @@ const handleItemVisibility = ()=> {
             .addEventListener('click', (e)=> {
                 e.preventDefault()
 
-                setVisibility(deleteItemForm, item_id)
+                setVisibility(deleteItemForm, item_id, 'item_id')
+            })
+        })
+    })
+}
+
+const handleCategories = ()=> {
+    const deleteCategoryModal = document.querySelector('#delete-category-modal')
+    const deleteCategoryForm = deleteCategoryModal.querySelector('form')
+
+    addCategory(()=> window.location.reload())
+
+    listCategories.querySelectorAll('li').forEach(category => {        
+        category.querySelector('button[delete]')?.addEventListener('click', ()=> {
+            deleteCategoryForm.querySelector('button[type="submit"]')
+            .addEventListener('click', (e)=> {
+                e.preventDefault()
+                
+                setVisibility(
+                    deleteCategoryForm, 
+                    category.id.slice(9), 
+                    'category_code',
+                    ()=> {window.location.reload()}
+                )
             })
         })
     })
@@ -112,4 +100,5 @@ const handleItemVisibility = ()=> {
 document.addEventListener('DOMContentLoaded', ()=> {
     enableItemSwiper()
     handleItemVisibility()
+    handleCategories()
 })

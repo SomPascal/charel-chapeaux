@@ -415,7 +415,7 @@ use Config\Contact;
                 <a href="/">
                   <img 
                    src="/assets/images/items/chapeaux-9.jpg" 
-                   alt="categories" 
+                   alt="Charel Chapeaux" 
                    class="product-image img-fluid"
                   >
                 </a>

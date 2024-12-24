@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Model;
 
 class CategoryModel extends Model
@@ -10,9 +11,9 @@ class CategoryModel extends Model
     protected $primaryKey       = 'code';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
+    protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = ['name'];
+    protected $allowedFields    = ['name', 'deleted_at'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -46,7 +47,21 @@ class CategoryModel extends Model
 
     public function getAll(): array
     {
-        return $this->select(['code', 'name'])
+        return $this->select([
+            'category.code', 
+            'category.name',
+            'COUNT(item.id) AS num_items'
+        ])
+        ->join('item', 'item.code_category = category.code', 'left')
+        ->where('item.deleted_at', null)
+        ->groupBy('category.code')
         ->findAll(limit: 50);
+    }
+
+    public function add_in_trash(int $category_code): bool
+    {
+        return $this->update(id: $category_code, row: [
+            'deleted_at' => Time::now()
+        ]);
     }
 }

@@ -10,12 +10,10 @@ class DraftController extends BaseController
 {
     public function index()
     {
-        dd(classes([
-            'd-flex',
-            'justify-content-center',
-            'align-items-center',
-            'flex-column',
-            'opacity-75' => false
+        dd(attrs([
+            'id="hello"' => 1+7 == 8,
+            'id="hi"' => 1*7 == 8,
+            'id="good morning"' => 1-7 == 8,
         ]));
 
         dd(model(AdminModel::class)->amount());

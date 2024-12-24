@@ -28,7 +28,8 @@ class DashboardController extends BaseController
         return view('Admin/items', [
             'num_of_items' => $item_model->num_of_items(),
             'items' => $item_model->get_items()->paginate(24),
-            'items_pager' => $item_model->pager
+            'items_pager' => $item_model->pager,
+            'categories' => model(CategoryModel::class)->asObject()->getAll()
         ]);
     }
 

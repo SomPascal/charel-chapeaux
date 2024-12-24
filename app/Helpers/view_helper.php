@@ -24,6 +24,30 @@ if (! function_exists('classes'))
     }
 }
 
+if (! function_exists('attrs')) 
+{
+    function attrs (array $attrs): string
+    {
+        $str_attrs = '';
+
+        foreach ($attrs as $k => $v)
+        {
+            if (is_string($v))
+            {
+                $str_attrs .= $v . ' ';
+                continue;
+            }
+
+            if ($v == true) 
+            {
+                $str_attrs .= $k . ' ';
+            }
+        }
+
+        return trim($str_attrs);
+    }
+}
+
 if (! function_exists('attr')) 
 {
     function attr(bool $cond, string $attr, ?string $orAttr=null): ?string

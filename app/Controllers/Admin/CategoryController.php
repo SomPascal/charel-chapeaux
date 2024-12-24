@@ -56,7 +56,18 @@ class CategoryController extends BaseController
 
     public function delete(): Response
     {
-        return $this->respond(status: Response::HTTP_OK);
+        $category_code = (int) $this->request->getJsonVar('category_code');
+
+        try {
+            if (! model(CategoryModel::class)->add_in_trash($category_code)) 
+            {
+                return $this->failServerError();
+            }
+        } catch (\Throwable) {
+            return $this->failServerError();
+        }
+
+        return $this->respondUpdated();
     }
 
     public function update(): Response

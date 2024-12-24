@@ -1,8 +1,10 @@
 <?php
-
 use Config\Contact;
 
- $this->extend('base') ?>
+helper(['text', 'number']);
+?>
+
+<?php $this->extend('base') ?>
 
 <?php $this->section('title') ?>
   <title>
@@ -203,214 +205,226 @@ use Config\Contact;
     </div>
   </section>
 
-  <section id="our-collections" class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden">
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-        <h4 class="text-uppercase">
-          Notre Collection de chapeaux
-        </h4>
-
-        <a href="/" class="btn-link">
-          Me Confectionner un chapeau
-          <i class="fa fa-arrow-right"></i>
-        </a>
-      </div>
-
-      <div class="swiper product-swiper open-up" data-aos="zoom-out">
-        <div class="swiper-wrapper d-flex">
-          
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect" liked>
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-1.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fs-5 fa fa-heart"></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F 
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-2.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="#" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/details-item.html">
-                      15.000 F 
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-3.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="#" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-4.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="#" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/details-item.html">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-5.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="#" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/details-item.html">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-8.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="#" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/details-item.html">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-7.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
+  <?php $i = 0 ?>
+  <?php foreach(array_chunk($items, 7) as $chuncked_item): ?>
+    <section 
+     <?= attrs([
+      'id="our-collections"' => $i == 0,
+      'id="caps-collection-2"' => $i == 1,
+      'id="caps-collection-3"' => $i == 2
+     ]) ?>
+     class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden"
+    >
+      <div class="container">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+          <h4 class="text-uppercase">
+            Notre Collection de chapeaux
+          </h4>
+  
+          <a href="/" class="btn-link">
+            Me Confectionner un chapeau
+            <i class="fa fa-arrow-right"></i>
+          </a>
         </div>
-
-        <div class="swiper-pagination"></div>
+  
+        <div class="swiper product-swiper open-up" data-aos="zoom-out">
+          <div class="swiper-wrapper d-flex">
+            <?php foreach($chuncked_item as $item): ?>
+              <div class="swiper-slide">
+                <div class="product-item image-zoom-effect link-effect" liked>
+                  <div class="image-holder position-relative">
+                    <a href="<?= route_to('item.show', $item->id) ?>">
+                      <img 
+                      src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
+                      alt="<?= esc(character_limiter($item->name, 18, '...')) ?>" 
+                      class="product-image img-fluid"
+                      >
+                    </a>
+    
+                    <a href="/" class="btn-icon btn-wishlist">
+                      <i class="fs-5 fa fa-heart"></i>
+                    </a>
+    
+                    <div class="product-content">
+                      <h5 class="text-uppercase fs-5 mt-3">
+                        <a href="/">
+                          <?= esc(number_to_currency($item->price, XAF)) ?>
+                        </a>
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach ?>
+  
+            <!-- <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-2.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+                  <a href="#" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/details-item.html">
+                        15.000 F 
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-3.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+                  <a href="#" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/">
+                        15.000 F
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-4.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+  
+                  <a href="#" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+  
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/details-item.html">
+                        15.000 F
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-5.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+                  <a href="#" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/details-item.html">
+                        15.000 F
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-8.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+                  <a href="#" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/details-item.html">
+                        15.000 F
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="swiper-slide">
+              <div class="product-item image-zoom-effect link-effect">
+                <div class="image-holder position-relative">
+                  <a href="details-item.html">
+                    <img 
+                     src="/assets/images/items/chapeaux-7.jpg" 
+                     alt="categories" 
+                     class="product-image img-fluid"
+                    >
+                  </a>
+                  <a href="/" class="btn-icon btn-wishlist">
+                    <i class="fa fa-heart fs-5" ></i>
+                  </a>
+                  <div class="product-content">
+                    <h5 class="text-uppercase fs-5 mt-3">
+                      <a href="/">
+                        15.000 F
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+  
+          <div class="swiper-pagination"></div>
+        </div>
+  
+        <div class="icon-arrow icon-arrow-left blur-effet">
+          <svg width="50" height="50" viewBox="0 0 24 24">
+            <use xlink:href="#arrow-left"></use>
+          </svg>
+        </div>
+  
+        <div class="icon-arrow icon-arrow-right">
+          <svg width="50" height="50" viewBox="0 0 24 24">
+            <use xlink:href="#arrow-right"></use>
+          </svg>
+        </div>
       </div>
+    </section>
+    <?php $i++ ?>
+  <?php endforeach ?>
 
-      <div class="icon-arrow icon-arrow-left blur-effet">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-left"></use>
-        </svg>
-      </div>
 
-      <div class="icon-arrow icon-arrow-right">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-right"></use>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <section id="caps-collection-2" class="new-arrival product-carousel pt-2 pb-5 position-relative overflow-hidden">
+  <!-- <section id="caps-collection-2" class="new-arrival product-carousel pt-2 pb-5 position-relative overflow-hidden">
     <div class="container">
       <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
         <h4 class="text-uppercase">
@@ -807,7 +821,7 @@ use Config\Contact;
         </svg>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <section class="collection bg-light position-relative py-5">
     <div class="container">

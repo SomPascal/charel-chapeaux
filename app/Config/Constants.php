@@ -100,3 +100,5 @@ define('X_RETRY_AFTER', 'X-Retry-After');
 
 define('OTP_EXPIRE_AT', 'otp.expire_at');
 define('TWO_MB', 2 * 1024 * 1024);
+
+define('XAF', 'XAF');
