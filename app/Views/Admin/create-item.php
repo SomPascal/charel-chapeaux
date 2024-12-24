@@ -45,6 +45,8 @@
                     Poster
                 </button>
             </nav>
+
+            <p class="alert alert-danger d-none"></p>
     
             <div class="container-fluid mb-3">
                 <h3 class="text-uppercase h6">Images</h3>

@@ -557,7 +557,6 @@ const modifyContacts = ()=> {
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
-    document.querySelector('#sidebarToggleTop')?.click()
     setAdmins()
     showAdminDetails()
     generateInviteLink()

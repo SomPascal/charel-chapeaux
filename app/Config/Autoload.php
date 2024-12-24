@@ -92,6 +92,7 @@ class Autoload extends AutoloadConfig
      */
     public $helpers = [
         'auth', 'setting', 
-        'uid', 'contact'
+        'uid', 'contact',
+        'view'
     ];
 }

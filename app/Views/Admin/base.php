@@ -17,6 +17,9 @@
      rel="stylesheet"
     >
 
+    <!-- Swiper bundle  -->
+    <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css" />
+
     <!-- Custom styles for this template-->
     <link href="/assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -35,6 +38,21 @@
             <!-- Main Content -->
             <div id="content">
                 <?= $this->include('Admin/Parts/navbar') ?>
+
+                <?php if(session()->has('success')): ?>
+                    <p class="alert alert-success m-3">
+                        <i class="fa fa-check"></i>
+                        <?= esc(session()->get('success')) ?>
+                    </p>
+                <?php endif ?>
+
+                <?php if(session()->has('error')): ?>
+                    <p class="alert alert-danger m-3">
+                        <i class="fa fa-times"></i>
+                        <?= esc(session()->get('error')) ?>
+                    </p>
+                <?php endif ?>
+
                 <?= $this->renderSection('content') ?>
             </div>
             <!-- End of Main Content -->
@@ -53,6 +71,10 @@
     <?= $this->include('Admin/Parts/notification') ?>
 
     <?= $this->include('Admin/Parts/scripts') ?>
+
+    <script <?= csp_script_nonce() ?> >
+        document.querySelector('#sidebarToggleTop')?.click()
+    </script>
 
     <?php $this->renderSection('script') ?>
 

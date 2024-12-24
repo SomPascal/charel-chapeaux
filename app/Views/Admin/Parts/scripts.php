@@ -5,6 +5,8 @@
 <!-- Core plugin JavaScript-->
 <script src="/assets/Admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
 <!-- Validate JS -->
 <script src="/assets/vendor/validate.js/validate.min.js"></script>
 

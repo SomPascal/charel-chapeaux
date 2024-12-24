@@ -14,6 +14,7 @@ use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
+use App\Controllers\PicsController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -80,6 +81,11 @@ $routes->group('item', function(RouteCollection $routes) {
     $routes->post('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
     $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
     $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
+    $routes->post('hide', [ItemController::class, 'hide'], ['as' => 'item.hide']);
+    $routes->post('unhide', [ItemController::class, 'unhide'], ['as' => 'item.unhide']);
+    $routes->post('delete', [ItemController::class, 'delete'], ['as' => 'item.delete']);
+
+    $routes->get('pic/(:hash)', [PicsController::class, 'item'], ['as' => 'item.pic']);
 });
 
 $routes->set404Override(sprintf('%s::%s', ErrorController::class, 'pageNotFound'));

@@ -32,20 +32,6 @@
             <?php endif ?>
         </div>
 
-        <?php if(session()->has('success')): ?>
-            <p class="alert alert-success m-3">
-                <i class="fa fa-check"></i>
-                <?= esc(session()->get('success')) ?>
-            </p>
-        <?php endif ?>
-
-        <?php if(session()->has('error')): ?>
-            <p class="alert alert-danger m-3">
-                <i class="fa fa-times"></i>
-                <?= esc(session()->get('error')) ?>
-            </p>
-        <?php endif ?>
-
         <p>
             Il y'a actuellement <?= esc(count($admins)) ?> 
             administrateur(s).
@@ -327,5 +313,5 @@
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>
-    <script type="module" src="/assets/Admin/js/script.js"></script>
+    <script type="module" src="<?= base_url('assets/Admin/js/script.js') ?>"></script>
 <?php $this->endSection('script') ?>

@@ -119,12 +119,99 @@ class ItemController extends BaseController
             5*SECOND
         );
 
-        return $this->respondCreated(['i' => $i]);
+        return $this->respondCreated()->setHeader(
+            X_REDIRECT_TO, 
+            url_to('admin.items')
+        );
     }
 
     public function show()
     {
         return view('item');
+    }
+
+    public function hide(): Response
+    {
+        $item_id = $this->request->getJsonVar('item_id');
+
+        try {
+            if (! model(ItemModel::class)->hide($item_id))
+            {
+                return $this->failServerError();
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                LogLevel::ERROR,
+                'Could not hide an item due to: ' . $e->getMessage(),
+                ['item_id' => $item_id, 'user_email' => auth()->user()->email]
+            );
+
+            return $this->failServerError();
+        }
+
+        session()->setTempdata(
+            'success', 
+            'Cette article à été caché avec succès.',
+            5*SECOND
+        );
+
+        return $this->respondUpdated();
+    }
+
+    public function unhide(): Response
+    {
+        $item_id = $this->request->getJsonVar('item_id');
+
+        try {
+            if (! model(ItemModel::class)->unhide($item_id))
+            {
+                return $this->failServerError();
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                LogLevel::ERROR,
+                'Could not unhide an item due to: ' . $e->getMessage(),
+                ['item_id' => $item_id, 'user_email' => auth()->user()->email]
+            );
+
+            return $this->failServerError();
+        }
+
+        session()->setTempdata(
+            'success', 
+            'Cette article s\'affiche à présent avec succès.',
+            5*SECOND
+        );
+
+        return $this->respondUpdated();
+    }
+
+    public function delete(): Response
+    {
+        $item_id = $this->request->getJsonVar('item_id');
+
+        try {
+            if (! model(ItemModel::class)->add_in_trash($item_id))
+            {
+                return $this->failServerError();
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                LogLevel::ERROR,
+                'Could not delete an item due to: ' . $e->getMessage(),
+                ['item_id' => $item_id, 'user_email' => auth()->user()->email]
+            );
+
+            return $this->failServerError();
+        }
+
+        session()->setTempdata(
+            'success', 
+            'Cette article à été supprimé avec succès.',
+            5*SECOND
+        );
+
+        return $this->respondUpdated();
     }
 
     public function like(): Response

@@ -231,7 +231,38 @@ const recordItem = ()=> {
 
             if (response.ok) 
             {
-                window.location = '/admin'
+                window.location = response.headers.get(env.X_REDIRECT_TO) ?? '/admin'
+            }
+            else if (response.status == env.HTTP_INTERNAL_SERVER_ERROR) {
+                setAlert(
+                    createItemForm,
+                    'Une erreur est survenue. Veuillez éssayer de nouveau.'
+                )
+            }
+            else if (response.status == env.HTTP_BAD_REQUEST) {
+                return response.json()
+            }
+            else {
+                setAlert(
+                    createItemForm,
+                    'Une erreur est survenue. Veuillez éssayer de nouveau.'
+                )
+            }
+        })
+        .then(json => {
+            if (json == undefined) {
+                return
+            }
+
+            if (json.status == env.HTTP_BAD_REQUEST) {
+                for (const id in json.messages) {
+                    if (Object.prototype.hasOwnProperty.call(json.messages, id)) {
+                        setErrMsg(
+                            document.querySelector('#' + id),
+                            json.messages[id]
+                        )
+                    }
+                }
             }
         })
     })
