@@ -49,6 +49,11 @@ class ItemModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    public function in_category(string $category_code): self
+    {
+        return $this->where(['category.code' => $category_code]);
+    }
+
     protected function not_deleted(): self 
     {
         return $this->where('item.deleted_at', null);
@@ -102,5 +107,26 @@ class ItemModel extends Model
         ->join('item_pics', 'item_pics.item_id = item.id', 'left')
         ->groupBy('item.id')
         ->asObject();
+    }
+
+    public function get_item(string $item_id): ?object
+    {
+        $r = $this->select([
+            'item.id AS id',
+            'item.name AS name',
+            'item.price AS price',
+            'item.description AS description',
+            'item.created_at AS created_at',
+
+            'category.name AS category',
+            'category.code AS category_code'
+        ])
+        ->where([
+            'item.id' => $item_id
+        ])
+        ->join('category', 'category.code = item.code_category')
+        ->findAll();
+
+        return empty($r) ? null : $r[0];
     }
 }

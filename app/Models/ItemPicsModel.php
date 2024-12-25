@@ -46,4 +46,14 @@ class ItemPicsModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+    
+    public function get_item_pics(string $item_id, int $limit=10): array
+    {
+        return $this->select('item_pics.id AS id')
+        ->join('item', 'item.id = item_pics.item_id', 'left')
+        ->where('item.id', $item_id)
+        ->orderBy('item_pics.created_at')
+        ->asObject()
+        ->findAll(limit: $limit);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\CategoryModel;
 use App\Models\ItemModel;
 use App\Models\ItemPicsModel;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Files\UploadedFile;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -125,9 +126,22 @@ class ItemController extends BaseController
         );
     }
 
-    public function show()
+    public function show(string $item_id)
     {
-        return view('item');
+        $item_model = model(ItemModel::class);
+        $item_pics_model = model(ItemPicsModel::class);
+        $item = $item_model->asObject()->get_item($item_id);
+
+        if ($item == null) {
+            throw new PageNotFoundException("Error Processing Request");
+        }
+
+        return view('item', [
+            'item' => $item,
+            'item_props' => $item_model->in_category($item->category_code)
+            ->get_items()->findAll(limit: 7),
+            'item_pics' => $item_pics_model->get_item_pics($item_id)
+        ]);
     }
 
     public function hide(): Response

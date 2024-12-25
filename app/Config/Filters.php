@@ -86,6 +86,9 @@ class Filters extends BaseFilters
                     'admin/fr/register',
                     'admin/att-register',
 
+                    'fr/item*',
+                    'en/item*',
+
                     'admin/login',
                     'login',
                     '/',
