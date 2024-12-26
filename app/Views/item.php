@@ -50,11 +50,17 @@ use Config\Contact;
           <?= esc(character_limiter($item->name, 125, '...')) ?>
         </h4>
 
-        <p class="opacity-75">
+        <p class="opacity-75 mb-0">
           Catégorie: <?= esc($item->category) ?>
         </p>
 
-        <p><?= esc(character_limiter($item->description, 300, '...')) ?></p>
+        <?php if($item->is_hidden): ?>
+          <span class="opacity-75 mb-3 small fs-6 text-danger">
+            Caché <i class="fa fa-ban"></i>
+          </span>
+        <?php endif ?>
+
+        <p class="mt-2"><?= esc(character_limiter($item->description, 300, '...')) ?></p>
 
         <?php if (auth()->loggedIn()): ?>
           <div class="bg-light p-3 rounded-2 d-flex align-items-center justify-content-around mb-1">

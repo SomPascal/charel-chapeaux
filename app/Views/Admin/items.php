@@ -361,12 +361,12 @@ use App\Models\ItemModel;
         </div>
     </div>
 
-    <section class="container-fluid py">
+    <section class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800">
             Mes Articles
         </h1>
 
-        <div class="card show w-100 mb-4">
+        <div class="card show w-100 mb-4" id="find-items">
             <div class="card-body d-flex flex-wrap justify-content-between align-items-center">
                 <div class="input-group w-75 mb-2">
                     <div class="input-group-prepend">
@@ -384,7 +384,16 @@ use App\Models\ItemModel;
                     placeholder="Trouver les chapeaux"
                     aria-label="Username"
                     aria-describedby="basic-addon1"
+                    readonly
                     />
+
+                    <button 
+                     type="button" 
+                     data-toggle="modal"
+                     data-target="#search-admin-modal"
+                     class="d-none"
+                     id="show-search-item-modal"
+                    ></button>
                 </div>
 
                 <div class="d-flex">
@@ -477,17 +486,17 @@ use App\Models\ItemModel;
                                  ]) ?> 
                                  id="item-<?= esc($item->id, 'attr') ?>"
                                 >
-                                    <a href="<?= route_to('item.show', $item->id) ?>" target="_blank">
+                                    <a href="<?= route_to('item.show', $item->id) ?>">
                                         <img 
                                          src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
                                          class="card-img-top img-fluid" 
-                                         alt="..."
+                                         alt="<?= esc(character_limiter($item->name, 25, '...')) ?>"
                                         />
                                     </a>
             
                                     <div class="card-body">
                                         <h6 class="card-title h6 fw-bold text-uppercase mb-0" style="font-weight: bold;">
-                                            <?= esc(character_limiter($item->name, 25, '...')) ?>
+                                            <?= esc(character_limiter($item->name, 125, '...')) ?>
                                             <?php if ($item->is_hidden): ?>
                                                 <span class="fs-6">
                                                     (Caché)
@@ -550,6 +559,7 @@ use App\Models\ItemModel;
         <?= $items_pager->links() ?>
     </section>
 
+    <?= $this->include('Admin/Parts/search-items-modal') ?>
     <?= $this->include('Admin/Parts/hide-item-modal') ?>
     <?= $this->include('Admin/Parts/add-category-modal') ?>
     <?= $this->include('Admin/Parts/delete-category-modal') ?>

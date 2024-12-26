@@ -132,7 +132,7 @@ class ItemController extends BaseController
         $item_pics_model = model(ItemPicsModel::class);
         $item = $item_model->asObject()->get_item($item_id);
 
-        if ($item == null) {
+        if ($item == null || ($item->is_hidden == true && ! auth()->loggedIn())) {
             throw new PageNotFoundException("Error Processing Request");
         }
 

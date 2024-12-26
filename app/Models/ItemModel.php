@@ -54,6 +54,21 @@ class ItemModel extends Model
         return $this->where(['category.code' => $category_code]);
     }
 
+    public function search(string $term, int $category=-1, int $limit=15): array
+    {
+        return $this->get_items()
+        ->like('item.name', $term)
+        ->orLike('item.description', $term)
+        ->orLike('category.name', $term)
+        ->orderBy('item.created_at', 'DESC')
+        ->findAll(limit: $limit);
+    }
+
+    public function unhided(): self
+    {
+        return $this->where(['item.is_hidden' => false]);
+    }
+
     protected function not_deleted(): self 
     {
         return $this->where('item.deleted_at', null);
@@ -97,11 +112,11 @@ class ItemModel extends Model
             'item.is_hidden AS is_hidden',
             'item.created_at AS created_at',
             'category.name AS category',
+            'category.code AS category_code',
 
             'users.username AS admin_username',
             'item_pics.id AS item_pic_id'
         ])
-        ->not_deleted()
         ->join('category', 'category.code = item.code_category', 'left')
         ->join('users', 'users.id = item.admin_id', 'left')
         ->join('item_pics', 'item_pics.item_id = item.id', 'left')
@@ -117,6 +132,7 @@ class ItemModel extends Model
             'item.price AS price',
             'item.description AS description',
             'item.created_at AS created_at',
+            'item.is_hidden AS is_hidden',
 
             'category.name AS category',
             'category.code AS category_code'

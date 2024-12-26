@@ -16,7 +16,7 @@ class HomeController extends BaseController
         // dd($item_model->get_items()->asObject()->findAll());
 
         return view('index', [
-            'items' => $item_model->get_items()->asObject()->findAll()
+            'items' => $item_model->get_items()->unhided()->asObject()->findAll()
         ]);
     }
 

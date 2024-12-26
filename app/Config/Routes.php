@@ -15,6 +15,7 @@ use App\Controllers\Admin\RegisterController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
 use App\Controllers\PicsController;
+use App\Controllers\SearchController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -77,7 +78,11 @@ $routes->group('invite', function(RouteCollection $routes){
 
 $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
 
+$routes->get('{locale}/find', [SearchController::class, 'find'], ['as' => 'item.find']);
+
 $routes->group('item', function(RouteCollection $routes) {
+    $routes->get('search', [SearchController::class, 'search'], ['as' => 'item.search']);
+
     $routes->post('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
     $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
     $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);

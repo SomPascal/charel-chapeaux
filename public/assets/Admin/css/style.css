@@ -16,6 +16,11 @@ textarea {
     cursor: pointer;
 }
 
+.x-center {
+    margin-left: 50%;
+    transform: translate(-50%);
+}
+
 .opacity-0 {
     opacity: 0;
 }
@@ -99,6 +104,16 @@ textarea {
     text-align: center;
 }
 
-@media screen and (min-width: 780px) {
+.search-result img {
+    max-width: 230px;
+}
 
+@media screen and (max-width: 780px) {
+    .search-result {
+        max-width: 130px;
+    }
+
+    .search-result img {
+        max-width: 130px;
+    }
 }
