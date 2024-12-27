@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Filters\SendCSRFToken;
 use App\Filters\Shield\SessionAuth;
+use App\Filters\TrackVisits;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -37,7 +38,8 @@ class Filters extends BaseFilters
         'pagecache'       => PageCache::class,
         'performance'     => PerformanceMetrics::class,
         'session-auth'    => SessionAuth::class,
-        'send-csrf-token' => SendCSRFToken::class
+        'send-csrf-token' => SendCSRFToken::class,
+        'track-visits'    => TrackVisits::class
     ];
 
     /**
@@ -74,7 +76,7 @@ class Filters extends BaseFilters
     public array $globals = [
         'before' => [
             // 'honeypot',
-            // 'csrf',
+            'csrf',
             'invalidchars',
             'session-auth' => [
                 'except' => [
@@ -101,6 +103,7 @@ class Filters extends BaseFilters
                     'invite/use*'
                 ]
             ],
+            'track-visits'
         ],
         'after' => [
             // 'honeypot',
