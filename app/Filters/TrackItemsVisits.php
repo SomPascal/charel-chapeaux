@@ -2,9 +2,11 @@
 
 namespace App\Filters;
 
+use App\Models\ItemsVisitsModel;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\I18n\Time;
 
 class TrackItemsVisits implements FilterInterface
 {
@@ -25,15 +27,44 @@ class TrackItemsVisits implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        if (! (url_is('en/item/*') || url_is('fr/item/*')))
+        if (! (url_is('en/item/*') || url_is('fr/item/*')) || auth()->loggedIn())
         {
             return;
         }
 
         $visitor = session()->get('visitor');
-        // dd($visitor);
+        $item_id = $request->getUri()->getSegment(3);
+        $items_visits_model = model(ItemsVisitsModel::class);
 
-        // return response()->setBody('hello');
+        if (! session()->has(sprintf(
+            'item.visit.%s.%s', 
+            md5($visitor['id']), 
+            md5($item_id)
+        )))
+        {
+            if (! $items_visits_model->hasAlreadyBeenVisited(
+                vistor_id: $visitor['id'],
+                item_id: $item_id
+            )) 
+            {
+                $recorded_item_id = uid();
+
+                $items_visits_model->insert(row: [
+                    'id' => $recorded_item_id,
+                    'visitor_id' => $visitor['id'],
+                    'item_id' => $item_id,
+                    'created_at' => Time::now()
+                ]);
+
+                session()->set(sprintf(
+                    'item.visit.%s.%s', 
+                    md5($visitor['id']), 
+                    md5($recorded_item_id)
+                ), true);
+            }
+        }
+        
+
     }
 
     /**

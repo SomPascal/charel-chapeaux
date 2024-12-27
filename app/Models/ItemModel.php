@@ -54,7 +54,7 @@ class ItemModel extends Model
         return $this->where(['category.code' => $category_code]);
     }
 
-    public function search(string $term, int $category=-1, int $limit=15): array
+    public function search(string $term, int $limit=15): array
     {
         return $this->get_items()
         ->like('item.name', $term)
@@ -111,6 +111,7 @@ class ItemModel extends Model
             'item.description AS description',
             'item.is_hidden AS is_hidden',
             'item.created_at AS created_at',
+
             'category.name AS category',
             'category.code AS category_code',
 

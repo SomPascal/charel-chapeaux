@@ -20,7 +20,7 @@ class SearchController extends BaseController
         $cache = Services::cache();
 
         try {
-            $results = model(ItemModel::class)->search(term: $term, category: $category);
+            $results = model(ItemModel::class)->search(term: $term);
         } catch (\Throwable) {
             return $this->failServerError();
         }

@@ -13,6 +13,11 @@ class CreateItemsVisitsTable extends Migration
         ->addForeignKey('visitor_id', 'visitor', 'id')
         ->addForeignKey('item_id', 'item', 'id')
         ->addField([
+            'id' => [
+                'type' => 'varchar',
+                'constraint' => 125,
+            ],
+            
             'visitor_id' => [
                 'type' => 'varchar',
                 'constraint' => 125,
