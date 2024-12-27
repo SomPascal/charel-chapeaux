@@ -2,10 +2,12 @@
 
 namespace App\Filters;
 
+use App\Models\VisitorModel;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use CodeIgniter\I18n\Time;
 
 class TrackVisits implements FilterInterface
 {
@@ -29,7 +31,49 @@ class TrackVisits implements FilterInterface
         /**
          * @var IncomingRequest $request
          */
-        return response()->setBody('Hello Guy');
+
+        if (! $request->is('GET') || auth()->loggedIn()) {
+            return;
+        }
+
+        $visitor_model = model(VisitorModel::class);
+        $visitor = [];
+
+        if (! session()->has('visitor')) {
+            
+            if ($visitor_model->hasAlreadyVisited(
+                ip: $request->getIPAddress(),
+                ua: (string) $request->getUserAgent()
+            )) 
+            {
+                $visitor = $visitor_model->findOne(
+                    ip: $request->getIPAddress(), 
+                    ua: (string) $request->getUserAgent()
+                );
+
+                session()->set('visitor', $visitor);
+            }
+            else {
+                $visitor = [
+                    'id' => uid(),
+                    'ip' => $request->getIPAddress(),
+                    'user_agent' => $request->getUserAgent(),
+                    'accept_lang' => $request->header('Accept-Language'),
+                    'referrer_url' => $request->getServer('HTTP_REFFERER') ?? 'Direct',
+                    'created_at' => Time::now()
+                ];
+
+                $visitor_model->insert(row: $visitor);
+
+                unset(
+                    $visitor['referrer_url'], 
+                    $visitor['created_at'],
+                    $visitor['accept_lang']
+                );
+
+                session()->set('visitor', $visitor);
+            }
+        }
     }
 
     /**

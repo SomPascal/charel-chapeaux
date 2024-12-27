@@ -1,3 +1,11 @@
+<?php
+
+use App\Models\VisitorModel;
+
+helper(['string', 'number']);
+
+?>
+
 <?php if (auth()->loggedIn()): ?>
     <nav class="sticky-top w-100 bg-primary text-light py-2 px-3 d-flex align-items-center justify-content-between">
         <span class="mb-0 text-capitalize text-light">
@@ -23,7 +31,9 @@
                 <ul class="dropdown-menu">
                     <li class="dropdown-item d-flex justify-content-between">
                         <i class="fa fa-chart-line"></i>
-                        <span>53</span>
+                        <span>
+                            <?= esc(number_format(model(VisitorModel::class)->todayVisits())) ?>
+                        </span>
                     </li>
                     
                     <li class="dropdown-item d-flex justify-content-between">

@@ -1,4 +1,8 @@
-<?php $this->extend('Admin/base') ?>
+<?php
+
+use App\Models\VisitorModel;
+
+ $this->extend('Admin/base') ?>
 
 <?php $this->section('title') ?>
     <title>
@@ -191,11 +195,11 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                    Visites (Par semaine)
+                                    Visites (jour)
                                 </div>
 
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    34
+                                    <?= esc(number_format(model(VisitorModel::class)->todayVisits())) ?>
                                 </div>
                             </div>
 
