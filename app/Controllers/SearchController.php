@@ -8,20 +8,42 @@ use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\HTTP\Response;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
+use Psr\Log\LogLevel;
 
 class SearchController extends BaseController
 {
     use ResponseTrait;
 
+    protected function fetch(string $term): array
+    {
+        $results = cache()->get('search.' . md5($term));
+
+        if ($results == null) {
+            $results = model(ItemModel::class)->search(term: $term);
+            cache()->save('search.' . md5($term), $results, 5*MINUTE);
+        }
+
+        return $results;
+    }
+
     public function search(): Response
     {
         $term = $this->request->getGet(index: 'term', filter: FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $category = (int) $this->request->getGet(index: 'category', filter: FILTER_SANITIZE_NUMBER_INT);
-        $cache = Services::cache();
 
         try {
-            $results = model(ItemModel::class)->search(term: $term, category: $category);
-        } catch (\Throwable) {
+            $results = $this->fetch($term);
+        } catch (\Throwable $e) {
+            log_message(
+                level: LogLevel::ERROR,
+                message: sprintf(
+                    'Could not find items due to: %s, \n %s',
+                    $e->getMessage(), 
+                    $e->getTraceAsString()
+                ),
+                context: ['username' => auth()->user()->username]
+            );
+
             return $this->failServerError();
         }
 

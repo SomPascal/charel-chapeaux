@@ -52,7 +52,7 @@ use App\Models\ItemModel;
                         <div class="card-body">
                             <div class="card-img-top">
                                 <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
+                                src="..." 
                                 class="img-fluid" 
                                 alt="..."
                                 />
@@ -105,7 +105,7 @@ use App\Models\ItemModel;
                         <div class="card-body">
                             <div class="card-img-top">
                                 <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
+                                src="..." 
                                 class="img-fluid" 
                                 alt="..."
                                 />
@@ -153,7 +153,7 @@ use App\Models\ItemModel;
                         <div class="card-body">
                             <div class="card-img-top">
                                 <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
+                                src="..." 
                                 class="img-fluid" 
                                 alt="..."
                                 />

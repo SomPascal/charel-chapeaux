@@ -61,7 +61,7 @@
                     Pas de résultats pour "<span>chapeau de luxe</span>"
                 </div>
 
-                <ul id="search-results" class="flex-wrap justify-content-start align-items-start d-none" style="gap: 15px;">
+                <ul id="search-results" class="flex-wrap justify-content-center align-items-start d-none" style="gap: 15px;">
                     <!-- <li 
                      class="carcd shadow search-result"
                      id="r-0"
