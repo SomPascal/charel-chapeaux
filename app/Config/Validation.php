@@ -58,4 +58,31 @@ class Validation extends BaseConfig
     public array $invite_admin = [
         'role' => 'required|in_list[admin,superadmin]'
     ];
+
+    public array $change_role = [
+        'admin_id' => 'required',
+        'role' => 'required|in_list[superadmin,admin]'
+    ];
+
+    public array $ban_admin = [
+        'admin_id' => 'required',
+        'ban' => 'required|in_list[on,off]'
+    ];
+
+    public array $change_contact = [
+        'content' => 'required',
+        'name' => 'required|in_list[phone,whatsapp,instagram,facebook,location,map]|max_length[300]'
+    ]; 
+
+    public array $create_category = [
+        'category_name' => 'required|min_length[3]|max_length[124]|is_unique[category.name]'
+    ];
+
+    public array $store_item = [
+        'item-name' => 'required|min_length[3]|max_length[124]',
+        'categories' => 'required',
+        'item-description' => 'required|min_length[6]|max_length[200]',
+        'item-price' => 'required|numeric|is_natural',
+        // 'item-images' => 'required|uploaded[item-images]|is_image[item-images]|max_size[item-images,' . TWO_MB .']|mime_in[item-images,image/png,image/jpeg,image/jpg]'
+    ];
 }

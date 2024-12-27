@@ -14,7 +14,9 @@
 Thumbs.db
 ehthumbs.db
 Desktop.ini
-
+*.db
+*.sqlite
+*.sql
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 

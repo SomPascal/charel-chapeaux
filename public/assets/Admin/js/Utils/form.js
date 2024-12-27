@@ -6,6 +6,7 @@ v.validators.presence.message = '^Ce champ est obligatoire.'
 v.validators.email.message = '^Entrez un email valid'
 v.validators.length.tooLong = '^Ce champ est trop long (%{count} charactères au plus)'
 v.validators.length.tooShort = '^Ce champ est trop court (%{count} charactères au moins)'
+v.validators.numericality.notValid = '^Veuillez entrer un nombre entier'
 
 /**
  * 
@@ -23,7 +24,39 @@ v.validators.username = function (value) {
     return res
 }
 
+v.validators.image = function (value) {
+    let res = undefined
+    let data
+    
+    try {
+        data = JSON.parse(value)
+    } catch (err) {
+        return '^Un problème est survenue sur votre fichier'
+    }
+
+    if (! data.type.startsWith('image/')) {
+        res = '^Veuillez choisir une image.'
+    }
+    else if (! env.IMAGE_ALLOWED_EXTENSIONS.includes(data.ext))
+    {
+        res = '^Choisissez une image ayant l\'une des extension suivantes: png, jpeg, jpg, gif.'
+    }
+    else if (data.size > env.IMAGE_MAX_SIZE) {
+        res = '^Le poids maximal de l\'image est de 2MB.'
+    }
+
+    return res
+}
+
 const rules = {
+    'code': {
+        'presence': {'allowEmpty': false},
+    },
+
+    'contact-content': {
+        'presence': {'allowEmpty': false}
+    },
+
     'username': {
         'presence': {'allowEmpty': false},
         'length': {
@@ -48,6 +81,11 @@ const rules = {
         }
     },
 
+    'password-confirm': {
+        'presence': {'allowEmpty': false},
+        'equality': 'password'
+    },
+
     'current-password': {
         'presence': {'allowEmpty': false},
         'length': {
@@ -62,10 +100,46 @@ const rules = {
         }
     },
 
+    'category_name': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
     'new-password-confirm': {
         'presence': {'allowEmpty': false},
         'equality': 'new-password'
-    }
+    },
+    
+    'item-name': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
+    'item-images': {
+        'image': {}
+    },
+
+    'item-price': {
+        'presence': {'allowEmpty': false},
+        'numericality': {
+            'onlyInteger': true,
+            'noStrings': false
+        }
+    },
+
+    'item-description': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 6,
+            'maximum': 200
+        }
+    },
 }
 
 /**
@@ -108,6 +182,39 @@ const checkField = (field, fieldId, flag=false, nextField, nextFieldId)=> {
 
     errors = v(data, rules)
         
+    if (errors == undefined || errors[fieldId] == undefined) {        
+        setErrMsg(field, '', false)
+        res = true
+    }
+    else {
+        setErrMsg(field, errors[fieldId][0])
+        res = false
+    }
+
+    return res
+}
+
+
+/**
+ * 
+ * @param {File} file 
+ * @param {String} fieldId 
+ */
+const checkFileField = (file, fieldId)=> {
+    let data = {}
+
+    data[fieldId] = JSON.stringify({
+        'size': file.size,
+        'ext': file.name.slice(file.name.lastIndexOf('.') +1).toLowerCase(),
+        'type': file.type.toLowerCase()
+    })
+    
+    let errors
+    let res
+    let field = document.querySelector('#' + fieldId)
+    
+    errors = v(data, rules)
+
     if (errors == undefined || errors[fieldId] == undefined) {        
         setErrMsg(field, '', false)
         res = true
@@ -182,6 +289,7 @@ const disable = (form, flag=true)=> {
 export {
     showPasswords,
     checkField,
+    checkFileField,
     setAlert,
     setErrMsg,
     disable,

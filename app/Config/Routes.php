@@ -1,7 +1,10 @@
 <?php
 
+use App\Controllers\Admin\CategoryController;
+use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
+use App\Controllers\Admin\ContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -11,6 +14,8 @@ use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
+use App\Controllers\PicsController;
+use App\Controllers\SearchController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -28,7 +33,7 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->post('login', [LoginController::class, 'attemptLogin'], ['as' => 'admin.att-login']);
 
     $routes->get('{locale}/register', [RegisterController::class, 'register'], ['as' => 'admin.register']);
-    $routes->post('register', [RegisterController::class, 'attemptRegister'], ['as' => 'admin.att-register']);
+    $routes->post('att-register', [RegisterController::class, 'attemptRegister'], ['as' => 'admin.att-register']);
     
     $routes->get('{locale}/change-password', [ChangePasswordController::class, 'changePswd'], ['as' => 'admin.change-pswd']);
     $routes->post('change-password', [ChangePasswordController::class, 'attemptChangePswd'], ['as' => 'admin.att-change-pswd']);
@@ -38,14 +43,27 @@ $routes->group('admin', function(RouteCollection $routes) {
 
     $routes->get('/', [DashboardController::class, 'index'], ['as' => 'admin.index']);
 
+    $routes->group('category', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
+        $routes->post('create', [CategoryController::class, 'create'], ['as' => 'admin.category.create']);
+        $routes->post('update', [CategoryController::class, 'update'], ['as' => 'admin.category.update']);
+        $routes->post('delete', [CategoryController::class, 'delete'], ['as' => 'admin.category.delete']);
+    });
+
     $routes->group('{locale}', function(RouteCollection $routes) {
         $routes->get('/', [DashboardController::class, 'home'], ['as' => 'admin.home']);
         $routes->get('stats', [DashboardController::class, 'stats'], ['as' => 'admin.stats']);
         $routes->get('manage', [DashboardController::class, 'manage'], ['as' => 'admin.manage']);
         $routes->get('items', [DashboardController::class, 'items'], ['as' => 'admin.items']);
+        $routes->get('create', [ItemController::class, 'create'], ['as' => 'admin.item.create', 'filter' => 'group:admin,superadmin']);
     
         $routes->get('content', [DashboardController::class, 'content'], ['as' => 'admin.content']);
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);
+    });
+
+    $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
+        $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
+        $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
+        $routes->post('contact', [ContactController::class, 'change'], ['as' => 'admin.change.contact']);
     });
 });
 
@@ -55,13 +73,24 @@ $routes->post('accept-cookie', [CookieController::class, 'accept'], ['as' => 'co
 
 $routes->group('invite', function(RouteCollection $routes){
     $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'invite.use']);
-    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'group:superadmin']);
+    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
 });
 
+$routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
+
+$routes->get('{locale}/find', [SearchController::class, 'find'], ['as' => 'item.find']);
+
 $routes->group('item', function(RouteCollection $routes) {
-    $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
-    $routes->get('like', [ItemController::class, 'like'], ['as' => 'item.like']);
-    $routes->get('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
+    $routes->get('search', [SearchController::class, 'search'], ['as' => 'item.search']);
+
+    $routes->post('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
+    $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
+    $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
+    $routes->post('hide', [ItemController::class, 'hide'], ['as' => 'item.hide']);
+    $routes->post('unhide', [ItemController::class, 'unhide'], ['as' => 'item.unhide']);
+    $routes->post('delete', [ItemController::class, 'delete'], ['as' => 'item.delete']);
+
+    $routes->get('pic/(:hash)', [PicsController::class, 'item'], ['as' => 'item.pic']);
 });
 
 $routes->set404Override(sprintf('%s::%s', ErrorController::class, 'pageNotFound'));

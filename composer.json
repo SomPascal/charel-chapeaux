@@ -15,7 +15,9 @@
         "codeigniter4/shield": "^1.1",
         "codeigniter4/translations": "^4.5",
         "jdenticon/jdenticon": "^1.0",
-        "symfony/uid": "^7.1"
+        "mailjet/mailjet-apiv3-php": "^1.6",
+        "symfony/uid": "^7.1",
+        "teamtnt/tntsearch": "^4.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",

@@ -17,6 +17,9 @@
      rel="stylesheet"
     >
 
+    <!-- Swiper bundle  -->
+    <link rel="stylesheet" href="/assets/vendor/swiper/swiper-bundle.min.css" />
+
     <!-- Custom styles for this template-->
     <link href="/assets/Admin/css/sb-admin-2.min.css" rel="stylesheet">
 
@@ -35,6 +38,21 @@
             <!-- Main Content -->
             <div id="content">
                 <?= $this->include('Admin/Parts/navbar') ?>
+
+                <?php if(session()->has('success')): ?>
+                    <p class="alert alert-success m-3">
+                        <i class="fa fa-check"></i>
+                        <?= esc(session()->get('success')) ?>
+                    </p>
+                <?php endif ?>
+
+                <?php if(session()->has('error')): ?>
+                    <p class="alert alert-danger m-3">
+                        <i class="fa fa-times"></i>
+                        <?= esc(session()->get('error')) ?>
+                    </p>
+                <?php endif ?>
+
                 <?= $this->renderSection('content') ?>
             </div>
             <!-- End of Main Content -->
@@ -48,20 +66,15 @@
 
     <?= $this->include('Admin/Parts/scroll-to-top') ?>
     <?= $this->include('Admin/Parts/logout-modal') ?>
+    <?= $this->include('Admin/Parts/ban-admin-modal') ?>
     <?= $this->include('Admin/Parts/see-website') ?>
+    <?= $this->include('Admin/Parts/notification') ?>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="/assets/Admin/vendor/jquery/jquery.min.js"></script>
-    <script src="/assets/Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <?= $this->include('Admin/Parts/scripts') ?>
 
-    <!-- Core plugin JavaScript-->
-    <script src="/assets/Admin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Validate JS -->
-    <script src="/assets/vendor/validate.js/validate.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="/assets/Admin/js/sb-admin-2.min.js"></script>
+    <script <?= csp_script_nonce() ?> >
+        document.querySelector('#sidebarToggleTop')?.click()
+    </script>
 
     <?php $this->renderSection('script') ?>
 

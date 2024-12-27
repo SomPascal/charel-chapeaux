@@ -32,123 +32,132 @@
             <?php endif ?>
         </div>
 
-        <?php if(session()->has('success')): ?>
-            <p class="alert alert-success m-3">
-                <i class="fa fa-check"></i>
-                <?= esc(session()->get('success')) ?>
-            </p>
-        <?php endif ?>
-
         <p>
             Il y'a actuellement <?= esc(count($admins)) ?> 
             administrateur(s).
         </p>
 
         <?php if (count($admins) > 0): ?>
-            <div class="row pb-5">
-                <?php foreach($admins as $admin): ?>
-                    <div class="col-md-4 my-1">
-                        <div 
-                            class="card border-left-secondary shadow" 
-                            email="<?= esc($admin->email, 'attr') ?>"
-                            username="<?= esc($admin->username, 'attr') ?>" 
-                            admin-id="<?= esc($admin->id, 'attr') ?>"
-                            invited-by=""
-                            myself="<?= $admin->id == user_id() ?>"
-                            group="<?= esc($admin->group, 'attr') ?>"
-                            created-at="<?= esc($admin->created_at, 'attr') ?>"
-                            admin-card
-                        >
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <h5 class="h5">
-                                            <?= esc($admin->username) ?>
-                                            <?= ($admin->id == user_id()) ? '(Moi)' : null ?>
-                                        </h5>
+            <?php foreach(array_chunk($admins, 2) as $chunked_admins): ?>
+                <div class="row mb-3">
+                    <?php foreach($chunked_admins as $admin): ?>
+                        <div class="col-md-6">
+                            <div 
+                                class="card border-left-secondary shadow mb-3" 
+                                email="<?= esc($admin->email, 'attr') ?>"
+                                username="<?= esc($admin->username, 'attr') ?>" 
+                                admin-id="<?= esc($admin->id, 'attr') ?>"
+                                invitedBy="<?= esc($admin->inviter_username, 'attr') ?>"
+                                myself="<?= $admin->id == user_id() ?>"
+                                group="<?= esc($admin->group, 'attr') ?>"
+                                created-at="<?= esc($admin->created_at, 'attr') ?>"
+                                admin-card
+                            >
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <h5 class="h5 d-flex flex-wrap justify-content-between">
+                                                <?= esc($admin->username) ?>
+                                                <?= ($admin->id == user_id()) ? '(Moi)' : null ?>
 
-                                        <?php if (isset($admin->inviter_username)): ?>
-                                            <p>
-                                                Invité par: 
-                                                <span class="text-primary">
-                                                    <b><?= esc($admin->inviter_username) ?></b>
-                                                </span>
-                                            </p>
-                                        <?php endif ?>
-
-                                        <div class="d-flex">
-                                            <button 
-                                                show-admin
-                                                class="btn 
-                                                btn-secondary 
-                                                btn-sm btn-icon-split m-1"
-                                                data-toggle="modal"
-                                                data-target="#admin-details"
-                                            >
-                                                <span class="icon">
-                                                    <i class="fa fa-expand-alt"></i>
-                                                </span>
-
-                                                <span class="text">
-                                                    Agrandir
-                                                </span>
-                                            </button>
-                                            <?php if ($admin->id != user_id()): ?>
+                                                <?php if (isset($admin->inviter_username)): ?>
+                                                    <p class="mb-0">
+                                                        Invité par: 
+                                                        <span class="text-primary">
+                                                            <b><?= esc($admin->inviter_username) ?></b>
+                                                        </span>
+                                                    </p>
+                                                <?php endif ?>
+                                            </h5>
+    
+    
+                                            <div class="d-flex flex-wrap">
                                                 <button 
+                                                    show-admin
+                                                    class="btn 
+                                                    btn-secondary 
+                                                    btn-sm btn-icon-split m-1"
                                                     data-toggle="modal"
-                                                    data-target="#eject-admin"
-                                                    class="btn btn-sm btn-danger btn-icon-split m-1"
+                                                    data-target="#admin-details"
                                                 >
                                                     <span class="icon">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-expand-alt"></i>
                                                     </span>
-
+    
                                                     <span class="text">
-                                                        Expulser
+                                                        Agrandir
                                                     </span>
                                                 </button>
-
-                                                <!-- Role Modificator -->
-                                                <div class="btn-group btn-sm">
-                                                    <button type="button" class="btn btn-sm btn-secondary disabled">
-                                                        <i class="fa fa-user-edit"></i>
-                                                        Role
-                                                    </button>
-
+                                                <?php if ($admin->id != user_id() && auth()->user()->inGroup('superadmin')): ?>
                                                     <button 
-                                                        type="button" 
-                                                        class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
-                                                        data-toggle="dropdown" 
-                                                        aria-expanded="false"
+                                                        type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#ban-admin-modal"
+                                                        class="btn btn-sm btn-danger btn-icon-split m-1"
+                                                        ban-admin
                                                     >
-                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                        <span class="icon">
+                                                            <i class="fa fa-trash"></i>
+                                                        </span>
+    
+                                                        <span class="text">
+                                                            Expulser
+                                                        </span>
                                                     </button>
-
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">
-                                                            Admin (Actuel)
-                                                        </a>
-
-                                                        <a class="dropdown-item" href="#">
-                                                            Super Admin
-                                                        </a>
+    
+                                                    <!-- Role Modificator -->
+                                                    <div class="btn-group btn-sm" admin-role>
+                                                        <button type="button" class="btn btn-sm btn-secondary disabled">
+                                                            <i class="fa fa-user-edit"></i>
+                                                            Role
+                                                        </button>
+    
+                                                        <button 
+                                                            type="button" 
+                                                            class="btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" 
+                                                            data-toggle="dropdown" 
+                                                            aria-expanded="false"
+                                                        >
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+    
+                                                        <ul class="dropdown-menu">
+                                                            <?php foreach(config('Config\AuthGroups')->groups as $role => $desc): ?>
+                                                                <?php if(user_id() != $admin->id): ?>
+                                                                    <li 
+                                                                     data-toggle="modal"
+                                                                     data-target="#change-admin-role"
+                                                                     value="<?= esc($role) ?>"
+                                                                     class="cursor-pointer dropdown-item <?= ($admin->group == $role) ? 'disabled' : null ?>"
+                                                                     <?= ($admin->group == $role) ? 'disabled' : null ?> 
+                                                                    >
+                                                                        <?= esc($desc['title']) ?>
+                                                                        <?= ($admin->group == $role) ? '(Actuel)' : null ?>
+                                                                    </li>
+                                                                <?php endif ?>
+                                                            <?php endforeach ?>
+                                                        </ul>
                                                     </div>
-                                                </div>
-                                            <?php endif ?>
+                                                <?php endif ?>
                                             </div>
-                                    </div>
-                                    
-                                    <div class="col-auto">
-                                        <?php if ($admin->group == 'superadmin'): ?>
-                                            <i class="fas fa-crown fa-2x text-warning-100"></i>
-                                        <?php endif ?>
+                                        </div>
+                                        
+                                        <div class="col-auto">
+                                            <?php if ($admin->group == 'superadmin'): ?>
+                                                <i class="fas fa-crown fa-2x text-warning-100"></i>
+                                            <?php endif ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php endforeach ?>
-            </div>
+                    <?php endforeach ?>
+                </div>
+            <?php endforeach ?>
+        <?php else: ?>
+            <p class="alert alert-danger w-100 text-uppercase text-center">
+                Pas d'administrateurs
+            </p>
         <?php endif ?>
 
         <!-- Page Heading -->
@@ -292,425 +301,17 @@
             </div>
         </div>
 
-        <div id="site-links" class="my-5">
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">
-                Liens du site 
-            </h1>
+        <?= $this->include('Admin/Parts/site-links') ?>
 
-            <p class="mb-4">
-                Vous pouvez modifier les liens ci-dessous ou les tester.
-            </p>
-
-            <div class="row my-3">
-                <div class="col-md-6 mb-3">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5 class="h5 text-capitalize">
-                                <i class="fa fa-phone"></i>
-                                Appel 
-                            </h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="237 699 96 75 12"
-                                    readonly
-                                    id="link-phone"
-                                />
-
-                                <a 
-                                    href="tel:237699967512" 
-                                    target="_blank" 
-                                    class="input-group-append"
-                                >
-                                    <span class="input-group-text">
-                                        <i class="fa fa-external-link-alt"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button 
-                                type="button"
-                                class="btn btn-sm btn-primary btn-icon-split"
-                                data-toggle="modal"
-                                data-target="#extend-links"
-                            >
-                                <span class="icon">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-
-                                <span class="text">
-                                    Modifier
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5 class="h5 text-capitalize">
-                                <i class="fab fa-whatsapp"></i>
-                                WhatsApp 
-                            </h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="https://wa.me/237699967512?text=ok"
-                                    readonly
-                                    id="link-phone"
-                                />
-
-                                <a 
-                                    href="https://wa.me/237699967512?text=ok" 
-                                    target="_blank" 
-                                    class="input-group-append"
-                                >
-                                    <span class="input-group-text">
-                                        <i class="fa fa-external-link-alt"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button 
-                                type="button"
-                                class="btn btn-sm btn-primary btn-icon-split"
-                                data-toggle="modal"
-                                data-target="#extend-links"
-                            >
-                                <span class="icon">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-
-                                <span class="text">
-                                    Modifier
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row my-3">
-                <div class="col-md-6 mb-3">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5 class="h5 text-capitalize">
-                                <i class="fab fa-facebook"></i>
-                                Facebook 
-                            </h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="https://facebook.com/profile.php?id=100063837618193"
-                                    readonly
-                                    id="link-phone"
-                                />
-
-                                <a 
-                                    href="https://facebook.com/profile.php?id=100063837618193" 
-                                    target="_blank" 
-                                    class="input-group-append"
-                                >
-                                    <span class="input-group-text">
-                                        <i class="fa fa-external-link-alt"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button 
-                                type="button"
-                                class="btn btn-sm btn-primary btn-icon-split"
-                                data-toggle="modal"
-                                data-target="#extend-links"
-                            >
-                                <span class="icon">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-
-                                <span class="text">
-                                    Modifier
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5 class="h5 text-capitalize">
-                                <i class="fab fa-instagram"></i>
-                                Instagram 
-                            </h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="input-group">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="https://instagram.com/charelchapeaux"
-                                    readonly
-                                    id="link-phone"
-                                />
-
-                                <a 
-                                    href="https://instagram.com/charelchapeaux" 
-                                    target="_blank" 
-                                    class="input-group-append"
-                                >
-                                    <span class="input-group-text">
-                                        <i class="fa fa-external-link-alt"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button 
-                                type="button"
-                                class="btn btn-sm btn-primary btn-icon-split"
-                                data-toggle="modal"
-                                data-target="#extend-links"
-                            >
-                                <span class="icon">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-
-                                <span class="text">
-                                    Modifier
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h5 class="h5 text-capitalize">
-                                <i class="fa fa-map-marked"></i>
-                                Google Maps 
-                            </h5>
-                        </div>
-
-                        <div class="card-body">
-                            <div class="input-group mb-3">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="Express Union Biteng, Yaoundé, Cameroun"
-                                    readonly
-                                    id="link-phone"
-                                />
-                            </div>
-
-                            <div class="input-group">
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    aria-label="Username"
-                                    value="maps.google.com"
-                                    readonly
-                                    id="link-phone"
-                                />
-
-                                <a 
-                                    href="maps.google.com/" 
-                                    target="_blank" 
-                                    class="input-group-append"
-                                >
-                                    <span class="input-group-text">
-                                        <i class="fa fa-external-link-alt"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="card-footer">
-                            <button 
-                                type="button"
-                                class="btn btn-sm btn-primary btn-icon-split"
-                                data-toggle="modal"
-                                data-target="#extend-map-links"
-                            >
-                                <span class="icon">
-                                    <i class="fa fa-edit"></i>
-                                </span>
-
-                                <span class="text">
-                                    Modifier
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Begin Page Content -->
-        <div class="my-3" id="contacts">
-
-            <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">
-                Contacts 
-            </h1>
-
-            <p class="mb-4">
-                Les numero ci-dessous ont ete ajoute sur le formlaire de contacte
-            </p>
-
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary text-uppercase">
-                        Liste de prospects
-                    </h6>
-                </div>
-
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>
-                                        <i class="fa fa-phone"></i>
-                                        Appel
-                                    </th>
-
-                                    <th>
-                                        <i class="fab fa-whatsapp"></i>
-                                        WhatsApp
-                                    </th>
-
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-
-                            <tfoot>
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>
-                                        <i class="fa fa-phone"></i>
-                                        Appel
-                                    </th>
-
-                                    <th>
-                                        <i class="fab fa-whatsapp"></i>
-                                        WhatsApp
-                                    </th>
-
-                                    <th>Date</th>
-                                </tr>
-                            </tfoot>
-
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        Ruben Ulrich
-                                    </td>
-                                    <td>
-                                        <a href="tel:+237656473748">
-                                            237 656 47 37 48
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        <a href="https://wa.me/237656473748">
-                                            237 656 47 37 48
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        25 Oct 2025 0 a 11:24
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        Ruben Ulrich
-                                    </td>
-                                    <td>
-                                        <a href="tel:+237656473748">
-                                            237 656 47 37 48
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        <a href="https://wa.me/237656473748">
-                                            237 656 47 37 48
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        25 Oct 2025 0 a 11:24
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        Ndjengwes Steve 
-                                    </td>
-
-                                    <td>
-                                        <a href="tel:+237657471838">
-                                            237 657 471 838
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        <a href="https://wa.me/237657471839">
-                                            237 657 471 838
-                                        </a>
-                                    </td>
-
-                                    <td>
-                                        14 Janv 2024
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <!-- Content Row -->
+        <?= $this->include('Admin/Parts/contacts') ?>
     </div>
 
     <?= $this->include('Admin/Parts/admin-details-modal') ?>
     <?= $this->include('Admin/Parts/invitation-link-modal') ?>
+    <?= $this->include('Admin/Parts/change-contacts-modal') ?>
+    <?= $this->include('Admin/Parts/change-admin-role-modal') ?>
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>
-    <script type="module" src="/assets/Admin/js/script.js"></script>
+    <script type="module" src="<?= base_url('assets/Admin/js/script.js') ?>"></script>
 <?php $this->endSection('script') ?>

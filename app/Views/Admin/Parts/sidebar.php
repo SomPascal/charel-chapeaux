@@ -1,3 +1,4 @@
+<?php $methodeName = service('router')->methodName() ?>
 <!-- Sidebar -->
 <ul 
     class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" 
@@ -18,7 +19,9 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
+    <li 
+     class="nav-item <?= $methodeName == 'home' ? 'active' : null ?>"
+    >
         <a class="nav-link" href="<?= route_to('admin.home', request()->getLocale()) ?>">
             <i class="fas fa-fw fa-home"></i>
             <span>
@@ -31,7 +34,9 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <li 
+     class="nav-item <?= $methodeName == 'content' ? 'active' : null ?>"
+    >
         <a 
             class="nav-link collapsed" 
             href="<?= route_to('admin.content') ?>" 
@@ -45,7 +50,9 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Utilities Collapse Menu -->
-    <li class="nav-item">
+    <li
+     class="nav-item <?= $methodeName == 'items' ? 'active' : null ?>"
+    >
         <a 
             class="nav-link" 
             href="<?= route_to('admin.items') ?>" 
@@ -62,7 +69,9 @@
     <hr class="sidebar-divider">
 
     <!-- Nav Item - Pages Collapse Menu -->
-    <li class="nav-item">
+    <li 
+     class="nav-item <?= $methodeName == 'stats' ? 'active' : null ?>"
+    >
         <a 
             class="nav-link collapsed"
             href="<?= route_to('admin.stats') ?>" 

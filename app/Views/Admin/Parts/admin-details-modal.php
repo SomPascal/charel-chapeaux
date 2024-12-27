@@ -33,7 +33,7 @@
 
                 <ul class="mt-3">
                     <li>
-                        <p class="d-flex align-items-center justify-content-between" id="detail-id">
+                        <p class="d-flex align-items-center justify-content-between" id="detail-group">
                             <b>Type: </b>
                             <span>Admin</span>
                         </p>

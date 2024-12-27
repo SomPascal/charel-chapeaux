@@ -4,7 +4,7 @@
         <div class="col-md-3 col-sm-6">
           <div class="footer-menu footer-menu-001">
             <div class="footer-intro mb-4">
-              <a href="/">
+              <a href="<?= base_url(request()->getLocale()) ?>">
                 <img 
                  src="/assets/images/cc-logo.png" 
                  alt="Logo Charel Chapeaux"
@@ -20,7 +20,7 @@
               <ul class="list-unstyled d-flex flex-wrap gap-3">
                 <li>
                   <a 
-                   href="https://wa.me/237699967512" 
+                   href="https://wa.me/<?= esc(get_contact('whatsapp'), 'attr') ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -30,7 +30,7 @@
 
                 <li>
                   <a 
-                   href="https://facebook.com/profile.php?id=100063837618193" 
+                   href="<?= esc(get_contact('facebook')) ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -40,7 +40,7 @@
 
                 <li>
                   <a 
-                   href="https://instagram.com/charelchapeaux" 
+                   href="<?= esc(get_contact('instagram')) ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -61,7 +61,7 @@
             <ul class="menu-list list-unstyled text-uppercase border-animation-left fs-6">
               <li class="menu-item">
                 <a 
-                 href="/" 
+                 href="<?= base_url(request()->getLocale()) ?>" 
                  class="item-anchor"
                 >
                   Accueil
@@ -70,7 +70,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="/" 
+                 href="<?= base_url(request()->getLocale().'#our-collections') ?>" 
                  class="item-anchor"
                 >
                   Nos collections
@@ -79,7 +79,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="blog.html" 
+                 href="<?= base_url(request()->getLocale().'#contact-us') ?>" 
                  class="item-anchor"
                 >
                   Contactez-nous
@@ -98,7 +98,7 @@
             <ul class="menu-list list-unstyled text-uppercase border-animation-left fs-6">
               <li class="menu-item">
                 <a 
-                 href="/" 
+                 href="https://wa.me/<?= esc(get_contact('whatsapp')) ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -108,7 +108,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="/" 
+                 href="<?= esc(get_contact('facebook')) ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -118,7 +118,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="blog.html" 
+                 href="<?= esc(get_contact('instagram')) ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -128,7 +128,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="blog.html" 
+                 href="<?= esc(get_contact('map')) ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -147,8 +147,11 @@
 
             <p>
               Avez-vous des questions ? 
-              <a href="tel:237699967512" class="item-anchor">
-                237 699 96 75 12
+              <a 
+               href="tel:<?= esc(get_contact('phone'), 'attr') ?>" 
+               class="item-anchor"
+              >
+                <?= esc(get_contact('phone')) ?>
               </a>
             </p>
           </div>

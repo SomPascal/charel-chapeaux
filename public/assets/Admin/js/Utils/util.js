@@ -11,7 +11,12 @@ const env = {
     HTTP_FORBIDDEN: 403,
     HTTP_TOO_MANY_REQUEST: 429,
 
-    HTTP_INTERNAL_SERVER_ERROR: 500
+    HTTP_INTERNAL_SERVER_ERROR: 500,
+    HTTP_INSUFFICIENT_STORAGE: 507,
+
+    IMAGE_MAX_SIZE: 2*1_048_576,
+    IMAGE_ALLOWED_EXTENSIONS: ['png', 'jpg', 'jpeg', 'gif'],
+    MAX_ITEM_PICS: 10
 }
 
 const csrfTag = document.head.querySelector(`meta[name="${env.X_CSRF_TOKEN}"]`)
@@ -50,9 +55,63 @@ const getCsrfToken = ()=> {
     return  csrfTag.getAttribute('content')
 }
 
+/**
+ * 
+ * @param {String} message 
+ * @param {String} type
+ */
+const setNotification = (message, type='alert-success')=> {
+    const notification = document.querySelector('#notification')
+    const close = notification.querySelector('button')
+
+    if (! notification) {
+        return
+    }
+    notification.querySelector('p').innerHTML = message
+    notification.classList.add('show')
+    notification.classList.add(type)
+
+    close.onclick = ()=> {
+        notification.querySelector('p').innerHTML = ''
+        notification.classList.remove(type)
+        notification.classList.remove('show')
+    }
+
+    setTimeout(() => {
+        close.click()
+    }, 4000)
+}
+
+const randomString = ()=> Math.random().toString(16).slice(2)
+
+/**
+ * @param {String} imagePreviewSelector
+ * @param {File} imageFile
+ * @returns {Boolean}
+ */
+const showImagePreview = (imagePreviewSelector, imageFile)=> {
+    let res = false
+    let imagePreview = document.querySelector(imagePreviewSelector)
+
+    if (! imageFile) {
+        imagePreview.src = ''
+        return res
+    }
+    const reader = new FileReader()
+
+    reader.onload = (e)=> {
+        imagePreview.src = e.target.result
+    }
+
+    reader.readAsDataURL(imageFile)
+}
+
 export {
     env,
     setCsrfToken,
     getCsrfToken,
-    copyLink
+    copyLink,
+    setNotification,
+    randomString,
+    showImagePreview
 }

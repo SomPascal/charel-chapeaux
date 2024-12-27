@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="row justify-content-between align-items-center w-100">
         <div class="col-auto">
-          <a class="navbar-brand text-white" href="/">
+          <a class="navbar-brand text-white" href="<?= base_url(request()->getLocale()) ?>">
             <img 
              src="/assets/images/cc-logo.png" 
              alt="Charel Chapeaux Logo" 
@@ -32,11 +32,16 @@
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 gap-1 gap-md-5 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Accueil</a>
+                  <a class="nav-link" href="<?= base_url(request()->getLocale()) ?>">
+                    Accueil
+                  </a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="#our-collections">
+                  <a 
+                   class="nav-link" 
+                   href="<?= base_url(request()->getLocale()) ?>#our-collections"
+                  >
                     Collections
                   </a>
                 </li>
@@ -59,7 +64,7 @@
                   >
                     <li>
                       <a 
-                       href="https://facebook.com/profile.php?id=100063837618193" 
+                       href="<?= esc(get_contact('facebook')) ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >
@@ -70,7 +75,7 @@
 
                     <li>
                       <a 
-                       href="https://instagram.com/charelchapeaux" 
+                       href="<?= esc(get_contact('instagram')) ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >
@@ -81,7 +86,7 @@
 
                     <li>
                       <a 
-                       href="https://wa.me/237699967512" 
+                       href="https://wa.me/<?= esc(get_contact('whatsapp')) ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >
@@ -93,7 +98,10 @@
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a 
+                   class="nav-link" 
+                   href="<?= base_url(request()->getLocale()) ?>#contact-us"
+                  >
                     Contactez-nous
                   </a>
                 </li>

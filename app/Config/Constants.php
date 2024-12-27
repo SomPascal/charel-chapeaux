@@ -97,3 +97,8 @@ define('EVENT_PRIORITY_HIGH', 10);
 define('X_REDIRECT_TO', 'X-Redirect-To');
 define('X_CSRF_TOKEN', 'X-CSRF-TOKEN');
 define('X_RETRY_AFTER', 'X-Retry-After');
+
+define('OTP_EXPIRE_AT', 'otp.expire_at');
+define('TWO_MB', 2 * 1024 * 1024);
+
+define('XAF', 'XAF');

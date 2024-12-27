@@ -1,3 +1,7 @@
+*:disabled {
+    cursor: not-allowed;
+}
+
 ul {
     margin-left: 0;
     padding-left: 0;
@@ -8,8 +12,25 @@ textarea {
     resize: none;
 }
 
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.x-center {
+    margin-left: 50%;
+    transform: translate(-50%);
+}
+
 .opacity-0 {
     opacity: 0;
+}
+
+.opacity-75 {
+    opacity: .75;
+}
+
+.opacity-50 {
+    opacity: .5;
 }
 
 .view-app {
@@ -35,10 +56,64 @@ textarea {
     position: fixed;
     bottom: 28px;
     right: 70px;
+    z-index: 999;
 }
 
-@media screen and (min-width: 780px) {
-    h2 {
-        color: red !important;
+.notification {
+    position: fixed;
+    left: 30px;
+    transition: .3s ease;
+
+    bottom: -100px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.notification.show {
+    bottom: 30px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.overflox-y-hidden {
+    overflow-y: hidden !important;
+} 
+
+.overflow-x-auto {
+    overflow-x: auto !important;
+}
+
+#list-items {
+    /* background: red; */
+}
+
+.pagination {
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.pagination .active a {
+    height: 30px;
+    width: 30px;
+    border-radius: 50px;
+    background: #4e73df;
+    color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.search-result img {
+    max-width: 230px;
+}
+
+@media screen and (max-width: 780px) {
+    .search-result {
+        max-width: 130px;
+    }
+
+    .search-result img {
+        max-width: 130px;
     }
 }
