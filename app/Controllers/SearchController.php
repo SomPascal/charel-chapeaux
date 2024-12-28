@@ -32,6 +32,7 @@ class SearchController extends BaseController
         $category = (int) $this->request->getGet(index: 'category', filter: FILTER_SANITIZE_NUMBER_INT);
 
         try {
+<<<<<<< HEAD
             $results = $this->fetch($term);
         } catch (\Throwable $e) {
             log_message(
@@ -44,6 +45,10 @@ class SearchController extends BaseController
                 context: ['username' => auth()->user()->username]
             );
 
+=======
+            $results = model(ItemModel::class)->search(term: $term);
+        } catch (\Throwable) {
+>>>>>>> feature/visit-tracker
             return $this->failServerError();
         }
 

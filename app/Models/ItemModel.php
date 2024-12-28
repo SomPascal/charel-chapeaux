@@ -111,6 +111,7 @@ class ItemModel extends Model
             'item.description AS description',
             'item.is_hidden AS is_hidden',
             'item.created_at AS created_at',
+
             'category.name AS category',
             'category.code AS category_code',
 

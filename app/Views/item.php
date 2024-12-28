@@ -87,7 +87,7 @@ use Config\Contact;
         <div class="row w-100 mt-5 cta">
           <div class="col-md-6">
             <a 
-            href="https://wa.me/237699967512" 
+            href="<?= sprintf('%s?item=%s', route_to('goto', 'whatsapp'), $item->id) ?>" 
             target="_blank" 
             class="btn btn-success text-uppercase w-100 m-1"
             >
@@ -97,7 +97,7 @@ use Config\Contact;
           </div>
 
           <div class="col-md-6">
-            <a href="tel:237699967512" class="btn btn-dark text-uppercase w-100 m-1">
+            <a href="<?= sprintf('%s?item=%s', route_to('goto', 'phone'), $item->id) ?>" class="btn btn-dark text-uppercase w-100 m-1">
               <i class="fa fa-phone"></i>
               Appeler
             </a>

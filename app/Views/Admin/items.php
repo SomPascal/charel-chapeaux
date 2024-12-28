@@ -2,6 +2,7 @@
 
 use App\Models\CategoryModel;
 use App\Models\ItemModel;
+use App\Models\ItemsVisitsModel;
 
  helper('text') ?>
 <?php $this->extend('Admin/base') ?>
@@ -507,7 +508,11 @@ use App\Models\ItemModel;
                                         <div class="d-flex gap-0 flex-row justify-content-between fs-7">
                                             <p class="mb-0">
                                                 <i class="fa fa-eye"></i>
-                                                <label>---</label>
+                                                <label>
+                                                    <?= esc(number_format(model(ItemsVisitsModel::class)
+                                                        ->visits($item->id))) 
+                                                    ?>
+                                                </label>
                                             </p>
 
                                             <p class="mb-0">
