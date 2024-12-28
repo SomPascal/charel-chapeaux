@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Model;
 
 class RedirectionModel extends Model
@@ -48,4 +49,27 @@ class RedirectionModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function contactDailyClick(string $name): int
+    {
+        $res = $this->select('COUNT(redirection.id) AS num')
+        ->join('contact', 'contact.id = redirection.contact_id', 'left')
+        ->where('contact.name', $name)
+        ->where('DATE(redirection.created_at)', Time::today()->format('Y-m-d'))
+        ->findAll(limit: 1);
+
+        return empty($res) ? 0 : $res[0]['num'];
+    }
+
+    public function todayRedirections(): array
+    {
+        return $this->select([
+            'COUNT(redirection.id) AS num',
+            'contact.name AS name'
+        ])
+        ->join('contact', 'contact.id = redirection.contact_id', 'left')
+        ->where('DATE(redirection.created_at)', Time::today()->format('Y-m-d'))
+        ->groupBy('contact.id')
+        ->findAll();
+    }
 }

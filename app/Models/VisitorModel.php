@@ -82,7 +82,9 @@ class VisitorModel extends Model
 
     public function todayVisits(): int
     {
-        $res = $this->select('COUNT(visitor.id) AS num')->findAll();
+        $res = $this->select('COUNT(visitor.id) AS num')
+        ->where('DATE(visitor.created_at)', Time::today()->format('Y-m-d'))
+        ->findAll();
 
         return empty($res) ? 0 : $res[0]['num'];
     }

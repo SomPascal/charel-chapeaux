@@ -3,6 +3,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', ()=> {
         document.querySelector('#clickable-link').click()
-        history.back()
+        // history.back()
     })
 </script>

@@ -2,7 +2,10 @@
 
 use App\Models\VisitorModel;
 
- $this->extend('Admin/base') ?>
+helper(['contact'])
+?>
+
+<?php $this->extend('Admin/base') ?>
 
 <?php $this->section('title') ?>
     <title>
@@ -218,11 +221,11 @@ use App\Models\VisitorModel;
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                    Appels (Par semaine)
+                                    Appels (Par jour)
                                 </div>
 
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    12
+                                    <?= esc(get_visits($redirections, 'phone')) ?>
                                 </div>
                             </div>
 
@@ -241,11 +244,11 @@ use App\Models\VisitorModel;
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    WhatsApp (Par semaine)
+                                    WhatsApp (Par jour)
                                 </div>
 
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    34
+                                    <?= esc(get_visits($redirections, 'whatsapp')) ?>
                                 </div>
                             </div>
 
@@ -266,11 +269,11 @@ use App\Models\VisitorModel;
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                    Instagram (Par semaine)
+                                    Instagram (Par jour)
                                 </div>
 
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    44
+                                    <?= esc(get_visits($redirections, 'instagram')) ?>
                                 </div>
                             </div>
                             <div class="col-auto">
@@ -288,11 +291,11 @@ use App\Models\VisitorModel;
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
-                                    Google Maps (Par semaine)
+                                    Google Maps (Par jour)
                                 </div>
 
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    06
+                                    <?= esc(get_visits($redirections, 'map')) ?>
                                 </div>
                             </div>
 
