@@ -38,19 +38,23 @@ helper(['string', 'number']);
                     
                     <li class="dropdown-item d-flex justify-content-between">
                         <i class="fa fa-phone"></i>
-                        <span>14</span>
+                        <span>
+                            <?= esc(get_visits($redirections, 'phone')) ?>
+                        </span>
                     </li>
 
                     <li class="dropdown-item d-flex justify-content-between">
                         <i class="fab fa-whatsapp"></i>
-                        <span>14</span>
+                        <span>
+                            <?= esc(get_visits($redirections, 'whatsapp')) ?>
+                        </span>
                     </li>
 
                     <li><hr class="dropdown-divider"></li>
 
                     <li class="dropdown-item">
                         <a 
-                         href="<?= route_to('admin.stats', request()->getLocale()) ?>" 
+                         href="<?= route_to('admin.home', request()->getLocale()) ?>" 
                          target="_blank"
                         >
                             Ouvrir
