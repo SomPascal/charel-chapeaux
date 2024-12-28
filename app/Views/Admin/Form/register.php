@@ -91,7 +91,6 @@
                              class="custom-control-input" 
                              id="show-password"
                              show-password-trigger
-                             required
                             />
 
                             <label 
@@ -110,7 +109,6 @@
                              type="checkbox" 
                              class="custom-control-input" 
                              id="remember"
-                             checked
                             />
 
                             <label 

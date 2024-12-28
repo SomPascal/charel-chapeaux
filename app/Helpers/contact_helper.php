@@ -27,3 +27,20 @@ if (! function_exists('get_contact')) {
         return $content;
     }
 }
+
+if (! function_exists('get_visits')) {
+    function get_visits(array $data, string $name): ?string
+    {
+        $visits = 0;
+
+        foreach ($data as $contact) {
+            if ($contact['name'] == $name) {
+                $visits = $contact['num'];
+                break;
+            }
+        }
+
+        return $visits;
+    }
+}
+

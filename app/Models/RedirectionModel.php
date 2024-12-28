@@ -2,20 +2,22 @@
 
 namespace App\Models;
 
-use App\Entities\ContactEntity;
+use CodeIgniter\I18n\Time;
 use CodeIgniter\Model;
 
-class ContactModel extends Model
+class RedirectionModel extends Model
 {
-    protected $table            = 'contact';
+    protected $table            = 'redirection';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
+    
     protected $allowedFields    = [
-        'id', 'name', 
-        'content', 'created_at'
+        'id', 'visitor_id', 'item_id',
+        'contact_id', 'context',
+        'created_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -48,34 +50,26 @@ class ContactModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function setContact(string $name, string $content): bool
+    public function contactDailyClick(string $name): int
     {
-        return $this->where('name', $name)
-        ->update(row: ['content' => $content]);
-    }
-
-    public function get(): array
-    {
-        return $this->select(['name', 'content'])
-        ->limit(6)
-        ->find();
-    }
-
-    public function nameExist(string $name): bool
-    {
-        $res = $this->select('COUNT(contact.id) AS num')
+        $res = $this->select('COUNT(redirection.id) AS num')
+        ->join('contact', 'contact.id = redirection.contact_id', 'left')
         ->where('contact.name', $name)
-        ->find();
+        ->where('DATE(redirection.created_at)', Time::today()->format('Y-m-d'))
+        ->findAll(limit: 1);
 
-        return empty($res) ? false : $res[0]['num'] > 0;
+        return empty($res) ? 0 : $res[0]['num'];
     }
 
-    public function getIdByName(string $name): ?string
+    public function todayRedirections(): array
     {
-        $res = $this->select('contact.id AS id')
-        ->where('contact.name', $name)
-        ->find();
-
-        return empty($res) ? null : $res[0]['id'];
+        return $this->select([
+            'COUNT(redirection.id) AS num',
+            'contact.name AS name'
+        ])
+        ->join('contact', 'contact.id = redirection.contact_id', 'left')
+        ->where('DATE(redirection.created_at)', Time::today()->format('Y-m-d'))
+        ->groupBy('contact.id')
+        ->findAll();
     }
 }

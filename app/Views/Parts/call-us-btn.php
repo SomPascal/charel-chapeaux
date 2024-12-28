@@ -3,7 +3,7 @@
 use Config\Contact;
 ?>
 <a 
-   href="tel:<?= esc(get_contact('phone') ?? Contact::$phone) ?>" 
+   href="<?= route_to('goto', 'phone') ?>" 
    class="call-cta-btn btn btn-dark"
 >
     <i class="fa fa-phone"></i>

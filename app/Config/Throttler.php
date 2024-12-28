@@ -32,4 +32,9 @@ class Throttler extends BaseConfig
         'seconds' => MINUTE
     ];
 
+    public array $redirect = [
+        'capacity' => 1,
+        'seconds' => 5*MINUTE
+    ];
+
 }

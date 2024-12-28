@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\AdminModel;
 use App\Models\CategoryModel;
 use App\Models\ItemModel;
+use App\Models\RedirectionModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
@@ -18,6 +19,7 @@ class DashboardController extends BaseController
 
         return view('Admin/home', [
             'admins' => $admins,
+            'redirections' => model(RedirectionModel::class)->todayRedirections()
         ]);
     }
 
@@ -29,7 +31,8 @@ class DashboardController extends BaseController
             'num_of_items' => $item_model->num_of_items(),
             'items' => $item_model->get_items()->paginate(24),
             'items_pager' => $item_model->pager,
-            'categories' => model(CategoryModel::class)->asObject()->getAll()
+            'categories' => model(CategoryModel::class)->asObject()->getAll(),
+            'redirections' => model(RedirectionModel::class)
         ]);
     }
 
