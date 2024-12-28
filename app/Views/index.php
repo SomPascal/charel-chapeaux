@@ -860,7 +860,7 @@ helper(['text', 'number']);
               <br><br>
 
               <a 
-               href="<?= esc(get_contact('map')) ?>" 
+               href="<?= route_to('goto', 'map') ?>" 
                target="_blank"
               >
                 <i class="fa fa-map-pin"></i>
@@ -869,7 +869,7 @@ helper(['text', 'number']);
               <br><br>
 
               <a 
-               href="tel:237<?= esc(get_contact('phone')) ?>" 
+               href="<?= route_to('goto', 'phone') ?>" 
                class="btn btn-lg btn-dark text-uppercase"
               >
                 Appelez-nous
@@ -950,7 +950,7 @@ helper(['text', 'number']);
           <div class="row">
             <div class="col-md-6">
               <a 
-               href="htpps://wa.me/<?= esc(get_contact('whatsapp') ?? Contact::$whatsapp) ?>" 
+               href="<?= route_to('goto', 'whatsapp') ?>" 
                class="btn btn-dark w-100 m-2" 
                target="_blank"
               >
@@ -961,7 +961,7 @@ helper(['text', 'number']);
             
             <div class="col-md-6">
               <a 
-               href="tel:<?= esc(get_contact('phone') ?? Contact::$phone) ?>" 
+               href="<?= route_to('goto', 'phone') ?>" 
                class="btn btn-dark w-100 m-2" 
                target="_blank"
               >
@@ -974,7 +974,7 @@ helper(['text', 'number']);
           <div class="row mb-5">
             <div class="col-md-6">
               <a 
-               href="<?= esc(get_contact('facebook') ?? Contact::$facebook) ?>" 
+               href="<?= route_to('goto', 'facebook') ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >
@@ -984,7 +984,7 @@ helper(['text', 'number']);
             </div>
             <div class="col-md-6">
               <a 
-               href="<?= esc(get_contact('instragram') ?? Contact::$instagram) ?>" 
+               href="<?= route_to('goto', 'instagram') ?>" 
                class="btn btn-dark w-100 m-2"
                target="_blank"
               >

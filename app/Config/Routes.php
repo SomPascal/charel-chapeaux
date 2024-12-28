@@ -15,6 +15,7 @@ use App\Controllers\Admin\RegisterController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
 use App\Controllers\PicsController;
+use App\Controllers\RedirectController;
 use App\Controllers\SearchController;
 use CodeIgniter\Router\RouteCollection;
 
@@ -27,6 +28,8 @@ $routes->environment('development', function(RouteCollection $routes){
 });
 
 service('auth')->routes($routes);
+
+$routes->get('goto/(:alpha)', [RedirectController::class, 'goto'], ['as' => 'goto']);
 
 $routes->group('admin', function(RouteCollection $routes) {
     $routes->get('{locale}/login', [LoginController::class, 'login'], ['as' => 'admin.login']);

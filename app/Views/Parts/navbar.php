@@ -64,7 +64,7 @@
                   >
                     <li>
                       <a 
-                       href="<?= esc(get_contact('facebook')) ?>" 
+                       href="<?= route_to('goto', 'facebook') ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >
@@ -75,7 +75,7 @@
 
                     <li>
                       <a 
-                       href="<?= esc(get_contact('instagram')) ?>" 
+                       href="<?= route_to('goto', 'instagram') ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >
@@ -86,7 +86,7 @@
 
                     <li>
                       <a 
-                       href="https://wa.me/<?= esc(get_contact('whatsapp')) ?>" 
+                       href="<?= route_to('goto', 'whatsapp') ?>" 
                        class="dropdown-item item-anchor"
                        target="_blank"
                       >

@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
-use CodeIgniter\I18n\Time;
 use CodeIgniter\Model;
 
-class ItemsVisitsModel extends Model
+class RedirectionModel extends Model
 {
-    protected $table            = 'items_visits';
+    protected $table            = 'redirection';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
+    
     protected $allowedFields    = [
         'id', 'visitor_id', 'item_id',
+        'contact_id', 'context',
         'created_at'
     ];
 
@@ -47,28 +48,4 @@ class ItemsVisitsModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function hasAlreadyBeenVisited(string $vistor_id, $item_id): bool
-    {
-        $res = $this->select('COUNT(items_visits.id) AS num')
-        ->where([
-            'items_visits.visitor_id' => $vistor_id,
-            'items_visits.item_id' => $item_id,
-            'items_visits.created_at >' => Time::yesterday()
-        ])
-        ->findAll(limit: 1);
-
-        return empty($res) ? false : $res[0]['num'] > 0;
-    }
-
-    public function visits(string $item_id): int
-    {
-        $res = $this->select('COUNT(items_visits.id) AS num')
-        ->where([
-            'items_visits.item_id' => $item_id
-        ])
-        ->findAll(limit: 1);
-
-        return empty($res) ? 0 : $res[0]['num'];
-    }
 }

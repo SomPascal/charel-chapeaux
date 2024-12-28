@@ -60,4 +60,22 @@ class ContactModel extends Model
         ->limit(6)
         ->find();
     }
+
+    public function nameExist(string $name): bool
+    {
+        $res = $this->select('COUNT(contact.id) AS num')
+        ->where('contact.name', $name)
+        ->find();
+
+        return empty($res) ? false : $res[0]['num'] > 0;
+    }
+
+    public function getIdByName(string $name): ?string
+    {
+        $res = $this->select('contact.id AS id')
+        ->where('contact.name', $name)
+        ->find();
+
+        return empty($res) ? null : $res[0]['id'];
+    }
 }

@@ -7,6 +7,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\I18n\Time;
+use Psr\Log\LogLevel;
 
 class TrackItemsVisits implements FilterInterface
 {
@@ -47,19 +48,29 @@ class TrackItemsVisits implements FilterInterface
                 item_id: $item_id
             )) 
             {
-                $recorded_item_id = uid();
-
-                $items_visits_model->insert(row: [
-                    'id' => $recorded_item_id,
-                    'visitor_id' => $visitor['id'],
-                    'item_id' => $item_id,
-                    'created_at' => Time::now()
-                ]);
+                try {
+                    db_connect()->table('items_visits')
+                    ->insert([
+                        'id' => uid(),
+                        'visitor_id' => $visitor['id'],
+                        'item_id' => $item_id,
+                        'created_at' => Time::now()
+                    ]);
+                } catch (\Throwable $e) {
+                    log_message(
+                        LogLevel::ERROR,
+                        message: sprintf(
+                            'Could not record item visit due to: %s\n%s',
+                            $e->getMessage(),
+                            $e->getTraceAsString()
+                        )
+                    );
+                }
 
                 session()->set(sprintf(
                     'item.visit.%s.%s', 
                     md5($visitor['id']), 
-                    md5($recorded_item_id)
+                    md5($item_id)
                 ), true);
             }
         }

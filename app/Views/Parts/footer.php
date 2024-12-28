@@ -20,7 +20,7 @@
               <ul class="list-unstyled d-flex flex-wrap gap-3">
                 <li>
                   <a 
-                   href="https://wa.me/<?= esc(get_contact('whatsapp'), 'attr') ?>" 
+                   href="<?= route_to('goto', 'whatsapp') ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -30,7 +30,7 @@
 
                 <li>
                   <a 
-                   href="<?= esc(get_contact('facebook')) ?>" 
+                   href="<?= route_to('goto', 'facebook') ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -40,7 +40,7 @@
 
                 <li>
                   <a 
-                   href="<?= esc(get_contact('instagram')) ?>" 
+                   href="<?= route_to('goto', 'instagram') ?>" 
                    class="text-secondary fs-3"
                    target="_blank"
                   >
@@ -98,7 +98,7 @@
             <ul class="menu-list list-unstyled text-uppercase border-animation-left fs-6">
               <li class="menu-item">
                 <a 
-                 href="https://wa.me/<?= esc(get_contact('whatsapp')) ?>" 
+                 href="<?= route_to('goto', 'whatsapp') ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -108,7 +108,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="<?= esc(get_contact('facebook')) ?>" 
+                 href="<?= route_to('goto', 'facebook') ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -118,7 +118,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="<?= esc(get_contact('instagram')) ?>" 
+                 href="<?= route_to('goto', 'instagram') ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -128,7 +128,7 @@
 
               <li class="menu-item">
                 <a 
-                 href="<?= esc(get_contact('map')) ?>" 
+                 href="<?= route_to('goto', 'map') ?>" 
                  class="item-anchor"
                  target="_blank"
                 >
@@ -148,7 +148,7 @@
             <p>
               Avez-vous des questions ? 
               <a 
-               href="tel:<?= esc(get_contact('phone'), 'attr') ?>" 
+               href="<?= route_to('goto', 'phone') ?>" 
                class="item-anchor"
               >
                 <?= esc(get_contact('phone')) ?>
