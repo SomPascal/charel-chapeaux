@@ -21,7 +21,7 @@ class ItemController extends BaseController
 
     public function create(): string
     {
-        return view('Admin/create-item', [
+        return view('Admin/Create/item', [
             'categories' => model(CategoryModel::class)->getAll()
         ]);
     }

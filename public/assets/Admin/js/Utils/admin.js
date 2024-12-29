@@ -105,7 +105,7 @@ const addCategory = (success)=> {
      * @param {String} key_name
      * @param {CallableFunction|null} success
      */
-const setVisibility = (form, id, key_name, success=null)=> {
+const setVisibility = (form, id, key_name='id', success=null)=> {
     disable(form)
 
     let data = {}

@@ -11,8 +11,8 @@ class CreateItemTable extends Migration
     {
         $this->forge
         ->addPrimaryKey('id')
-        ->addForeignKey('admin_id', 'users', 'id')
-        ->addForeignKey('code_category', 'category', 'code')
+        // ->addForeignKey('admin_id', 'users', 'id')
+        // ->addForeignKey('code_category', 'category', 'code')
         ->addField([
             'id' => [
                 'type' => 'varchar',
@@ -38,7 +38,7 @@ class CreateItemTable extends Migration
             ],
 
             'description' => [
-                'type' => 'tynitext',
+                'type' => 'varchar',
                 'constraint' => 125
             ],
 
@@ -59,11 +59,11 @@ class CreateItemTable extends Migration
                 'null' => true
             ],
         ])
-        ->createTable('item');
+        ->createTable('item', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('item');
+        $this->forge->dropTable('item', true);
     }
 }

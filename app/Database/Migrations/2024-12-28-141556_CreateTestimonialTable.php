@@ -5,29 +5,25 @@ namespace App\Database\Migrations;
 use CodeIgniter\Database\Migration;
 use CodeIgniter\Database\RawSql;
 
-class CreateItemPicsTable extends Migration
+class CreateTestimonialTable extends Migration
 {
     public function up()
     {
-        $this->forge
-        ->addPrimaryKey('id')
-        ->addForeignKey('item_id', 'item', 'id')
+        $this->forge->addPrimaryKey('id')
         ->addField([
             'id' => [
-                'type' => 'varchar',
-                'constraint' => 30,
+                'type' => 'int',
+                'constraint' => 125
             ],
 
-            'item_id' => [
+            'name' => [
                 'type' => 'varchar',
-                'constraint' => 30
+                'constraint' => 125
             ],
 
-            'extension' => [
+            'content' => [
                 'type' => 'varchar',
-                'constraint' => 30,
-                'null' => 'false',
-                'default' => 'png'
+                'constraint' => 255
             ],
 
             'created_at' => [
@@ -36,16 +32,22 @@ class CreateItemPicsTable extends Migration
                 'default' => new RawSql('CURRENT_TIMESTAMP')
             ],
 
+            'updated_at' => [
+                'type' => 'datetime',
+                'null' => false,
+                'default' => new RawSql('CURRENT_TIMESTAMP')
+            ],
+
             'deleted_at' => [
                 'type' => 'datetime',
-                'null' => true
+                'null' => true,
             ]
         ])
-        ->createTable('item_pics');
+        ->createTable('testimonial', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('item_pics');
+        $this->forge->dropTable('testimonial', true);
     }
 }

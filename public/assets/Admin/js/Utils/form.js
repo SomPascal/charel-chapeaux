@@ -140,6 +140,22 @@ const rules = {
             'maximum': 200
         }
     },
+    
+    'autor': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
+    'testimonial': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 6,
+            'maximum': 200
+        }
+    }
 }
 
 /**

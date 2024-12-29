@@ -17,6 +17,7 @@ use App\Controllers\InviteAdminController;
 use App\Controllers\PicsController;
 use App\Controllers\RedirectController;
 use App\Controllers\SearchController;
+use App\Controllers\TestimonialController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -50,6 +51,16 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->post('create', [CategoryController::class, 'create'], ['as' => 'admin.category.create']);
         $routes->post('update', [CategoryController::class, 'update'], ['as' => 'admin.category.update']);
         $routes->post('delete', [CategoryController::class, 'delete'], ['as' => 'admin.category.delete']);
+    });
+
+    $routes->group('testimonial', ['filter' => 'group:superadmin'], function(RouteCollection $routes) {
+        $routes->get('create', [TestimonialController::class, 'create'], ['as' => 'admin.testimonial.create']);
+        $routes->post('store', [TestimonialController::class, 'store'], ['as' => 'admin.testimonial.store']);
+
+        $routes->get('modify/(:num)', [TestimonialController::class, 'modify'], ['as' => 'admin.testimonial.modify']);
+        $routes->post('update', [TestimonialController::class, 'update'], ['as' => 'admin.testimonial.update']);
+        
+        $routes->post('delete', [TestimonialController::class, 'delete'], ['as' => 'admin.testimonial.delete']);
     });
 
     $routes->group('{locale}', function(RouteCollection $routes) {

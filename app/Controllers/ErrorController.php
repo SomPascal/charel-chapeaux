@@ -11,7 +11,7 @@ class ErrorController extends BaseController
     {
         $view_name = 'page-not-found';
 
-        if (auth()->loggedIn() && auth()->user()->hasPermission('admin.access'))
+        if (auth()->loggedIn())
         {
             $view_name = 'Admin/page-not-found';
         }

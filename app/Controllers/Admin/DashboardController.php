@@ -7,6 +7,7 @@ use App\Models\AdminModel;
 use App\Models\CategoryModel;
 use App\Models\ItemModel;
 use App\Models\RedirectionModel;
+use App\Models\TestimonialModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
@@ -53,7 +54,11 @@ class DashboardController extends BaseController
 
     public function content()
     {
-        return view('Admin/content');
+        $testimonials = model(TestimonialModel::class)->asObject()->getAll();
+
+        return view('Admin/content', [
+            'testimonials' => $testimonials
+        ]);
     }
 
     function show(int $admin_id): string

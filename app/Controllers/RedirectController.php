@@ -30,7 +30,7 @@ class RedirectController extends BaseController
 
         if (! auth()->loggedIn()) 
         {
-            if (! $throttler->check(
+            if ($throttler->check(
                 key: sprintf('redirect.%s.%s', md5($visitor['id']), md5($name)),
                 capacity: $config['capacity'],
                 seconds: $config['seconds']
@@ -50,7 +50,7 @@ class RedirectController extends BaseController
                         'created_at' => Time::now()
                     ]);
                 } catch (\Throwable $e) {
-                    dd($e->getMessage());                    
+                    
                     log_message(
                         LogLevel::ERROR,
                         sprintf(
@@ -62,7 +62,7 @@ class RedirectController extends BaseController
                 }
             }
             else {
-                dd('too many requests');
+                dd('too many requests, try again in: ', $throttler->getTokenTime());
             }
         }
         else {

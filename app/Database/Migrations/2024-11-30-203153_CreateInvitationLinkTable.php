@@ -39,7 +39,7 @@ class CreateInvitationLinkTable extends Migration
 
         ])
         ->addPrimaryKey('id')
-        ->addForeignKey('inviter_id', 'users', 'id')
+        // ->addForeignKey('inviter_id', 'users', 'id')
         ->createTable('invitation_links', true);
     }
 

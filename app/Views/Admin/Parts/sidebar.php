@@ -64,24 +64,5 @@
             </span>
         </a>
     </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider">
-
-    <!-- Nav Item - Pages Collapse Menu -->
-    <li 
-     class="nav-item <?= $methodeName == 'stats' ? 'active' : null ?>"
-    >
-        <a 
-            class="nav-link collapsed"
-            href="<?= route_to('admin.stats') ?>" 
-            aria-expanded="true" 
-        >
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>
-                Statistiques
-            </span>
-        </a>
-    </li>
 </ul>
 <!-- End of Sidebar -->
