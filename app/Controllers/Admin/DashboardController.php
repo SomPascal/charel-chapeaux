@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\AdminModel;
 use App\Models\CategoryModel;
+use App\Models\ContactFormModel;
 use App\Models\ItemModel;
 use App\Models\RedirectionModel;
 use App\Models\TestimonialModel;
@@ -16,11 +17,14 @@ class DashboardController extends BaseController
     public function home()
     {
         $adminModel = model(AdminModel::class);
+        $contact_form_model = model(ContactFormModel::class);
         $admins = $adminModel->asObject()->getAdmins();
 
         return view('Admin/home', [
             'admins' => $admins,
-            'redirections' => model(RedirectionModel::class)->todayRedirections()
+            'redirections' => model(RedirectionModel::class)->todayRedirections(),
+            'form_submits' => $contact_form_model->getAll()->asObject()->paginate(10),
+            'form_submits_pager' => $contact_form_model->pager,
         ]);
     }
 

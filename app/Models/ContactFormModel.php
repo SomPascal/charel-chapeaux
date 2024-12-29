@@ -69,4 +69,14 @@ class ContactFormModel extends Model
             'created_at' => Time::now()
         ], returnID: false);
     }
+
+    public function getAll(): self
+    {
+        return $this->select([
+            'contact_form.name',
+            'contact_form.phone',
+            'contact_form.created_at'
+        ])
+        ->orderBy('created_at', 'DESC');
+    }
 }

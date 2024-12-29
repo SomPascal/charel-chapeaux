@@ -9,7 +9,7 @@ use Config\Contact;
     <meta name="viewport" content="width=device-width"> <!-- Forcing initial-scale shouldn't be necessary -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Use the latest (edge) version of IE rendering engine -->
     <meta name="x-apple-disable-message-reformatting">  <!-- Disable auto-scale in iOS 10 Mail entirely -->
-    
+
     <?= $this->renderSection('title') ?>
     <!-- The title tag shows in email notifications, like Android 4.4. -->
 
@@ -394,25 +394,25 @@ ul.social li{
                         </h3>
                       	<ul>
                             <li>
-                                <a href="<?= route_to('goto', 'phone') ?>">
+                                <a href="<?= url_to('goto', 'phone') ?>">
                                     Appel
                                 </a>
                             </li>
 
                             <li>
-                                <a href="<?= route_to('goto', 'whatsapp') ?>">
+                                <a href="<?= url_to('goto', 'whatsapp') ?>">
                                     Whatsapp
                                 </a>
                             </li>
 
                             <li>
-                                <a href="<?= route_to('goto', 'instagram') ?>">
+                                <a href="<?= url_to('goto', 'instagram') ?>">
                                     Instagram
                                 </a>
                             </li>
 
                             <li>
-                                <a href="<?= route_to('goto', 'facebook') ?>">
+                                <a href="<?= url_to('goto', 'facebook') ?>">
                                     Facebook
                                 </a>
                             </li>

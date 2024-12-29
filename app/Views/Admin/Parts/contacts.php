@@ -10,119 +10,83 @@
     </p>
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary text-uppercase">
-                Liste de prospects
-            </h6>
-        </div>
+    <?php
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Nom</th>
-                            <th>
-                                <i class="fa fa-phone"></i>
-                                Appel
-                            </th>
+use CodeIgniter\I18n\Time;
 
-                            <th>
-                                <i class="fab fa-whatsapp"></i>
-                                WhatsApp
-                            </th>
-
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-
-                    <tfoot>
-                        <tr>
-                            <th>Nom</th>
-                            <th>
-                                <i class="fa fa-phone"></i>
-                                Appel
-                            </th>
-
-                            <th>
-                                <i class="fab fa-whatsapp"></i>
-                                WhatsApp
-                            </th>
-
-                            <th>Date</th>
-                        </tr>
-                    </tfoot>
-
-                    <tbody>
-                        <tr>
-                            <td>
-                                Ruben Ulrich
-                            </td>
-                            <td>
-                                <a href="tel:+237656473748">
-                                    237 656 47 37 48
-                                </a>
-                            </td>
-
-                            <td>
-                                <a href="https://wa.me/237656473748">
-                                    237 656 47 37 48
-                                </a>
-                            </td>
-
-                            <td>
-                                25 Oct 2025 0 a 11:24
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                Ruben Ulrich
-                            </td>
-                            <td>
-                                <a href="tel:+237656473748">
-                                    237 656 47 37 48
-                                </a>
-                            </td>
-
-                            <td>
-                                <a href="https://wa.me/237656473748">
-                                    237 656 47 37 48
-                                </a>
-                            </td>
-
-                            <td>
-                                25 Oct 2025 0 a 11:24
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                Ndjengwes Steve 
-                            </td>
-
-                            <td>
-                                <a href="tel:+237657471838">
-                                    237 657 471 838
-                                </a>
-                            </td>
-
-                            <td>
-                                <a href="https://wa.me/237657471839">
-                                    237 657 471 838
-                                </a>
-                            </td>
-
-                            <td>
-                                14 Janv 2024
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
+ if(count($form_submits) > 0): ?>
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary text-uppercase">
+                    Liste de prospects
+                </h6>
+            </div>
+    
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>
+                                    <i class="fa fa-phone"></i>
+                                    Appel
+                                </th>
+    
+                                <th>
+                                    <i class="fab fa-whatsapp"></i>
+                                    WhatsApp
+                                </th>
+    
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+    
+                        <tfoot>
+                            <tr>
+                                <th>Nom</th>
+                                <th>
+                                    <i class="fa fa-phone"></i>
+                                    Appel
+                                </th>
+    
+                                <th>
+                                    <i class="fab fa-whatsapp"></i>
+                                    WhatsApp
+                                </th>
+    
+                                <th>Date</th>
+                            </tr>
+                        </tfoot>
+    
+                        <tbody>
+                            <?php foreach($form_submits as $form_submit): ?>
+                                <tr>
+                                    <td>
+                                        <?= esc($form_submit->name) ?>
+                                    </td>
+                                    <td>
+                                        <a href="tel:<?= esc($form_submit->phone) ?>">
+                                            <?= esc($form_submit->phone) ?>
+                                        </a>
+                                    </td>
+        
+                                    <td>
+                                        <a href="https://wa.me/237<?= esc($form_submit->phone) ?>">
+                                            <?= esc($form_submit->phone) ?>
+                                        </a>
+                                    </td>
+        
+                                    <td>
+                                        <?= Time::createFromFormat('Y-m-d H:i:s', $form_submit->created_at)->humanize() ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif ?>
 </div>
 <!-- Content Row -->

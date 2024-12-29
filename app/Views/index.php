@@ -428,68 +428,68 @@ helper(['text', 'number']);
             </div>
           </div>
 
-          <form 
-           method="post" 
-           action="<?= route_to('contact.store') ?>"
-           id="contact-us" 
-           <?= classes([
-            'd-flex' => session()->get(CONTACT_SENT) != true,
-            'd-none' => session()->get(CONTACT_SENT) == true,
-            'flex-wrap',
-            'justify-content-center',
-            'mb-3'
-           ]) ?>
-          >
-            <p class="alert alert-danger d-none"></p>
-
-            <div class="row w-100">
-              <div class="col-md-6">
-                <div class="input-group has-validation mb-3">
-                  <span class="input-group-text">
-                    Nom
-                  </span>
-
-                  <input 
-                    type="text"
-                    placeholder="Ex: Chrystelle" 
-                    aria-label="Votre nom" 
-                    id="name"
-                    class="form-control form-control-lg"
-                    minlength="3"
-                    maxlength="24"
-                    value="joel"
-                    required
-                  >
-
-                  <p class="invalid-feedback"></p>
+          <?php if(session()->get(CONTACT_SENT) == true): ?>
+            <form 
+             method="post" 
+             action="<?= route_to('contact.store') ?>"
+             id="contact-us" 
+             <?= classes([
+              'd-flex',
+              'd-none',
+              'flex-wrap',
+              'justify-content-center',
+              'mb-3'
+             ]) ?>
+            >
+              <p class="alert alert-danger d-none"></p>
+  
+              <div class="row w-100">
+                <div class="col-md-6">
+                  <div class="input-group has-validation mb-3">
+                    <span class="input-group-text">
+                      Nom
+                    </span>
+  
+                    <input 
+                      type="text"
+                      placeholder="Ex: Chrystelle" 
+                      aria-label="Votre nom" 
+                      id="name"
+                      class="form-control form-control-lg"
+                      minlength="3"
+                      maxlength="24"
+                      required
+                    >
+  
+                    <p class="invalid-feedback"></p>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="input-group has-validation mb-3">
+                    <span class="input-group-text">
+                      237
+                    </span>
+  
+                    <input 
+                      type="text"
+                      placeholder="Votre numéro" 
+                      aria-label="Votre numéro" 
+                      id="phone"
+                      class="form-control form-control-lg"
+                      required
+                    >
+  
+                    <p class="invalid-feedback"></p>
+                  </div>
                 </div>
               </div>
-
-              <div class="col-md-6">
-                <div class="input-group has-validation mb-3">
-                  <span class="input-group-text">
-                    237
-                  </span>
-
-                  <input 
-                    type="text"
-                    placeholder="Votre numéro" 
-                    aria-label="Votre numéro" 
-                    id="phone"
-                    class="form-control form-control-lg"
-                    value="656 06 35 55"
-                    required
-                  >
-
-                  <p class="invalid-feedback"></p>
-                </div>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
-              Nous Contacter
-            </button>
-          </form>
+  
+              <button type="submit" class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
+                Nous Contacter
+              </button>
+            </form>
+          <?php endif ?>
 
             <p 
              id="contact-sent-success"
