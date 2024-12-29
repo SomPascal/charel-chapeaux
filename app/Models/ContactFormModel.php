@@ -53,6 +53,7 @@ class ContactFormModel extends Model
     {
         $res = $this->select('COUNT(contact_form.id) AS num')
         ->where('contact_form.visitor_id', $visitor_id)
+        ->where('contact_form.created_at >', Time::yesterday())
         ->find();
 
         return empty($res) ? false : $res[0]['num'] > 0;

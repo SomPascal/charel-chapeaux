@@ -14,6 +14,8 @@ class ContactController extends BaseController
 {
     use ResponseTrait;
 
+    protected $helpers = ['mailjet'];
+
     protected function alreadySentForm(array $visitor): bool
     {
         if (session()->get(CONTACT_SENT) == true)
@@ -85,7 +87,34 @@ class ContactController extends BaseController
         }
 
         // send mail
-        // ...
+        if (env('CI_ENVIRONMENT', 'development') == 'development')
+        {
+            if (mailjet(
+                receiverEmail: env('mailjet.receiver', 'rubenndjengwes@gmail.com'),
+                receiverName: 'Charel Chapeaux',
+                subject: 'Formulaire de Contact',
+                textContent: 'Enregistrement au formulaire de contact',
+                htmlContent: view('Mail/contact_form', [
+                    'visitor' => [
+                        'phone' => $data['phone'],
+                        'name' => $data['name']
+                    ]
+                ])
+            ) == false) 
+            {
+                log_message(
+                    LogLevel::ALERT,
+                    'Could not send contact form email',
+                    ['phone' => $data['phone'], 'name' => $data['name']]
+                );
+            }
+        }
+        else {
+            log_message(
+                level: LogLevel::INFO,
+                message: 'Mail successfully sent to %s' . env('mailjet.receiver', 'rubenndjengwes@gmail.com')
+            );
+        }
         
         // set session data
         session()->set(CONTACT_SENT, true);
