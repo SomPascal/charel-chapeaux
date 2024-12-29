@@ -18,7 +18,7 @@ use App\Models\ItemsVisitsModel;
                 </h1>
 
                 <p class="opacity-75">
-                    <?= count($items) ?> articles enregistrés.
+                    <?= esc($num_of_items) ?> articles enregistrés.
                 </p>
             </div>
             
@@ -513,11 +513,6 @@ use App\Models\ItemsVisitsModel;
                                                         ->visits($item->id))) 
                                                     ?>
                                                 </label>
-                                            </p>
-
-                                            <p class="mb-0">
-                                                <i class="fa fa-heart"></i>
-                                                <label>---</label>
                                             </p>
 
                                         </div>

@@ -44,7 +44,7 @@ class SearchController extends BaseController
                 context: ['username' => auth()->user()->username]
             );
 
-            $results = model(ItemModel::class)->search(term: $term);
+            $results = model(ItemModel::class)->orderByPopularity()->search(term: $term);
         } catch (\Throwable) {
             return $this->failServerError();
         }

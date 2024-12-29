@@ -17,7 +17,7 @@ class HomeController extends BaseController
         $item_model = model(ItemModel::class);
 
         return view('index', [
-            'items' => $item_model->get_items()->unhided()->asObject()->findAll(),
+            'items' => $item_model->getHomeItems(),
             'redirections' => model(RedirectionModel::class)->todayRedirections(),
             'testimonials' => model(TestimonialModel::class)->asObject()->getAll()
         ]);

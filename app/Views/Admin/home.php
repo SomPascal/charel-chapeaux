@@ -172,20 +172,6 @@ helper(['contact'])
             <h1 class="h3 mb-0 text-gray-800 text-uppercase">
                 Tableau de bord
             </h1>
-
-            <button 
-                data-target="#report-type"
-                data-toggle="modal"
-                class="d-none d-sm-inline-block btn btn-sm btn-icon-split btn-success shadow-sm"
-            >
-                <span class="icon">
-                    <i class="fas fa-download fa-sm text-white-50"></i>
-                </span> 
-
-                <span class="text">
-                    Télécharger le rapport (Excel)
-                </span>
-            </button>
         </div>
 
         <!-- Content Row -->

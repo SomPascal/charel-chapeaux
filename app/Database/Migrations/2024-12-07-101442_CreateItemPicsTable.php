@@ -20,12 +20,12 @@ class CreateItemPicsTable extends Migration
 
             'item_id' => [
                 'type' => 'varchar',
-                'constraint' => 30
+                'constraint' => 125
             ],
 
             'extension' => [
                 'type' => 'varchar',
-                'constraint' => 30,
+                'constraint' => 125,
                 'null' => 'false',
                 'default' => 'png'
             ],

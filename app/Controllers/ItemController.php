@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\CategoryModel;
 use App\Models\ItemModel;
 use App\Models\ItemPicsModel;
+use App\Models\RedirectionModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Files\UploadedFile;
@@ -20,7 +21,7 @@ class ItemController extends BaseController
     use ResponseTrait;
 
     public function create(): string
-    {
+    {        
         return view('Admin/Create/item', [
             'categories' => model(CategoryModel::class)->getAll()
         ]);
@@ -89,6 +90,12 @@ class ItemController extends BaseController
             }
     
             $file_id = uid();
+            $file_path =  $file_id . '.' . $extension;
+
+            log_message('info', json_encode([
+                'file' => $file_path,
+                'file_id' => $file_id
+            ]));
 
             try {
                 if (model(ItemPicsModel::class)->insert(row: [
@@ -99,7 +106,7 @@ class ItemController extends BaseController
                 ], returnID: false))
                 {
                     if ($file->isValid()) {
-                        $file->store('items', $file_id . '.' . $extension);
+                        $file->store('items', $file_path);
                     }
                 }
             } catch (\Throwable $e) {
@@ -140,7 +147,8 @@ class ItemController extends BaseController
             'item' => $item,
             'item_props' => $item_model->in_category($item->category_code)
             ->get_items()->findAll(limit: 7),
-            'item_pics' => $item_pics_model->get_item_pics($item_id)
+            'item_pics' => $item_pics_model->get_item_pics($item_id),
+            'redirections' => model(RedirectionModel::class)->todayRedirections()
         ]);
     }
 

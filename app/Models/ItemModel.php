@@ -125,6 +125,19 @@ class ItemModel extends Model
         ->asObject();
     }
 
+    public function getHomeItems(string $direction='DESC'): array
+    {
+        return $this->get_items()->unhided()
+        ->orderByPopularity($direction)->asObject()->findAll();
+    }
+
+    public function orderByPopularity(string $direction='DESC'): self
+    {
+        return $this->join('items_visits', 'items_visits.item_id = item.id', 'left')
+        ->join('visitor', 'items_visits.visitor_id = visitor.id', 'left')
+        ->orderBy('COUNT(visitor.id)', $direction);
+    }
+
     public function get_item(string $item_id): ?object
     {
         $r = $this->select([

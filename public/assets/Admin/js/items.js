@@ -187,7 +187,7 @@ const searchItems = ()=> {
                 HTMLResult.classList.add('card', 'shadow', 'search-result')
                 HTMLResult.setAttribute('id', 'item-'.concat(result.id))
 
-                if (result.is_hidden) {
+                if (Number(result.is_hidden) == 1) {
                     HTMLResult.classList.add('opacity-50')
                 }
 
