@@ -1,3 +1,6 @@
+<?php
+use CodeIgniter\I18n\Time;
+?>
 <!-- Begin Page Content -->
 <div class="my-3" id="contacts">
     <!-- Page Heading -->
@@ -10,11 +13,7 @@
     </p>
 
     <!-- DataTales Example -->
-    <?php
-
-use CodeIgniter\I18n\Time;
-
- if(count($form_submits) > 0): ?>
+    <?php if(count($form_submits) > 0): ?>
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary text-uppercase">
@@ -87,6 +86,8 @@ use CodeIgniter\I18n\Time;
                 </div>
             </div>
         </div>
+
+        <?= $form_submits_pager->links() ?>
     <?php endif ?>
 </div>
 <!-- Content Row -->
