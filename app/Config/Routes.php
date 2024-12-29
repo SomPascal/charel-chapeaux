@@ -4,7 +4,7 @@ use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
-use App\Controllers\Admin\ContactController;
+use App\Controllers\Admin\ContactController as AdminContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\ErrorController;
@@ -12,6 +12,7 @@ use App\Controllers\HomeController;
 use App\Controllers\ItemController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
+use App\Controllers\ContactController as ContactController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
 use App\Controllers\PicsController;
@@ -77,7 +78,7 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
         $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
         $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
-        $routes->post('contact', [ContactController::class, 'change'], ['as' => 'admin.change.contact']);
+        $routes->post('contact', [AdminContactController::class, 'change'], ['as' => 'admin.change.contact']);
     });
 });
 
@@ -89,6 +90,8 @@ $routes->group('invite', function(RouteCollection $routes){
     $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'invite.use']);
     $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
 });
+
+$routes->post('contact', [ContactController::class, 'store'], ['as' => 'contact.store']);
 
 $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
 

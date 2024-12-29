@@ -103,7 +103,8 @@ class Filters extends BaseFilters
                     '__hot-reload',
                     'draft',
                     'invite/use*',
-                    'goto/*'
+                    'goto/*',
+                    'contact'
                 ]
             ],
             'track-visits',

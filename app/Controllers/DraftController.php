@@ -10,11 +10,13 @@ class DraftController extends BaseController
 {
     public function index()
     {
-        dd(attrs([
-            'id="hello"' => 1+7 == 8,
-            'id="hi"' => 1*7 == 8,
-            'id="good morning"' => 1-7 == 8,
-        ]));
+        dd(session()->get(CONTACT_SENT));
+
+        dd(preg_replace(
+            pattern: '/\s{1,}/', 
+            replacement: '',
+            subject: '656 06 35 55'
+        ));
 
         dd(model(AdminModel::class)->amount());
     }

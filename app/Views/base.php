@@ -20,6 +20,8 @@
    content="Création, vente de chapeaux, sacs et bijoux au cameroun et yaoundé en particulier."
   >
 
+  <?= csrf_meta() ?>
+
   <!-- BOOTSTRAP  -->
   <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap-reboot.min.css" />
   <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap-utilities.min.css" />
@@ -55,6 +57,7 @@
 
   <?= $this->include('Parts/cookies-info') ?>
   <?= $this->include('Parts/enlarge-wall') ?>
+  <?= $this->include('Admin/Parts/notification') ?>
 
   <script src="/assets/vendor/jquery/jquery.min.js"></script>
   <script src="/assets/js/plugins.js"></script>
@@ -64,7 +67,7 @@
   <script src="/assets/vendor/validate.js/validate.min.js"></script>
 
   <script src="/assets/js/script.min.js"></script>
-  <script src="/assets/js/main.js"></script>
+  <script type="module" src="/assets/js/main.js"></script>
 
   <?= $this->renderSection('script') ?>
 </body>

@@ -428,7 +428,20 @@ helper(['text', 'number']);
             </div>
           </div>
 
-          <form id="contact-us" class="d-flex flex-wrap justify-content-center">
+          <form 
+           method="post" 
+           action="<?= route_to('contact.store') ?>"
+           id="contact-us" 
+           <?= classes([
+            'd-flex' => session()->get(CONTACT_SENT) != true,
+            'd-none' => session()->get(CONTACT_SENT) == true,
+            'flex-wrap',
+            'justify-content-center',
+            'mb-3'
+           ]) ?>
+          >
+            <p class="alert alert-danger d-none"></p>
+
             <div class="row w-100">
               <div class="col-md-6">
                 <div class="input-group has-validation mb-3">
@@ -444,10 +457,11 @@ helper(['text', 'number']);
                     class="form-control form-control-lg"
                     minlength="3"
                     maxlength="24"
+                    value="joel"
                     required
                   >
 
-                  <span class="invalid-feedback"></span>
+                  <p class="invalid-feedback"></p>
                 </div>
               </div>
 
@@ -463,29 +477,35 @@ helper(['text', 'number']);
                     aria-label="Votre numéro" 
                     id="phone"
                     class="form-control form-control-lg"
+                    value="656 06 35 55"
                     required
                   >
 
-                  <span class="invalid-feedback"></span>
+                  <p class="invalid-feedback"></p>
                 </div>
               </div>
             </div>
 
-            <button class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
+            <button type="submit" class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
               Nous Contacter
             </button>
           </form>
 
-          <div id="success-contact" class="d-flex w-100 flex-column align-items-center bg-white p-3 h-auto d-none">
-            <p>
-              <i class="fs-1 fa fa-headphones-alt"></i>
-              <i class="fs-1 fa fa-check-circle text-success"></i>
+            <p 
+             id="contact-sent-success"
+             <?= classes([
+              'alert',
+              'alert-success',
+              'd-none' => session()->get(CONTACT_SENT) != true
+             ]) ?>
+            >
+              <i class="fa fa-circle-check fs-2"></i>
+              <br>
+              Notre equipe a été contacté avec succès et ils vous ferons signe 
+              dans quelques minutes.
+              <br>
+              Merci
             </p>
-            <p class="text-center">
-              Notre service client à été notifié, vous serez contacté dans quelques 
-              minutes.
-            </p>
-          </div>
         </div>
       </div>
     </div>

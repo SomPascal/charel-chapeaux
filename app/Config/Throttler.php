@@ -37,4 +37,9 @@ class Throttler extends BaseConfig
         'seconds' => 2*MINUTE
     ];
 
+    public array $contact = [
+        'capacity' => 5,
+        'seconds' => 2*MINUTE
+    ];
+
 }

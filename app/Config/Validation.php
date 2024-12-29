@@ -2,6 +2,7 @@
 
 namespace Config;
 
+use App\Validation\PhoneValidation;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Shield\Authentication\Passwords\ValidationRules;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
@@ -26,7 +27,8 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        ValidationRules::class
+        ValidationRules::class,
+        PhoneValidation::class
     ];
 
     /**
@@ -95,5 +97,10 @@ class Validation extends BaseConfig
         'id' => 'required|is_natural',
         'autor' => 'required|min_length[3]|max_length[124]',
         'testimonial' => 'required|min_length[6]|max_length[200]'
+    ];
+
+    public array $store_contact = [
+        'name' => 'required|min_length[3]|max_length[24]',
+        'phone' => 'required|phone'
     ];
 }
