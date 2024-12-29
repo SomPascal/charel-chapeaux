@@ -31,6 +31,10 @@ class DashboardController extends BaseController
         return view('Admin/items', [
             'num_of_items' => $item_model->num_of_items(),
             'items' => $item_model->get_items()->orderBy('item.created_at', 'DESC')->paginate(16),
+
+            'popular_items' => $item_model->mostPopular(),
+            'unpopular_items' => $item_model->lessPopular(),
+
             'items_pager' => $item_model->pager,
             'categories' => model(CategoryModel::class)->asObject()->getAll(),
             'redirections' => model(RedirectionModel::class)

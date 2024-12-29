@@ -1,6 +1,7 @@
 <?php
 helper(['text', 'number']);
 
+use App\Models\ItemsVisitsModel;
 use CodeIgniter\I18n\Time;
 use Config\Contact;
 ?>
@@ -46,9 +47,9 @@ use Config\Contact;
       </div>
 
       <div class="col-md-6">
-        <h4 class="text-uppercase text-left mb-0">
+        <h5 class="text-uppercase text-left mb-0">
           <?= esc(character_limiter($item->name, 125, '...')) ?>
-        </h4>
+        </h5>
 
         <p class="opacity-75 mb-0">
           Catégorie: <?= esc($item->category) ?>
@@ -63,13 +64,10 @@ use Config\Contact;
         <p class="mt-2"><?= esc(character_limiter($item->description, 300, '...')) ?></p>
 
         <?php if (auth()->loggedIn()): ?>
-          <div class="bg-light p-3 rounded-2 d-flex align-items-center justify-content-around mb-1">
+          <div class="bg-light p-3 rounded-2 d-flex align-items-center justify-content-around mb-3">
             <p class="mb-0">
-              <i class="fa fa-heart"></i> 86
-            </p>
-
-            <p class="mb-0">
-              <i class="fa fa-eye"></i> 86
+              <i class="fa fa-eye"></i> 
+              <?= esc(number_format(model(ItemsVisitsModel::class)->visits($item->id))) ?>
             </p>
 
             <p class="mb-0">
@@ -77,6 +75,19 @@ use Config\Contact;
               <?= Time::createFromFormat('Y-m-d H:i:s', $item->created_at)->humanize() ?>
             </p>
         </div>
+
+        <div class="d-flex align-items-center justify-content-start gap-3 mb-1">
+          <button class="btn btn-danger btn-sm">
+            <i class="fa fa-trash"></i>
+            Supprimer 
+          </button> 
+
+          <button class="btn btn-dark btn-sm">
+            <i class="fa fa-times"></i>
+            Cacher
+          </button>
+        </div>
+
         <?php endif ?>
         <hr>
 

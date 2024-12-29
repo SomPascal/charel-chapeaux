@@ -11,7 +11,7 @@ const enableItemSwiper = ()=> {
         new Swiper(list, {
             loop: false,
             slidesPerView: 2, 
-            spaceBetween: '20px',
+            spaceBetween: '10px',
 
             pagination: {
                 el: '.swiper-pagination'
@@ -252,9 +252,33 @@ const searchItems = ()=> {
     
 }
 
+const popularItemsSliders = ()=> {
+    document.querySelectorAll('#caps-popularity .swiper').forEach(slider => {
+        console.log(slider);
+        
+        new Swiper(slider, {
+            // Optional parameters
+            loop: false,
+            slidesPerView: 2,
+            spaceBetween: '10px',
+        
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+            },
+
+            keyboard: {
+                enabled: true,
+                onlyInViewport: false,
+            }
+        })
+    })
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     enableItemSwiper()
     handleItemVisibility()
     handleCategories()
     searchItems()
+    popularItemsSliders()
 })

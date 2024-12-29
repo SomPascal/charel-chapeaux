@@ -138,6 +138,20 @@ class ItemModel extends Model
         ->orderBy('COUNT(visitor.id)', $direction);
     }
 
+    public function mostPopular(int $limit=3): array
+    {
+        return $this->get_items()
+        ->orderByPopularity('DESC')
+        ->findAll(limit: $limit);
+    }
+
+    public function lessPopular(int $limit=3)
+    {
+        return $this->get_items()
+        ->orderByPopularity('ASC')
+        ->findAll(limit: $limit);
+    }
+
     public function get_item(string $item_id): ?object
     {
         $r = $this->select([
