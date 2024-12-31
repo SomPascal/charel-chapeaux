@@ -79,4 +79,12 @@ class ContactFormModel extends Model
         ])
         ->orderBy('created_at', 'DESC');
     }
+
+    public function num_records(): int
+    {
+        $res = $this->select('COUNT(contact_form.id) AS num')
+        ->find();
+
+        return empty($res) ? 0 : $res[0]['num'];
+    }
 }

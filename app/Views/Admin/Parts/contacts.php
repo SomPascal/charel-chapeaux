@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\ContactFormModel;
 use CodeIgniter\I18n\Time;
 ?>
 <!-- Begin Page Content -->
@@ -18,6 +20,7 @@ use CodeIgniter\I18n\Time;
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary text-uppercase">
                     Liste de prospects
+                    (<?= esc(number_format(model(ContactFormModel::class)->num_records())) ?>)
                 </h6>
             </div>
     
@@ -71,7 +74,12 @@ use CodeIgniter\I18n\Time;
                                     </td>
         
                                     <td>
-                                        <a href="https://wa.me/237<?= esc($form_submit->phone) ?>">
+                                        <a href="<?= sprintf(
+                                            'https://wa.me/237%d?text=Bonjour %s, bienvenue chez CharelChapeaux', 
+                                            preg_replace('/\s{1,}/', '', $form_submit->phone),
+                                            $form_submit->name
+                                            ) 
+                                        ?>">
                                             <?= esc($form_submit->phone) ?>
                                         </a>
                                     </td>

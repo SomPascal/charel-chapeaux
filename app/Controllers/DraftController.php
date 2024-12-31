@@ -12,18 +12,7 @@ class DraftController extends BaseController
     
     public function index()
     {
-        mailjet(
-            receiverEmail: env('mailjet.receiver', 'rubenndjengwes@gmail.com'),
-            receiverName: 'Charel Chapeaux',
-            subject: 'Formulaire de Contact',
-            textContent: 'Enregistrement au formulaire de contact',
-            htmlContent: view('Mail/contact_form', [
-                'visitor' => [
-                    'phone' => '656063555',
-                    'name' => 'jules'
-                ]
-            ])
-        );
+        dd(session()->get(CONTACT_SENT));
 
         return view('Mail/contact_form', [
             'visitor' => [

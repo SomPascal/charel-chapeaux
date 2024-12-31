@@ -207,73 +207,94 @@ helper(['text', 'number']);
     </div>
   </section>
 
-  <?php $i = 0 ?>
-  <?php foreach(array_chunk($items, 7) as $chuncked_item): ?>
-    <section 
-     <?= attrs([
-      'id="our-collections"' => $i == 0,
-      'id="caps-collection-2"' => $i == 1,
-      'id="caps-collection-3"' => $i == 2
-     ]) ?>
-     class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden"
-    >
-      <div class="container">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-          <h4 class="text-uppercase">
-            Notre Collection de chapeaux
-          </h4>
-  
-          <a href="/" class="btn-link">
-            Me Confectionner un chapeau
-            <i class="fa fa-arrow-right"></i>
-          </a>
-        </div>
-  
-        <div class="swiper product-swiper open-up" data-aos="zoom-out">
-          <div class="swiper-wrapper d-flex">
-            <?php foreach($chuncked_item as $item): ?>
-              <div class="swiper-slide">
-                <div class="product-item image-zoom-effect link-effect" liked>
-                  <div class="image-holder position-relative">
-                    <a href="<?= route_to('item.show', $item->id) ?>">
-                      <img 
-                      src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
-                      alt="<?= esc(character_limiter($item->name, 18, '...')) ?>" 
-                      class="product-image img-fluid"
-                      >
-                    </a>
+  <?php if (count($items) > 0): ?>
+    <?php $i = 0 ?>
+    <?php foreach(array_chunk($items, 7) as $chuncked_item): ?>
+      <section 
+       <?= attrs([
+        'id="our-collections"' => $i == 0,
+        'id="caps-collection-2"' => $i == 1,
+        'id="caps-collection-3"' => $i == 2
+       ]) ?>
+       class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden"
+      >
+        <div class="container">
+          <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+            <h4 class="text-uppercase">
+              Notre Collection de chapeaux
+            </h4>
     
-                    <div class="product-content">
-                      <h5 class="text-uppercase fs-5 mt-3">
-                        <a href="/">
-                          <?= esc(number_to_currency($item->price, XAF)) ?>
-                        </a>
-                      </h5>
+            <a href="/" class="btn-link">
+              Me Confectionner un chapeau
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
+    
+          <div class="swiper product-swiper open-up" data-aos="zoom-out">
+            <div class="swiper-wrapper d-flex">
+              <?php foreach($chuncked_item as $item): ?>
+                <div class="swiper-slide">
+                  <div class="product-item image-zoom-effect link-effect" liked>
+                    <div class="image-holder position-relative">
+                      <a href="<?= route_to('item.show', $item->id) ?>">
+                        <img 
+                        src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
+                        alt="<?= esc(character_limiter($item->name, 18, '...')) ?>" 
+                        class="product-image img-fluid"
+                        >
+                      </a>
+      
+                      <div class="product-content">
+                        <h5 class="text-uppercase fs-5 mt-3">
+                          <a href="/">
+                            <?= esc(number_to_currency($item->price, XAF)) ?>
+                          </a>
+                        </h5>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            <?php endforeach ?>
+              <?php endforeach ?>
+            </div>
+    
+            <div class="swiper-pagination"></div>
           </div>
-  
-          <div class="swiper-pagination"></div>
+    
+          <div class="icon-arrow icon-arrow-left blur-effet">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-left"></use>
+            </svg>
+          </div>
+    
+          <div class="icon-arrow icon-arrow-right">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-right"></use>
+            </svg>
+          </div>
         </div>
-  
-        <div class="icon-arrow icon-arrow-left blur-effet">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-left"></use>
-          </svg>
-        </div>
-  
-        <div class="icon-arrow icon-arrow-right">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-right"></use>
-          </svg>
-        </div>
-      </div>
-    </section>
-    <?php $i++ ?>
-  <?php endforeach ?>
+      </section>
+      <?php $i++ ?>
+    <?php endforeach ?>
+  <?php else: ?>
+    <?php if (auth()->loggedIn()): ?>
+      <section class="container my-5">
+        <p class="alert alert-info text-center">
+          <i class="fa fa-circle-info fs-1 text-left"></i>
+          <br>
+
+          <span>
+            Aucun article enrégistré.
+          </span>
+          <br>
+
+          <a href="<?= route_to('admin.item.create') ?>" class="btn btn-dark">
+            Créer un article
+            <i class="fa fa-circle-plus"></i>
+          </a>
+        </p>
+      </section>
+    <?php endif ?>
+  <?php endif ?>
 
   <section class="collection bg-light position-relative py-5">
     <div class="container">
@@ -369,6 +390,25 @@ helper(['text', 'number']);
 
       <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
     </section>
+  <?php else: ?>
+    <?php if (auth()->loggedIn()): ?>
+      <section class="container my-5">
+        <p class="alert alert-info text-center">
+          <i class="fa fa-circle-info fs-1 text-left"></i>
+          <br>
+
+          <span>
+            Aucun Témoignage enrégistré.
+          </span>
+          <br>
+
+          <a href="<?= route_to('admin.testimonial.create') ?>" class="btn btn-dark">
+            Créer une 
+            <i class="fa fa-circle-plus"></i>
+          </a>
+        </p>
+      </section>
+    <?php endif ?>
   <?php endif ?>
 
   <section id="contact-us" class="newsletter bg-light" style="background: url(/assets/img/pattern-bg.png) no-repeat;">
@@ -400,7 +440,7 @@ helper(['text', 'number']);
                target="_blank"
               >
                 <i class="fa fa-phone"></i>
-                Appel : <?= esc(get_contact('phone') ?? Contact::$phone) ?>
+                Appel : <?= esc(get_contact('phone', Contact::$phone)) ?>
               </a>
             </div>
           </div>
@@ -428,14 +468,13 @@ helper(['text', 'number']);
             </div>
           </div>
 
-          <?php if(session()->get(CONTACT_SENT) == true): ?>
+          <?php if(session()->get(CONTACT_SENT) !== true): ?>
             <form 
              method="post" 
              action="<?= route_to('contact.store') ?>"
              id="contact-us" 
              <?= classes([
               'd-flex',
-              'd-none',
               'flex-wrap',
               'justify-content-center',
               'mb-3'
@@ -496,7 +535,7 @@ helper(['text', 'number']);
              <?= classes([
               'alert',
               'alert-success',
-              'd-none' => session()->get(CONTACT_SENT) != true
+              'd-none' => session()->get(CONTACT_SENT) !== true
              ]) ?>
             >
               <i class="fa fa-circle-check fs-2"></i>
