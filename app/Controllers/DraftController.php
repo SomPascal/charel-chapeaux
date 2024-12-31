@@ -12,7 +12,7 @@ class DraftController extends BaseController
     
     public function index()
     {
-        dd(session()->get(CONTACT_SENT));
+        dd(session()->get(ACCEPTED_COOKIE));
 
         return view('Mail/contact_form', [
             'visitor' => [

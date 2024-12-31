@@ -99,12 +99,12 @@ const addCategory = (success)=> {
 }
 
 /**
-     * 
-     * @param {HTMLFormElement} form 
-     * @param {String} item_id
-     * @param {String} key_name
-     * @param {CallableFunction|null} success
-     */
+ * 
+ * @param {HTMLFormElement} form 
+ * @param {String} item_id
+ * @param {String} key_name
+ * @param {CallableFunction|null} success
+ */
 const setVisibility = (form, id, key_name='id', success=null)=> {
     disable(form)
 
@@ -146,6 +146,8 @@ const setVisibility = (form, id, key_name='id', success=null)=> {
         }
     })
 }
+
+// const handle 
 
 export {
     addCategory,
