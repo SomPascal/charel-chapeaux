@@ -4,9 +4,20 @@ import { env, getCsrfToken, setCsrfToken, setNotification } from "../Admin/js/Ut
 const handleCookiePopUp = ()=> {
     const cookiePopUp = document.querySelector('.cookies-info')
 
-    if (! cookiePopUp) return
+    if (! cookiePopUp) {
+        return
+    }
 
     cookiePopUp.querySelector('button').addEventListener('click', ()=> {
+        fetch(cookiePopUp.getAttribute('action'), {
+            'method': cookiePopUp.getAttribute('method'),
+            'cache': 'no-cache',
+            'headers': {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': getCsrfToken()
+            },
+        })
+        
         cookiePopUp.classList.add('cookies-accepted')
     })
 }

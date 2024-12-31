@@ -104,3 +104,4 @@ define('TWO_MB', 2 * 1024 * 1024);
 define('XAF', 'XAF');
 
 define('CONTACT_SENT', 'contact.sent');
+define('ACCEPTED_COOKIE', 'visitor.accepted_cookie');

@@ -50,8 +50,9 @@ class TrackVisits implements FilterInterface
                     ip: $request->getIPAddress(), 
                     ua: (string) $request->getUserAgent()
                 );
-
+                                
                 session()->set('visitor', $visitor);
+                session()->set(ACCEPTED_COOKIE, $visitor['accepted_cookie'] == '1' ? true : false);
             }
             else {
                 $visitor = [
@@ -72,6 +73,7 @@ class TrackVisits implements FilterInterface
                 );
 
                 session()->set('visitor', $visitor);
+                session()->set(ACCEPTED_COOKIE, false);
             }
         }
     }

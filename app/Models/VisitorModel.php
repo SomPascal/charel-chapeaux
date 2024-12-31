@@ -16,7 +16,7 @@ class VisitorModel extends Model
     protected $allowedFields    = [
         'id', 'ip', 'user_agent',
         'accept_lang', 'referrer_url',
-        'created_at', 'deleted_at'
+        'accepted_cookie', 'created_at', 'deleted_at'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -67,7 +67,8 @@ class VisitorModel extends Model
         $res = $this->select([
             'visitor.id AS id',
             'visitor.ip AS ip',
-            'visitor.user_agent AS user_agent'
+            'visitor.user_agent AS user_agent',
+            'visitor.accepted_cookie AS accepted_cookie'
         ])
         ->where([
             'visitor.ip' => $ip,

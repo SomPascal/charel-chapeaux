@@ -104,7 +104,8 @@ class Filters extends BaseFilters
                     'draft',
                     'invite/use*',
                     'goto/*',
-                    'contact'
+                    'contact',
+                    'accept-cookie'
                 ]
             ],
             'track-visits',
