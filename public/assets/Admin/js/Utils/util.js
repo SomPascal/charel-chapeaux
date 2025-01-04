@@ -48,6 +48,20 @@ const copyLink = (link) => {
     return res
 }
 
+const enableCopyLink = ()=> {
+    document.querySelectorAll('[copy-link]').forEach(btn => {
+        btn.addEventListener('click', (e)=> {
+            e.preventDefault()
+            copyLink(btn.getAttribute('href'))
+            btn.innerHTML = '<i class="fa fa-check"></i> Copié'
+
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa fa-copy"></i> Copier'
+            }, 1500)
+        })
+    })
+}
+
 /**
  * @returns {String}
  */
@@ -111,6 +125,7 @@ export {
     setCsrfToken,
     getCsrfToken,
     copyLink,
+    enableCopyLink,
     setNotification,
     randomString,
     showImagePreview

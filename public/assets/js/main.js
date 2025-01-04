@@ -1,5 +1,6 @@
+import { setVisibility } from "../Admin/js/Utils/admin.js"
 import { checkField, disable, setAlert, setErrMsg } from "../Admin/js/Utils/form.js"
-import { env, getCsrfToken, setCsrfToken, setNotification } from "../Admin/js/Utils/util.js"
+import { copyLink, enableCopyLink, env, getCsrfToken, setCsrfToken, setNotification } from "../Admin/js/Utils/util.js"
 
 const handleCookiePopUp = ()=> {
     const cookiePopUp = document.querySelector('.cookies-info')
@@ -163,10 +164,75 @@ const enlargeImages = ()=> {
     enlargeWall.addEventListener('click', ()=> closeBtn.click())
 }
 
+const handleItemVisibility = ()=> {
+    const showItemBtn = document.querySelector('#show-item-btn')
+    const showItemForm = document.querySelector('#show-item-modal form')
+    
+    const hideItemBtn = document.querySelector('#hide-item-btn')
+    const hideItemForm = document.querySelector('#hide-item-modal form')
+
+    const deleteItemBtn = document.querySelector('#delete-item-btn')
+    const deleteItemForm = document.querySelector('#delete-item-modal form')
+
+    const item_id = window.location.pathname.split('/').at(3)
+
+    if (hideItemBtn) {
+        hideItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+        
+            hideItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+        
+                setVisibility(
+                    hideItemForm,
+                    item_id, 
+                    'item_id',
+                )
+            })
+        })
+    }
+    
+    if (showItemBtn) {
+        showItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+
+            showItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+                
+                setVisibility(
+                    showItemForm,
+                    item_id, 
+                    'item_id',
+                )
+            })
+        })
+    }
+
+    if (deleteItemBtn) {
+        deleteItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+            
+            deleteItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+
+                setVisibility(
+                    deleteItemForm,
+                    item_id,
+                    'item_id',
+                    ()=> window.location = '/admin'
+                )
+            })
+        })
+    }
+
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     handleCookiePopUp()
     manageLikes()
     handleContactUs()
     handleItemsDetails()
     enlargeImages()
+    enableCopyLink()
+    handleItemVisibility()
 })

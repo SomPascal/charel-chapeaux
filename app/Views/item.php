@@ -8,11 +8,33 @@ use Config\Contact;
 
 <?php $this->extend('base') ?>
 
+<?php $this->section('title') ?>
+  <title>
+    Charel | <?= character_limiter($item->name, 35, '...') ?>
+  </title>
+<?php $this->endSection('title') ?>
+
 <?php $this->section('content') ?>
   <a class="btn btn-dark mt-2 ms-2" href="javascript:void(0)" role="button" onclick="history.back()">
     <i class="fa fa-arrow-left"></i>
     Retour
   </a>
+
+  <?php if (session()->has('success') || session()->has('error')): ?>
+    <div class="container mt-3">
+      <?php if (session()->has('success')): ?> 
+        <p class="alert alert-success">
+          <?= esc(session()->get('success')) ?>
+        </p>
+      <?php endif ?>
+      
+      <?php if (session()->has('error')): ?>
+        <p class="alert alert-danger">
+          <?= esc(session()->get('success')) ?>
+        </p>
+      <?php endif ?>
+    </div>
+  <?php endif ?>
 
   <div id="item-details" class="container p-md-5 p-sm-1">
     <div class="row p-3">
@@ -74,28 +96,65 @@ use Config\Contact;
               <i class="fa fa-clock"></i> 
               <?= Time::createFromFormat('Y-m-d H:i:s', $item->created_at)->humanize() ?>
             </p>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-start gap-3 mb-1">
-          <button class="btn btn-danger btn-sm">
-            <i class="fa fa-trash"></i>
-            Supprimer 
-          </button> 
-
-          <button class="btn btn-dark btn-sm">
-            <i class="fa fa-times"></i>
-            Cacher
-          </button>
-        </div>
-
+          </div>
         <?php endif ?>
+
+        <div class="d-flex align-items-center justify-content-start gap-3 flex-wrap mb-1">
+          <a href="<?= current_url() ?>" class="btn btn-dark btn-sm" copy-link>
+            <i class="fa fa-copy"></i>
+            Copier 
+          </a> 
+
+          <?php if (auth()->loggedIn()): ?>
+            <a href="#" class="btn btn-dark btn-sm">
+              <i class="fa fa-edit"></i>
+              Modifier 
+            </a> 
+
+            <?php if ($item->is_hidden): ?>
+              <button 
+               id="show-item-btn"
+               type="button"
+               data-bs-toggle="modal"
+               data-bs-target="#show-item-modal"
+               class="btn btn-sm btn-dark"
+              >
+                <i class="fa fa-eye"></i>
+                Afficher
+              </button>
+            <?php else: ?>
+              <button 
+               id="hide-item-btn"
+               type="button"
+               data-bs-toggle="modal"
+               data-bs-target="#hide-item-modal"
+               class="btn btn-sm btn-dark"
+              >
+                <i class="fa fa-eye-slash"></i>
+                Cacher
+              </button>
+            <?php endif ?>
+
+  
+            <button 
+             id="delete-item-btn"
+             type="button"
+             data-bs-toggle="modal" 
+             data-bs-target="#delete-item-modal" 
+             class="btn btn-danger btn-sm"
+            >
+              <i class="fa fa-trash"></i>
+              Supprimer 
+            </button> 
+          <?php endif ?>
+        </div>
         <hr>
 
         <h5 class="text-uppercase text-left">
           <?= esc(number_to_currency($item->price, XAF)) ?>
         </h5>
 
-        <div class="row w-100 mt-5 cta">
+        <div class="row w-100 mt-lg-5 mt-sm-4 cta">
           <div class="col-md-6">
             <a 
             href="<?= sprintf('%s?item=%s', route_to('goto', 'whatsapp'), $item->id) ?>" 
@@ -181,12 +240,11 @@ use Config\Contact;
       <hr>
     </section>
   <?php endif ?>
-<?php $this->endSection('content') ?>
 
-  <!-- <a 
-   href="/" 
-   class="call-cta-btn btn btn-dark"
-  >
-    <i class="fa fa-arrow-left"></i>
-    Retour
-  </a> -->
+  <?php if (auth()->loggedIn()): ?>
+    <?= $this->include('Admin/Parts/delete-item-modal') ?>
+    <?= $this->include('Admin/Parts/hide-item-modal') ?>
+    <?= $this->include('Admin/Parts/show-item-modal') ?>
+    <?= $this->include('Admin/Parts/delete-item-modal') ?>
+  <?php endif ?>
+<?php $this->endSection('content') ?>

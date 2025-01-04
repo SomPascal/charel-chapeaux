@@ -276,8 +276,6 @@ const searchItems = ()=> {
 
 const popularItemsSliders = ()=> {
     document.querySelectorAll('#caps-popularity .swiper').forEach(slider => {
-        console.log(slider);
-        
         new Swiper(slider, {
             // Optional parameters
             loop: false,

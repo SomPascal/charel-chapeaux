@@ -34,126 +34,69 @@ helper(['text', 'number']);
         </div>
       </div>
 
-      <div class="row">
-        <div 
-         class="swiper main-swiper py-4" 
-         data-aos="fade-up" 
-         data-aos-delay="600"
-        >
-          <div class="swiper-wrapper d-flex border-animation-left">
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                      src="/assets/images/items/presentation-cap-1.jpg" 
-                      alt="product"
-                      class="img-fluid"
-                    />
-                  </a>
+      <?php if(count($header_items) > 0): ?>
+        <div class="row">
+          <div 
+           class="swiper main-swiper py-4" 
+           data-aos="fade-up" 
+           data-aos-delay="600"
+          >
+            <div class="swiper-wrapper d-flex border-animation-left">
+              <?php foreach ($header_items as $item): ?>
+                <div class="swiper-slide">
+                  <div class="banner-item image-zoom-effect">
+                    <div class="image-holder">
+                      <a href="<?= route_to('item.show', $item->id) ?>">
+                        <img 
+                          src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
+                          alt="product"
+                          class="img-fluid"
+                        />
+                      </a>
+                    </div>
+    
+                    <div class="banner-content py-4">
+                      <h5 class="element-title text-uppercase">
+                        <?= esc($item->name) ?>
+                      </h5>
+    
+                      <p><?= esc($item->description) ?></p>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Des chapeaux sophistiqués
-                  </h5>
-
-                  <p>
-                    Nous sommes habitué à créer des chapeaux aux finissions impéccables.
-                  </p>
-                </div>
-              </div>
+              <?php endforeach ?>
             </div>
+            
+            <div class="swiper-pagination"></div>
+          </div>
+  
+          <div class="icon-arrow icon-arrow-left">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-left"></use>
+            </svg>
+          </div>
+  
+          <div class="icon-arrow icon-arrow-right">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-right"></use>
+            </svg></div>
+        </div>
+      <?php else: ?>
+        <?php if (auth()->loggedIn()): ?>
+          <div class="container">
+            <div class="alert alert-info text-center">
+              <p>
+                Veuillez ajouter des articles
+              </p>
 
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                     src="/assets/images/items/presentation-cap-2.jpg" 
-                     alt="product" 
-                     class="img-fluid"
-                    >
-                  </a>
-                </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Des chapeaux de hautes haute-qualités
-                  </h5>
-
-                  <p>
-                    Confectionnez chez nous des chapeaux soigneusement 
-                    conçus
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                     src="/assets/images/items/presentation-cap-3.jpg" 
-                     alt="product" 
-                     class="img-fluid"
-                    >
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Vos mariages et évènements
-                  </h5>
-
-                  <p>
-                    pour vos dotes, marriages ou funérailles, nous saurons vous 
-                    satisfaire.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                      src="/assets/images/items/chapeaux-12.jpg" 
-                      alt="product" 
-                      class="img-fluid"
-                    >
-                  </a>
-                </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Pour vos soirées et fetes
-                  </h5>
-
-                  <p>
-                    Démarquez vous dans les soirées, fetes avec un chapeau éclatant et 
-                    authentique.
-                  </p>
-                </div>
-              </div>
+              <a href="<?= route_to('admin.item.create') ?>" role="button" class="btn btn-dark">
+                Ajouter 
+                <i class="fa fa-circle-plus"></i>
+              </a>
             </div>
           </div>
-          
-          <div class="swiper-pagination"></div>
-        </div>
-
-        <div class="icon-arrow icon-arrow-left">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-left"></use>
-          </svg>
-        </div>
-
-        <div class="icon-arrow icon-arrow-right">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-right"></use>
-          </svg></div>
-      </div>
+        <?php endif ?>
+      <?php endif ?>
     </div>
   </section>
 

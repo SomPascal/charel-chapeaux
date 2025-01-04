@@ -16,8 +16,13 @@ class HomeController extends BaseController
     {
         $item_model = model(ItemModel::class);
 
+        $items = $item_model->getHomeItems();
+        $header_items = array_slice($items, 0, 4);
+        $remaining_items = array_slice($items, 4);
+
         return view('index', [
-            'items' => $item_model->getHomeItems(),
+            'header_items' => $header_items,
+            'items' => $remaining_items,
             'redirections' => model(RedirectionModel::class)->todayRedirections(),
             'testimonials' => model(TestimonialModel::class)->asObject()->getAll()
         ]);
