@@ -15,6 +15,10 @@ class CookieController extends BaseController
 
     public function accept(): Response
     {
+        if (auth()->loggedIn()) {
+            return $this->respondUpdated();
+        }
+        
         $visitor = session()->get('visitor');
 
         if (session()->get(ACCEPTED_COOKIE) === true)

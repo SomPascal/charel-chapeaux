@@ -17,6 +17,22 @@
   background-color: #62e89e6a;
 }
 
+.notification {
+  position: fixed;
+  left: 30px;
+  transition: .3s ease;
+
+  bottom: -100px;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.notification.show {
+  bottom: 30px;
+  opacity: 1;
+  visibility: visible;
+}
+
 body {
   --heading-font: 'poppins-title', "Marcellus", Roboto, sans-serif;
   --heading-font-weight: 400;
