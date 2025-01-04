@@ -76,8 +76,14 @@ class Validation extends BaseConfig
         'name' => 'required|in_list[phone,whatsapp,instagram,facebook,location,map]|max_length[300]'
     ]; 
 
-    public array $create_category = [
+    public array $set_category = [
         'category_name' => 'required|min_length[3]|max_length[124]|is_unique[category.name]'
+    ];
+
+    public array $set_category_errors = [
+        'category_name' => [
+            'is_unique' => 'Vous avez déjà utilisé ce nom de catégorie'
+        ]
     ];
 
     public array $store_item = [

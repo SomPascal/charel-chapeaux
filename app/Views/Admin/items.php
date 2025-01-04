@@ -212,10 +212,17 @@ use App\Models\ItemsVisitsModel;
                             Catégories
                         </button>
 
-                        <ul class="dropdown-menu" id="list-categories">
+                        <ul 
+                         class="dropdown-menu" 
+                         id="list-categories" 
+                         update-action="<?= route_to('admin.category.update') ?>"
+                         create-action="<?= route_to('admin.category.create') ?>"
+                        >
                             <?php foreach($categories as $category): ?>
                                 <li class="dropdown-item" id="category-<?= esc($category->code) ?>">
-                                    <?= esc($category->name) ?>
+                                    <p class="d-inline-block mb-0">
+                                        <?= esc($category->name) ?>
+                                    </p>
                                     (<?= esc($category->num_items ?? 0) ?>) 
 
                                     <div>
@@ -233,8 +240,8 @@ use App\Models\ItemsVisitsModel;
                                          type="button" 
                                          class="btn btn-sm btn-secondary" 
                                          data-toggle="modal"
-                                         data-target="#rename-category-modal"
-                                         delete
+                                         data-target="#add-category"
+                                         update
                                         >
                                             <i class="fa fa-edit"></i>
                                         </button>
@@ -251,7 +258,6 @@ use App\Models\ItemsVisitsModel;
                              ]) ?>
                             >
                                 <button 
-                                 class="btn btn-sm btn-secondary my-0 w-100"
                                  <?= classes([
                                     'btn',
                                     'btn-sm',
@@ -260,6 +266,7 @@ use App\Models\ItemsVisitsModel;
                                     'w-100',
                                     'disabled' => count($categories) > 10
                                  ]) ?>
+                                 id="add-category-btn"
 
                                  <?= attr(count($categories) > 10, 'disabled') ?>
                                  data-toggle="modal"
