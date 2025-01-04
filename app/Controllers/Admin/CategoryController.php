@@ -16,7 +16,7 @@ class CategoryController extends BaseController
 
     public function create(): Response
     {
-        if (! $this->validate('create_category')) {
+        if (! $this->validate('set_category')) {
             return $this->failValidationErrors(
                 $this->validator->getErrors()
             );
@@ -24,7 +24,7 @@ class CategoryController extends BaseController
 
         $data = $this->validator->getValidated();
 
-        $throttlerConfig = config('Config\Throttler')->addCategory;
+        $throttlerConfig = config('Config\Throttler')->setCategory;
         $throttler = Services::throttler();
         
         if (! $throttler->check(
@@ -46,6 +46,12 @@ class CategoryController extends BaseController
             
             return $this->failServerError();
         }
+
+        session()->setTempdata(
+            'success',
+            'Votre catégorie a été créé avec succès.',
+            5*SECOND
+        );
 
         return $this->respondCreated([
             'status' => Response::HTTP_CREATED,
@@ -72,6 +78,48 @@ class CategoryController extends BaseController
 
     public function update(): Response
     {
-        return $this->respondUpdated();
+        if (! $this->validate('set_category')) {
+            return $this->failValidationErrors(
+                $this->validator->getErrors()
+            );
+        }
+
+        $category_code = $this->request->getJsonVar('category_code', filter: FILTER_SANITIZE_NUMBER_INT);
+        $data = $this->validator->getValidated();
+
+        $throttlerConfig = config('Config\Throttler')->setCategory;
+        $throttler = Services::throttler();
+        
+        if (! $throttler->check(
+            key: md5('user:' . user_id()),
+            capacity: $throttlerConfig['capacity'],
+            seconds: $throttlerConfig['seconds']
+        )) {
+            return $this->failTooManyRequests()
+            ->setHeader(X_RETRY_AFTER, $throttler->getTokenTime());
+        }
+
+        try {
+            model(CategoryModel::class)->update(id: $category_code, row: [
+                'name' => $data['category_name']
+            ]);
+        } catch (\Throwable $e) {
+            log_message(
+                LogLevel::ERROR,
+                'Could not create category due to: ' . $e->getMessage()
+            );
+            
+            return $this->failServerError();
+        }
+
+        session()->setTempdata(
+            'success',
+            'Votre catégorie a modifée créé avec succès.',
+            5*SECOND
+        );
+
+        return $this->respondUpdated([
+            'status' => Response::HTTP_OK
+        ]);
     }
 }

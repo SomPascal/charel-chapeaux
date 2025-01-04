@@ -1,4 +1,4 @@
-import { addCategory } from "./Utils/admin.js"
+import { setCategory } from "./Utils/admin.js"
 import { checkField, checkFileField, disable, setAlert, setErrMsg } from "./Utils/form.js"
 import { env, getCsrfToken, randomString, setCsrfToken, setNotification, showImagePreview } from "./Utils/util.js"
 
@@ -167,7 +167,7 @@ const recordItem = ()=> {
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
-    addCategory(({id, name})=> {
+    setCategory(({id, name})=> {
         const category = document.createElement('option')
 
         category.value = id 
