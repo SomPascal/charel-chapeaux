@@ -133,7 +133,7 @@ class ItemController extends BaseController
         );
     }
 
-    public function show(string $item_id)
+    public function show(string $item_id): string
     {
         $item_model = model(ItemModel::class);
         $item_pics_model = model(ItemPicsModel::class);
@@ -236,13 +236,14 @@ class ItemController extends BaseController
         return $this->respondUpdated();
     }
 
-    public function like(): Response
+    public function modify(string $item_id)
     {
-        return $this->response->setBody('liked');
-    }
+        $item = model(ItemModel::class)->asObject()->get_item($item_id);
 
-    public function unlike(): Response
-    {
-        return $this->response->setBody('unliked');
+        if ($item == null) {
+            throw new PageNotFoundException("Error Processing Request");
+        }
+
+        dd($item);
     }
 }

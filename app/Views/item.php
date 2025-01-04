@@ -106,7 +106,7 @@ use Config\Contact;
           </a> 
 
           <?php if (auth()->loggedIn()): ?>
-            <a href="#" class="btn btn-dark btn-sm">
+            <a href="<?= route_to('admin.item.modify', $item->id) ?>" class="btn btn-dark btn-sm">
               <i class="fa fa-edit"></i>
               Modifier 
             </a> 

@@ -70,6 +70,7 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->get('manage', [DashboardController::class, 'manage'], ['as' => 'admin.manage']);
         $routes->get('items', [DashboardController::class, 'items'], ['as' => 'admin.items']);
         $routes->get('create', [ItemController::class, 'create'], ['as' => 'admin.item.create', 'filter' => 'group:admin,superadmin']);
+        $routes->get('modify/(:hash)', [ItemController::class, 'modify'], ['as' => 'admin.item.modify', 'filter' => 'group:admin,superadmin']);
     
         $routes->get('content', [DashboardController::class, 'content'], ['as' => 'admin.content']);
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);
