@@ -54,7 +54,7 @@
              class="dropdown-menu dropdown-menu-right shadow animated--grow-in" 
              aria-labelledby="userDropdown"
             >
-                <a class="dropdown-item" href="#">
+                <a data-toggle="modal" data-target="#invitation-link" class="dropdown-item" href="#">
                     <i class="fas fa-share fa-sm fa-fw mr-2 text-gray-400"></i>
                     Inviter un Admin
                 </a>

@@ -5,13 +5,13 @@
 <?php $this->section('content') ?>
     <section class="container-fluid">
         <!-- Admins Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <div class="d-sm-flex align-items-center justify-content-between mb-2">
             <h1 class="h3 mb-0 text-gray-800 text-uppercase">
                 Contenu du site
             </h1>
         </div>
 
-        <div class="my-5" id="site-desc">
+        <div class="my-3" id="site-desc">
             
             <div class="row">
                 <div 
@@ -188,7 +188,7 @@
             </div>
         </div>
 
-        <div class="my-5" id="testimonials">
+        <div class="my-3" id="testimonials">
             <div class="d-flex justify-content-between align-items-center">
                 <h2 class="h3 mb-2 text-gray-800 text-uppercase">
                     Témoignages Clients 

@@ -300,7 +300,6 @@ helper(['contact'])
     </div>
 
     <?= $this->include('Admin/Parts/admin-details-modal') ?>
-    <?= $this->include('Admin/Parts/invitation-link-modal') ?>
     <?= $this->include('Admin/Parts/change-contacts-modal') ?>
     <?= $this->include('Admin/Parts/change-admin-role-modal') ?>
 <?php $this->endSection('content') ?>
