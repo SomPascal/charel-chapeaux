@@ -7,6 +7,7 @@ use App\Controllers\Admin\ChangeUsernameController;
 use App\Controllers\Admin\ContactController as AdminContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
+use App\Controllers\Admin\DescriptionController;
 use App\Controllers\ErrorController;
 use App\Controllers\HomeController;
 use App\Controllers\ItemController;
@@ -62,6 +63,11 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->post('update', [TestimonialController::class, 'update'], ['as' => 'admin.testimonial.update']);
         
         $routes->post('delete', [TestimonialController::class, 'delete'], ['as' => 'admin.testimonial.delete']);
+    });
+
+    $routes->group('description', ['filter' => 'group:superadmin'], function(RouteCollection $routes) {
+        $routes->get('modify/(:hash)', [DescriptionController::class, 'modify'], ['as' => 'admin.description.modify']);
+        $routes->post('update/', [DescriptionController::class, 'update'], ['as' => 'admin.description.update']);
     });
 
     $routes->group('{locale}', function(RouteCollection $routes) {

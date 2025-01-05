@@ -200,6 +200,18 @@ const rules = {
             'minimum': 3,
             'maximum': 124
         }
+    },
+
+    'desc-content': {
+        'presence': {
+            'allowEmpty': false,
+            'message': '^Veuillez entrer la description'
+        },
+
+        'length': {
+            'minimum': 6,
+            'maximum': 200
+        }
     }
 }
 
@@ -216,6 +228,23 @@ const setErrMsg = (field, message, flag=true)=> {
     } else {
         field.classList.remove('is-invalid')
         field.parentNode.querySelector('p').innerHTML = ''
+    }
+}
+
+const setErrMsgFromServer = (messages)=> {
+    let input
+
+    for (const id in messages) {
+        if (Object.prototype.hasOwnProperty.call(messages, id)) {
+            input = document.querySelector('#' + id)
+
+            if (input) {
+                setErrMsg(
+                    input,
+                    messages[id]
+                )
+            }
+        }
     }
 }
 
@@ -353,6 +382,7 @@ export {
     checkFileField,
     setAlert,
     setErrMsg,
+    setErrMsgFromServer,
     disable,
     clearPassword
 }

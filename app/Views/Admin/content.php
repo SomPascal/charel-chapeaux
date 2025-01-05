@@ -1,3 +1,5 @@
+<?php helper(['description']) ?>
+
 <?php $this->extend('Admin/base') ?>
 
 <?php $this->section('content') ?>
@@ -10,177 +12,175 @@
         </div>
 
         <div class="my-5" id="site-desc">
+            
             <div class="row">
-                <div class="col-md-6">
-                    <form action="#" method="post" class="mb-3">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="text-uppercase">
-                                        Description Principal
-                                    </h5>
-
-                                    <button 
-                                        type="button"
-                                        class="btn btn-sm btn-secondary btn-icon-split"
-                                        data-target="#historyModal"
-                                        data-toggle="modal"
-                                    >
-                                        <span class="icon">
-                                            <i class="fas fa-history"></i>
-                                        </span>
-
-                                        <span class="text">
-                                            Historique
-                                        </span>
-                                    </button>
+                <div 
+                 class="swiper main-swiper py-4" 
+                >
+                    <div class="swiper-wrapper d-flex border-animation-left">
+                        <div class="swiper-slide">
+                            <div class="mb-3">
+                                <div class="card shadow">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between">
+                                            <h5 class="text-uppercase">
+                                                Description Principal
+                                            </h5>
+                                        </div>
+                                    </div>
+    
+                                    <div class="card-body">
+                                        <textarea 
+                                            id="main-desc"
+                                            class="form-control" 
+                                            readonly 
+                                        ><?= esc(get_desc(needle: 'main', haystack: $descriptions)) ?></textarea>
+                                    </div>
+    
+                                    <div class="card-footer">
+                                        <button 
+                                            type="button"
+                                            class="btn btn-sm btn-secondary btn-icon-split"
+                                            data-target="#extend-desc"
+                                            data-toggle="modal"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-expand-alt"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Agrandir
+                                            </span>
+                                        </button>
+    
+                                        <a 
+                                            href="<?= route_to('admin.description.modify', 'main') ?>"
+                                            role="button"
+                                            class="btn btn-sm btn-primary btn-icon-split"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Modifier
+                                            </span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="card-body">
-                                <textarea 
-                                    name="" 
-                                    id="main-desc"
-                                    class="form-control" 
-                                    readonly 
-                                    required
-                                >Hello World</textarea>
-                            </div>
-
-                            <div class="card-footer">
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-secondary btn-icon-split"
-                                    data-target="#extend-desc"
-                                    data-toggle="modal"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-primary btn-icon-split"
-                                    data-toggle="modal"
-                                    data-target="#extend-desc"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Modifier
-                                    </span>
-                                </button>
-
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-danger btn-icon-split"
-                                    data-target="#deleteTestimonialsModal"
-                                    data-toggle="modal"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
                         </div>
-                    </form>
-                </div>
-
-                <div class="col-md-6">
-                    <form action="#" method="post" class="mb-3">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="text-uppercase">
-                                        Description du site 
-                                    </h5>
-        
-                                    <button 
-                                        type="button"
-                                        class="btn btn-sm btn-secondary btn-icon-split"
-                                        data-target="#historyModal"
-                                        data-toggle="modal"
-                                    >
-                                        <span class="icon">
-                                            <i class="fas fa-history"></i>
-                                        </span>
-
-                                        <span class="text">
-                                            Historique
-                                        </span>
-                                    </button>
+    
+                        <div class="swiper-slide">
+                            <div class="mb-3">
+                                <div class="card shadow">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="text-uppercase">
+                                                A propos
+                                            </h5>
+                                        </div>
+                                    </div>
+    
+                                    <div class="card-body">
+                                        <textarea 
+                                            id="main-desc"
+                                            class="form-control" 
+                                            readonly 
+                                        ><?= esc(get_desc(needle: 'about', haystack: $descriptions)) ?></textarea>
+                                    </div>
+    
+                                    <div class="card-footer">
+                                        <button 
+                                            type="button"
+                                            class="btn btn-sm btn-secondary btn-icon-split"
+                                            data-target="#extend-desc"
+                                            data-toggle="modal"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-expand-alt"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Agrandir
+                                            </span>
+                                        </button>
+    
+                                        <a 
+                                            href="<?= route_to('admin.description.modify', 'about') ?>"
+                                            role="button"
+                                            class="btn btn-sm btn-primary btn-icon-split"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Modifier
+                                            </span>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="card-body">
-                                <textarea 
-                                    name="" 
-                                    id="main-desc"
-                                    class="form-control" 
-                                    readonly 
-                                    required
-                                >Hello World</textarea>
-                            </div>
-
-                            <div class="card-footer">
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-secondary btn-icon-split"
-                                    data-target="#extend-desc"
-                                    data-toggle="modal"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-primary btn-icon-split"
-                                    data-toggle="modal"
-                                    data-target="#extend-testimonials"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-edit"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Modifier
-                                    </span>
-                                </button>
-
-                                <button 
-                                    type="button"
-                                    class="btn btn-sm btn-danger btn-icon-split"
-                                    data-target="#deleteTestimonialsModal"
-                                    data-toggle="modal"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
+                        </div>
+    
+                        <div class="swiper-slide">
+                            <div class="mb-3">
+                                <div class="card shadow">
+                                    <div class="card-header">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="text-uppercase">
+                                                Description Google
+                                            </h5>
+                                        </div>
+                                    </div>
+    
+                                    <div class="card-body">
+                                        <textarea 
+                                            name="" 
+                                            id="main-desc"
+                                            class="form-control" 
+                                            readonly 
+                                            required
+                                        ><?= esc(get_desc(needle: 'meta', haystack: $descriptions)) ?></textarea>
+                                    </div>
+    
+                                    <div class="card-footer">
+                                        <button 
+                                            type="button"
+                                            class="btn btn-sm btn-secondary btn-icon-split"
+                                            data-target="#extend-desc"
+                                            data-toggle="modal"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-expand-alt"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Agrandir
+                                            </span>
+                                        </button>
+    
+                                        <a 
+                                            href="<?= route_to('admin.description.modify', 'meta') ?>"
+                                            role="button"
+                                            class="btn btn-sm btn-primary btn-icon-split"
+                                        >
+                                            <span class="icon">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+    
+                                            <span class="text">
+                                                Modifier
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    
+                    <div class="swiper-pagination"></div>
                 </div>
             </div>
         </div>

@@ -42,4 +42,9 @@ class Throttler extends BaseConfig
         'seconds' => 2*MINUTE
     ];
 
+    public array $update_description = [
+        'capacity' => 5,
+        'seconds' => MINUTE
+    ];
+
 }

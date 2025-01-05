@@ -109,4 +109,8 @@ class Validation extends BaseConfig
         'name' => 'required|min_length[3]|max_length[24]',
         'phone' => 'required|phone'
     ];
+
+    public array $update_description = [
+        'desc-content' => 'required|min_length[6]|max_length[200]'
+    ];
 }

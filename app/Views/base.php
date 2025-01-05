@@ -17,11 +17,7 @@ use Config\Contact;
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="keywords" content="ecommerce,fashion,store">
 
-  <meta 
-   name="description" 
-   content="Création, vente de chapeaux, sacs et bijoux au cameroun et yaoundé en particulier."
-  >
-
+  <?= $this->renderSection('meta-description') ?>
   <?= csrf_meta() ?>
 
   <!-- BOOTSTRAP  -->

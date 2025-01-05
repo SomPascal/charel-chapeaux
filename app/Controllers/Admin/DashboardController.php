@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\AdminModel;
 use App\Models\CategoryModel;
 use App\Models\ContactFormModel;
+use App\Models\DescriptionModel;
 use App\Models\ItemModel;
 use App\Models\RedirectionModel;
 use App\Models\TestimonialModel;
@@ -65,7 +66,8 @@ class DashboardController extends BaseController
         $testimonials = model(TestimonialModel::class)->asObject()->getAll();
 
         return view('Admin/content', [
-            'testimonials' => $testimonials
+            'testimonials' => $testimonials,
+            'descriptions' => model(DescriptionModel::class)->asObject()->getAll()
         ]);
     }
 

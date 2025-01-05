@@ -3,10 +3,17 @@
 use CodeIgniter\I18n\Time;
 use Config\Contact;
 
-helper(['text', 'number']);
+helper(['text', 'number', 'description']);
 ?>
 
 <?php $this->extend('base') ?>
+
+<?php $this->section('meta-description') ?>
+  <meta 
+   name="description" 
+   content="<?= esc(get_desc(needle: 'meta', haystack: $descriptions) ?? 'Création, vente de chapeaux, sacs et bijoux au cameroun et yaoundé en particulier.') ?>"
+  >
+<?php $this->endSection('meta-description') ?>
 
 <?php $this->section('title') ?>
   <title>
@@ -30,7 +37,7 @@ helper(['text', 'number']);
          data-aos="fade-up" 
          data-aos-delay="300"
         >
-          <p><?= esc(lang('Text.desc')) ?></p>
+          <p><?= esc(get_desc(needle: 'main', haystack: $descriptions)) ?></p>
         </div>
       </div>
 
@@ -266,12 +273,7 @@ helper(['text', 'number']);
               <br>
 
               <p>
-                Chez Charel Chapeaux, nous mettons l'accent sur le détail. Chaque fil, 
-                chaque tissu est soigneusement posé pour un résultat impeccable. 
-                
-                <br><br>
-                Pour tous vos événements, mariages, soirées, nous créons des chapeaux 
-                uniques et sur-mesure. 
+                <?= nl2br(esc(get_desc(needle: 'main', haystack: $descriptions))) ?>
               </p>
               <br><br>
 

@@ -8,9 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>
-        Charel Chapeaux | Ajouter
-    </title>
+    <?= $this->renderSection('title') ?>
 
     <!-- Custom fonts for this template-->
     <link href="/assets/Admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -56,7 +54,7 @@
     <?= $this->include('Admin/Parts/add-category-modal') ?>
     <?= $this->include('Admin/Parts/notification') ?>
     <?= $this->include('Admin/Parts/scripts') ?>
-    <script type="module" src="/assets/Admin/js/handle-testimonial.js"></script>
+    <script type="module" src="<?= base_url('assets/Admin/js/handle-description.js') ?>"></script>
 
     <?= $this->renderSection('script') ?>
 
