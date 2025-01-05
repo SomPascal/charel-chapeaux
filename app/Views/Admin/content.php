@@ -41,8 +41,9 @@
                                         <button 
                                             type="button"
                                             class="btn btn-sm btn-secondary btn-icon-split"
-                                            data-target="#extend-desc"
+                                            data-target="#extend-description-modal"
                                             data-toggle="modal"
+                                            extend-description
                                         >
                                             <span class="icon">
                                                 <i class="fas fa-expand-alt"></i>
@@ -94,8 +95,9 @@
                                         <button 
                                             type="button"
                                             class="btn btn-sm btn-secondary btn-icon-split"
-                                            data-target="#extend-desc"
+                                            data-target="#extend-description-modal"
                                             data-toggle="modal"
+                                            extend-description
                                         >
                                             <span class="icon">
                                                 <i class="fas fa-expand-alt"></i>
@@ -149,8 +151,9 @@
                                         <button 
                                             type="button"
                                             class="btn btn-sm btn-secondary btn-icon-split"
-                                            data-target="#extend-desc"
+                                            data-target="#extend-description-modal"
                                             data-toggle="modal"
+                                            extend-description
                                         >
                                             <span class="icon">
                                                 <i class="fas fa-expand-alt"></i>
@@ -274,6 +277,7 @@
     </section>
 
     <?= $this->include('Admin/Parts/delete-testimonial-modal') ?>
+    <?= $this->include('Admin/Parts/extend-description-modal') ?>
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>
