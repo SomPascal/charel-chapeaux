@@ -7,7 +7,6 @@
         'method' => 'post',
         'enctype' => 'multipart/form-data'
     ]) ?>
-    
 <?php $this->endSection('form') ?>
 
 <?php $this->section('content') ?>
