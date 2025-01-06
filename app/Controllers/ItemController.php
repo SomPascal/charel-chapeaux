@@ -132,6 +132,21 @@ class ItemController extends BaseController
             url_to('admin.items')
         );
     }
+    
+    public function modify(string $item_id)
+    {
+        $item = model(ItemModel::class)->asObject()->get_item($item_id);
+
+        if ($item == null) {
+            throw new PageNotFoundException("Error Processing Request");
+        }
+        
+        return view('Admin/Create/modify-item', [
+            'item' => $item,
+            'item_pics' => model(ItemPicsModel::class)->get_item_pics($item_id),
+            'categories' => model(CategoryModel::class)->getAll()
+        ]);
+    }
 
     public function show(string $item_id): string
     {
@@ -236,14 +251,4 @@ class ItemController extends BaseController
         return $this->respondUpdated();
     }
 
-    public function modify(string $item_id)
-    {
-        $item = model(ItemModel::class)->asObject()->get_item($item_id);
-
-        if ($item == null) {
-            throw new PageNotFoundException("Error Processing Request");
-        }
-
-        dd($item);
-    }
 }

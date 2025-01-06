@@ -3,9 +3,10 @@
 <?php $this->extend('Admin/Create/base') ?>
 
 <?php $this->section('form') ?>
-    <?= form_open(action: route_to('admin.item.store'), attributes: [
+    <?= form_open(action: route_to('admin.item.update'), attributes: [
         'method' => 'post',
-        'enctype' => 'multipart/form-data'
+        'enctype' => 'multipart/form-data',
+        'id' => 'update-item-form'
     ]) ?>
 <?php $this->endSection('form') ?>
 
@@ -18,6 +19,24 @@
             style="background-color: #ddd;"
             id="img-previews-box"
         >
+            <?php foreach ($item_pics as $item_pic): ?>
+                <li 
+                 id="preview-<?= esc($item_pic->id, 'attr') ?>" 
+                 class="shadow m-2 position-relative"
+                 style="width: 100px;"
+                >
+                    <img 
+                     class="img-fluid rounded" 
+                     src="<?= route_to('item.pic', $item_pic->id) ?>" 
+                     alt="Preview image"
+                    />
+
+                    <button type="button" class="btn btn-sm btn-danger shadow position-absolute" style="top: 5px;right: 5px;">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </li>
+
+            <?php endforeach ?>
         </ul>
     </div>
 
@@ -28,7 +47,7 @@
     <div class="pb-5 mb-5">
         <div class="mb-3">
             <label for="images" class="form-label">
-                Images
+                Image
             </label>
 
             <div class="input-group">
@@ -39,7 +58,7 @@
                     accept="image/*"
                     id="item-images"
                     multiple 
-                    required 
+                    <?= attr(count($item_pics) < 1, 'required') ?> 
                 />
 
                 <p class="invalid-feedback"></p>
@@ -58,6 +77,7 @@
                 minlength="3"
                 maxlength="124"
                 placeholder="Ex: Chapeau de marriage..."
+                value="<?= esc($item->name) ?>"
                 required
             />
 
@@ -72,7 +92,10 @@
             <div class="d-flex align-items-center gap-4" style="gap: 30px;">
                 <select id="categories" class="form-control">
                     <?php foreach($categories as $category): ?>
-                        <option value="<?= esc($category['code'], 'attr') ?>">
+                        <option 
+                         value="<?= esc($category['code'], 'attr') ?>"
+                         <?= attr($item->category_code == $category['code'], 'selected') ?>
+                        >
                             <?= esc($category['name'])  ?>
                         </option>
                     <?php endforeach ?>
@@ -104,7 +127,7 @@
                 minlength="6"
                 maxlength="200" 
                 required
-            ></textarea>
+            ><?= esc($item->description) ?></textarea>
 
             <p class="invalid-feedback"></p>
         </div>
@@ -115,10 +138,11 @@
             </label>
 
             <input 
-                type="text" 
+                type="number" 
                 id="item-price" 
                 placeholder="Ex: 18000"
                 class="form-control"
+                value="<?= esc($item->price) ?>"
                 required
             />
 
