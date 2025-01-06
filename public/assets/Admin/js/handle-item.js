@@ -1,19 +1,29 @@
-import { addCategory } from "./Utils/admin.js"
-import { checkField, checkFileField, disable, setAlert, setErrMsg } from "./Utils/form.js"
+import { setCategory } from "./Utils/admin.js"
+import { checkField, checkFileField, disable, setAlert, setErrMsg, setErrMsgFromServer } from "./Utils/form.js"
 import { env, getCsrfToken, randomString, setCsrfToken, setNotification, showImagePreview } from "./Utils/util.js"
 
+const handleItemForm = document.querySelector('#handle-item-form')
 const categories = document.querySelector('#categories')
 const imagePreviewBox = document.querySelector('#img-previews-box')
 const selectedFiles = {}
+const unselectedItemPics = []
+const formRole = handleItemForm.getAttribute('role')
 
 const removePreview = ()=> {
     imagePreviewBox.querySelectorAll('li button').forEach(btn => {
         btn.onclick = (e)=> {
             e.preventDefault()
-            let previewId = btn.parentNode.getAttribute('id')
-            document.querySelector('#' + previewId).remove()
 
-            delete selectedFiles[previewId]
+            let previewId = btn.parentNode.getAttribute('id')
+            btn.parentNode.remove()
+            
+            delete selectedFiles[previewId.slice(8)]
+
+            if (formRole == 'update') {
+                unselectedItemPics.push(previewId.slice(8))
+                console.log(unselectedItemPics)
+                
+            }
         }
     })
 }
@@ -43,12 +53,14 @@ const addPreview = (id)=> {
     removePreview()
 }
 
-const recordItem = ()=> {
-    const createItemForm = document.querySelector('#create-form form')
+const handleItem = ()=> {
+    const itemId = document.querySelector('#item-id')
     const itemImages = document.querySelector('#item-images')
     const itemName = document.querySelector('#item-name')
     const itemDescription = document.querySelector('#item-description')
     const itemPrice = document.querySelector('#item-price')
+
+    removePreview()
 
     const showItemPics = ()=> {
         itemImages.addEventListener('change', (e)=> {
@@ -95,16 +107,22 @@ const recordItem = ()=> {
 
     showItemPics()
 
-    createItemForm.addEventListener('submit', (e)=> {
+    handleItemForm.addEventListener('submit', (e)=> {
         e.preventDefault()
 
-        disable(createItemForm)
+        disable(handleItemForm)
+        setAlert(handleItemForm, '', false)
 
         let data = new FormData()
         data.append('item-name', itemName.value),
         data.append('item-price', itemPrice.value)
         data.append('categories', categories.value)
         data.append('item-description', itemDescription.value)
+
+        if (formRole == 'update') {
+            data.append('unselected-item-images', JSON.stringify(unselectedItemPics))
+            data.append('item-id', itemId.value)
+        }
         
         for (const i in selectedFiles) {
             if (Object.prototype.hasOwnProperty.call(selectedFiles, i)) {
@@ -112,8 +130,8 @@ const recordItem = ()=> {
             }
         }
         
-        fetch(createItemForm.getAttribute('action'), {
-            'method': createItemForm.getAttribute('method'),
+        fetch(handleItemForm.getAttribute('action'), {
+            'method': handleItemForm.getAttribute('method'),
             'cache': 'no-cache',
             'headers': {
                 'Accept': 'application/json',
@@ -123,7 +141,7 @@ const recordItem = ()=> {
             'body': data
         })
         .then(response => {
-            disable(createItemForm, false)
+            disable(handleItemForm, false)
             setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
 
             if (response.ok) 
@@ -132,7 +150,7 @@ const recordItem = ()=> {
             }
             else if (response.status == env.HTTP_INTERNAL_SERVER_ERROR) {
                 setAlert(
-                    createItemForm,
+                    handleItemForm,
                     'Une erreur est survenue. Veuillez éssayer de nouveau.'
                 )
             }
@@ -141,7 +159,7 @@ const recordItem = ()=> {
             }
             else {
                 setAlert(
-                    createItemForm,
+                    handleItemForm,
                     'Une erreur est survenue. Veuillez éssayer de nouveau.'
                 )
             }
@@ -152,14 +170,7 @@ const recordItem = ()=> {
             }
 
             if (json.status == env.HTTP_BAD_REQUEST) {
-                for (const id in json.messages) {
-                    if (Object.prototype.hasOwnProperty.call(json.messages, id)) {
-                        setErrMsg(
-                            document.querySelector('#' + id),
-                            json.messages[id]
-                        )
-                    }
-                }
+                setErrMsgFromServer(json.messages)
             }
         })
     })
@@ -167,14 +178,23 @@ const recordItem = ()=> {
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
-    addCategory(({id, name})=> {
-        const category = document.createElement('option')
+    const categoryName = document.querySelector('#category_name')
+    const categoryModal = document.querySelector('#add-category')
 
-        category.value = id 
-        category.innerText = name
-        categories.appendChild(category)
-        
-        setNotification(`La catégories ${name} a été ajouté avec succès.`)
+    setCategory({
+        'modal': categoryModal,
+        'name': categoryName,
+        'action': document.querySelector('#add-category-form').getAttribute('action'),
+        'success': ({id, name})=> {
+            const category = document.createElement('option')
+    
+            category.value = id 
+            category.innerText = name
+            categories.appendChild(category)
+            
+            setNotification(`La catégories ${name} a été ajouté avec succès.`)
+        }
     })
-    recordItem()
+
+    handleItem()
 })

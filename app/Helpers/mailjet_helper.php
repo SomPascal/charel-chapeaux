@@ -2,6 +2,7 @@
 
 use Mailjet\Client;
 use Mailjet\Resources;
+use Mailjet\Response;
 use Psr\Log\LogLevel;
 
 if (! function_exists('mailjet')) {
@@ -59,12 +60,15 @@ if (! function_exists('mailjet')) {
         } catch (\Throwable $e) {
             log_message(
                 LogLevel::ERROR,
-                $e->getMessage()
+                sprintf(
+                    'Could not send contact form mail due to: %s\n%s', 
+                    $e->getMessage(),
+                    $e->getTraceAsString()
+                )
             );
-            $response = false;
         }
 
         // Read the response
-        return $response;
+        return (bool) $response;
     }
 }

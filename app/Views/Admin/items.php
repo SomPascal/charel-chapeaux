@@ -4,7 +4,7 @@ use App\Models\CategoryModel;
 use App\Models\ItemModel;
 use App\Models\ItemsVisitsModel;
 
- helper('text') ?>
+ helper(['text', 'number']) ?>
 <?php $this->extend('Admin/base') ?>
 
 <?php $this->section('content') ?>
@@ -18,7 +18,7 @@ use App\Models\ItemsVisitsModel;
                 </h1>
 
                 <p class="opacity-75">
-                    <?= count($items) ?> articles enregistrés.
+                    <?= esc($num_of_items) ?> articles enregistrés.
                 </p>
             </div>
             
@@ -37,329 +37,142 @@ use App\Models\ItemsVisitsModel;
 
     <!-- CAPS POPULARITY  -->
     <div class="container py-4" id="caps-popularity">
-        <!-- Page Heading -->
-        <h3 class="h5 mb-4 text-gray-800 text-uppercase">
-            Les 03 Chapeaux les plus populaires 
-            <i class="fas fa-arrow-up"></i>
-        </h3>
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Page Heading -->
+                <h3 class="h5 mb-4 text-gray-800 text-uppercase">
+                    Les 03 Chapeaux les plus populaires 
+                    <i class="fas fa-arrow-up"></i>
+                </h3>
+        
+                <?php if(count($popular_items) > 0): ?>
+                    <!-- Slider main container -->
+                    <div class="swiper mb-3 pb-5">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+        
+                            <?php foreach($popular_items as $popular_item): ?>
+                                <div class="swiper-slide">
+                                    <div class="card shadow">
+                                        <a href="<?= route_to('item.show', $popular_item->id) ?>">
+                                            <img 
+                                            src="<?= route_to('item.pic', $popular_item->item_pic_id) ?>" 
+                                            class="card-img-top img-fluid img-fluid" 
+                                            alt="<?= esc(character_limiter($popular_item->description, 125, '...')) ?>"
+                                            />
+                                        </a>
+                                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <?= esc($popular_item->name) ?> 
+                                            </h5>
+                
+                                            <span>
+                                                <i class="fa fa-eye"></i>
+                                                <label>
+                                                    <?= esc(number_format(model(ItemsVisitsModel::class)
+                                                        ->visits($popular_item->id))) 
+                                                    ?>
+                                                </label>
+                                            </span>
+                
+                                            <p>
+                                                <?= esc(number_to_currency($popular_item->price, XAF)) ?> 
+                                            </p>
 
-        <!-- Slider main container -->
-        <div class="swiper mb-3">
-            <!-- Additional required wrapper -->
-            <div class="swiper-wrapper">
-                <!-- Slides -->
-                <!-- <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="..." 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <span>
-                                <i class="fa fa-eye"></i>
-                                <label>16</label>
-                            </span>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
+                                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                                <a 
+                                                 href="<?= route_to('admin.item.modify', $popular_item->id) ?>"
+                                                 class="btn btn-sm btn-primary m-1"
+                                                >
+                                                    Modifier
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach ?>
                         </div>
+            
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination"></div>
                     </div>
-                </div>
-
-                <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="..." 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="..." 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
+                <?php else: ?>
+                    <p class="bg-light">
+                        Aucun article 
+                    </p>
+                <?php endif ?>
             </div>
 
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
-        </div>
+            <div class="col-md-6">
+                <h3 class="h5 mb-4 text-gray-800 text-uppercase">
+                    Les 03 Chapeaux les mois populaires 
+                    <i class="fas fa-arrow-down"></i>
+                </h3>
+        
+                <!-- Slider main container -->
+                <?php if(count($unpopular_items) > 0): ?>
+                    <!-- Slider main container -->
+                    <div class="swiper mb-3 pb-5">
+                        <!-- Additional required wrapper -->
+                        <div class="swiper-wrapper">
+                            <!-- Slides -->
+        
+                            <?php foreach($unpopular_items as $unpopular_item): ?>
+                                <div class="swiper-slide">
+                                    <div class="card shadow">
+                                        <a href="<?= route_to('item.show', $unpopular_item->id) ?>">
+                                            <img 
+                                            src="<?= route_to('item.pic', $unpopular_item->item_pic_id) ?>" 
+                                            class="card-img-top img-fluid img-fluid" 
+                                            alt="<?= esc(character_limiter($unpopular_item->description, 125, '...')) ?>"
+                                            />
+                                        </a>
+                                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <?= esc($unpopular_item->name) ?> 
+                                            </h5>
+                
+                                            <span>
+                                                <i class="fa fa-eye"></i>
+                                                <label>
+                                                    <?= esc(number_format(model(ItemsVisitsModel::class)
+                                                        ->visits($unpopular_item->id))) 
+                                                    ?>
+                                                </label>
+                                            </span>
+                
+                                            <p>
+                                                <?= esc(number_to_currency($unpopular_item->price, XAF)) ?> 
+                                            </p>
 
-        <h3 class="h5 mb-4 text-gray-800 text-uppercase">
-            Les 03 Chapeaux les mois populaires 
-            <i class="fas fa-arrow-down"></i>
-        </h3>
-
-        <!-- Slider main container -->
-        <div class="swiper">
-            <!-- Additional required wrapper -->
-            <div class="swiper-wrapper">
-                <!-- Slides -->
-                <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
+                                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                                <a 
+                                                 href="<?= route_to('admin.item.modify', $unpopular_item->id) ?>"
+                                                 class="btn btn-sm btn-primary m-1"
+                                                >
+                                                    Modifier
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach ?>
                         </div>
+            
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination"></div>
                     </div>
-                </div>
-
-                <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="swiper-slide">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <div class="card-img-top">
-                                <img 
-                                src="<?= base_url('assets/Admin/img/chapeau-illustration.jpg') ?>" 
-                                class="img-fluid" 
-                                alt="..."
-                                />
-                            </div>
-
-                            <h5 class="card-title">
-                                Chapeaux 
-                            </h5>
-
-                            <p>
-                                15.000F
-                            </p>
-
-                            <div class="d-flex flex-wrap gap-2">
-                                <button 
-                                class="btn btn-sm btn-secondary btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fas fa-expand-alt"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Agrandir
-                                    </span>
-                                </button>
-
-                                <button 
-                                class="btn btn-sm btn-danger btn-icon-split m-1"
-                                >
-                                    <span class="icon">
-                                        <i class="fa fa-trash"></i>
-                                    </span>
-
-                                    <span class="text">
-                                        Supprimer
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php else: ?>
+                    <p class="bg-light">
+                        Aucun article 
+                    </p>
+                <?php endif ?>
             </div>
-
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
         </div>
+
     </div>
 
     <section class="container-fluid">
@@ -419,10 +232,17 @@ use App\Models\ItemsVisitsModel;
                             Catégories
                         </button>
 
-                        <ul class="dropdown-menu" id="list-categories">
+                        <ul 
+                         class="dropdown-menu" 
+                         id="list-categories" 
+                         update-action="<?= route_to('admin.category.update') ?>"
+                         create-action="<?= route_to('admin.category.create') ?>"
+                        >
                             <?php foreach($categories as $category): ?>
                                 <li class="dropdown-item" id="category-<?= esc($category->code) ?>">
-                                    <?= esc($category->name) ?>
+                                    <p class="d-inline-block mb-0">
+                                        <?= esc($category->name) ?>
+                                    </p>
                                     (<?= esc($category->num_items ?? 0) ?>) 
 
                                     <div>
@@ -434,6 +254,16 @@ use App\Models\ItemsVisitsModel;
                                          delete
                                         >
                                             <i class="fa fa-trash"></i>
+                                        </button>
+
+                                        <button 
+                                         type="button" 
+                                         class="btn btn-sm btn-secondary" 
+                                         data-toggle="modal"
+                                         data-target="#add-category"
+                                         update
+                                        >
+                                            <i class="fa fa-edit"></i>
                                         </button>
                                     </div>
                                 </li>
@@ -448,7 +278,6 @@ use App\Models\ItemsVisitsModel;
                              ]) ?>
                             >
                                 <button 
-                                 class="btn btn-sm btn-secondary my-0 w-100"
                                  <?= classes([
                                     'btn',
                                     'btn-sm',
@@ -457,6 +286,7 @@ use App\Models\ItemsVisitsModel;
                                     'w-100',
                                     'disabled' => count($categories) > 10
                                  ]) ?>
+                                 id="add-category-btn"
 
                                  <?= attr(count($categories) > 10, 'disabled') ?>
                                  data-toggle="modal"
@@ -515,22 +345,24 @@ use App\Models\ItemsVisitsModel;
                                                 </label>
                                             </p>
 
-                                            <p class="mb-0">
-                                                <i class="fa fa-heart"></i>
-                                                <label>---</label>
-                                            </p>
-
                                         </div>
                                         <p class="mb-0">
                                             Categorie: <?= esc($item->category ?? 'Autre') ?>
                                         </p>
             
                                         <p class="mb-0 fw-bold">
-                                            <?= esc($item->price) ?> F
+                                            <?= esc(number_to_currency($item->price, XAF)) ?> F
                                         </p>
             
                                         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
                                             
+                                            <a 
+                                             href="<?= route_to('admin.item.modify', $item->id) ?>"
+                                             class="btn btn-sm btn-primary m-1"
+                                            >
+                                                Modifier
+                                            </a>
+
                                             <button 
                                              class="btn btn-sm btn-danger m-1"
                                              data-toggle="modal"

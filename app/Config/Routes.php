@@ -4,19 +4,22 @@ use App\Controllers\Admin\CategoryController;
 use App\Controllers\Admin\ChangeController;
 use App\Controllers\Admin\ChangePasswordController;
 use App\Controllers\Admin\ChangeUsernameController;
-use App\Controllers\Admin\ContactController;
+use App\Controllers\Admin\ContactController as AdminContactController;
 use App\Controllers\CookieController;
 use App\Controllers\Admin\DashboardController;
+use App\Controllers\Admin\DescriptionController;
 use App\Controllers\ErrorController;
 use App\Controllers\HomeController;
 use App\Controllers\ItemController;
 use App\Controllers\Admin\LoginController;
 use App\Controllers\Admin\RegisterController;
+use App\Controllers\ContactController as ContactController;
 use App\Controllers\DraftController;
 use App\Controllers\InviteAdminController;
 use App\Controllers\PicsController;
 use App\Controllers\RedirectController;
 use App\Controllers\SearchController;
+use App\Controllers\TestimonialController;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -52,12 +55,26 @@ $routes->group('admin', function(RouteCollection $routes) {
         $routes->post('delete', [CategoryController::class, 'delete'], ['as' => 'admin.category.delete']);
     });
 
+    $routes->group('testimonial', ['filter' => 'group:superadmin'], function(RouteCollection $routes) {
+        $routes->get('create', [TestimonialController::class, 'create'], ['as' => 'admin.testimonial.create']);
+        $routes->post('store', [TestimonialController::class, 'store'], ['as' => 'admin.testimonial.store']);
+
+        $routes->get('modify/(:num)', [TestimonialController::class, 'modify'], ['as' => 'admin.testimonial.modify']);
+        $routes->post('update', [TestimonialController::class, 'update'], ['as' => 'admin.testimonial.update']);
+        
+        $routes->post('delete', [TestimonialController::class, 'delete'], ['as' => 'admin.testimonial.delete']);
+    });
+
+    $routes->group('description', ['filter' => 'group:superadmin'], function(RouteCollection $routes) {
+        $routes->get('modify/(:hash)', [DescriptionController::class, 'modify'], ['as' => 'admin.description.modify']);
+        $routes->post('update/', [DescriptionController::class, 'update'], ['as' => 'admin.description.update']);
+    });
+
     $routes->group('{locale}', function(RouteCollection $routes) {
         $routes->get('/', [DashboardController::class, 'home'], ['as' => 'admin.home']);
         $routes->get('stats', [DashboardController::class, 'stats'], ['as' => 'admin.stats']);
         $routes->get('manage', [DashboardController::class, 'manage'], ['as' => 'admin.manage']);
         $routes->get('items', [DashboardController::class, 'items'], ['as' => 'admin.items']);
-        $routes->get('create', [ItemController::class, 'create'], ['as' => 'admin.item.create', 'filter' => 'group:admin,superadmin']);
     
         $routes->get('content', [DashboardController::class, 'content'], ['as' => 'admin.content']);
         $routes->get('(:num)', [DashboardController::class, 'show'], ['as' => 'admin.show']);
@@ -66,7 +83,12 @@ $routes->group('admin', function(RouteCollection $routes) {
     $routes->group('change', ['filter' => 'group:superadmin'], function(RouteCollection $routes){
         $routes->post('role', [ChangeController::class, 'role'], ['as' => 'admin.change.role']);
         $routes->post('ban', [ChangeController::class, 'ban'], ['as' => 'admin.change.ban']);
-        $routes->post('contact', [ContactController::class, 'change'], ['as' => 'admin.change.contact']);
+        $routes->post('contact', [AdminContactController::class, 'change'], ['as' => 'admin.change.contact']);
+    });
+
+    $routes->group('invite', function(RouteCollection $routes){
+        $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'admin.invite.use']);
+        $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'admin.invite.get', 'filter' => 'group:superadmin']);
     });
 });
 
@@ -74,24 +96,23 @@ $routes->get('/', [HomeController::class, 'index'], ['as' => 'index']);
 $routes->get('{locale}', [HomeController::class, 'home'], ['as' => 'home']);
 $routes->post('accept-cookie', [CookieController::class, 'accept'], ['as' => 'cookie.accept']);
 
-$routes->group('invite', function(RouteCollection $routes){
-    $routes->get('use/(:hash)', [InviteAdminController::class, 'use'], ['as' => 'invite.use']);
-    $routes->post('get', [InviteAdminController::class, 'get'], ['as' => 'invite.get', 'filter' => 'group:superadmin']);
-});
+$routes->post('contact', [ContactController::class, 'store'], ['as' => 'contact.store']);
 
 $routes->get('{locale}/item/(:hash)', [ItemController::class, 'show'], ['as' => 'item.show']);
 
 $routes->get('{locale}/find', [SearchController::class, 'find'], ['as' => 'item.find']);
 
 $routes->group('item', function(RouteCollection $routes) {
-    $routes->get('search', [SearchController::class, 'search'], ['as' => 'item.search']);
+    $routes->get('{locale}/search', [SearchController::class, 'search'], ['as' => 'item.search']);
 
     $routes->post('store', [ItemController::class, 'store'], ['as' => 'admin.item.store', 'filter' => 'group:admin,superadmin']);
-    $routes->post('like', [ItemController::class, 'like'], ['as' => 'item.like']);
-    $routes->post('unlike', [ItemController::class, 'unlike'], ['as' => 'item.unlike']);
     $routes->post('hide', [ItemController::class, 'hide'], ['as' => 'item.hide']);
     $routes->post('unhide', [ItemController::class, 'unhide'], ['as' => 'item.unhide']);
     $routes->post('delete', [ItemController::class, 'delete'], ['as' => 'item.delete']);
+
+    $routes->get('create', [ItemController::class, 'create'], ['as' => 'admin.item.create', 'filter' => 'group:admin,superadmin']);
+    $routes->get('modify/(:hash)', [ItemController::class, 'modify'], ['as' => 'admin.item.modify', 'filter' => 'group:admin,superadmin']);
+    $routes->post('update', [ItemController::class, 'update'], ['as' => 'admin.item.update', 'filter' => 'group:admin,superadmin']);
 
     $routes->get('pic/(:hash)', [PicsController::class, 'item'], ['as' => 'item.pic']);
 });

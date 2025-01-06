@@ -20,24 +20,24 @@ class CreateItemPicsTable extends Migration
 
             'item_id' => [
                 'type' => 'varchar',
-                'constraint' => 30
+                'constraint' => 125
             ],
 
             'extension' => [
                 'type' => 'varchar',
-                'constraint' => 30,
+                'constraint' => 125,
                 'null' => 'false',
                 'default' => 'png'
             ],
 
             'created_at' => [
-                'type' => 'datatime',
+                'type' => 'datetime',
                 'null' => false,
                 'default' => new RawSql('CURRENT_TIMESTAMP')
             ],
 
             'deleted_at' => [
-                'type' => 'datatime',
+                'type' => 'datetime',
                 'null' => true
             ]
         ])

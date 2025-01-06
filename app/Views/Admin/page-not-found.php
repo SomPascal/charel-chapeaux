@@ -15,7 +15,7 @@
                 404
             </div>
 
-            <p class="lead text-gray-800 mb-5">
+            <p class="lead text-gray-800 mb-3">
                 Cette page n'existe pas.
             </p>
 
@@ -24,10 +24,17 @@
                 pour retourner à l'acceuil
             </p>
 
-            <a href="<?= route_to('admin.home') ?>">
-                <i class="fa fa-arrow-circle-left"></i>
-                Back to Dashboard
-            </a>
+            <div class="w-100 d-flex justify-content-center mt-3" style="gap: 15px;">
+                <a class="btn btn-sm btn-secondary" href="javascript:void(0)" onclick="history.back()" >
+                    <i class="fa fa-arrow-circle-left"></i>
+                    Retour
+                </a>
+
+                <a class="btn btn-sm btn-primary" href="<?= route_to('admin.home') ?>">
+                    <i class="fa fa-home"></i>
+                    Back to Dashboard
+                </a>
+            </div>
         </div>
     </div>
     <!-- /.container-fluid -->

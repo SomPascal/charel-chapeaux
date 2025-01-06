@@ -1,4 +1,4 @@
-import { addCategory, setVisibility } from "./Utils/admin.js"
+import { setCategory, setVisibility } from "./Utils/admin.js"
 import { disable, setAlert } from "./Utils/form.js"
 import { env, getCsrfToken, setCsrfToken, setNotification } from "./Utils/util.js"
 import Item from "./Components/Item.js"
@@ -11,7 +11,7 @@ const enableItemSwiper = ()=> {
         new Swiper(list, {
             loop: false,
             slidesPerView: 2, 
-            spaceBetween: '20px',
+            spaceBetween: '10px',
 
             pagination: {
                 el: '.swiper-pagination'
@@ -76,10 +76,20 @@ const handleItemVisibility = ()=> {
 }
 
 const handleCategories = ()=> {
+    const listCategories = document.querySelector('#list-categories')
     const deleteCategoryModal = document.querySelector('#delete-category-modal')
     const deleteCategoryForm = deleteCategoryModal.querySelector('form')
 
-    addCategory(()=> window.location.reload())
+    const categoryName = document.querySelector('#category_name')
+    const categoryModal = document.querySelector('#add-category')
+
+    document.querySelector('#add-category-btn').addEventListener('click', ()=> {
+        setCategory({
+            'name': categoryName,
+            'modal': categoryModal,
+            'action': listCategories.getAttribute('create-action'),
+        })
+    })
 
     listCategories.querySelectorAll('li').forEach(category => {        
         category.querySelector('button[delete]')?.addEventListener('click', ()=> {
@@ -93,6 +103,18 @@ const handleCategories = ()=> {
                     'category_code',
                     ()=> {window.location.reload()}
                 )
+            })
+        })
+
+        category.querySelector('button[update]')?.addEventListener('click', ()=> {
+            document.querySelector('#category_code').value = category.id.slice(9)
+            categoryName.value = category.querySelector('p').innerText
+
+            setCategory({
+                'name': categoryName,
+                'modal': categoryModal,
+                'action': listCategories.getAttribute('update-action'),
+                'update': true
             })
         })
     })
@@ -187,7 +209,7 @@ const searchItems = ()=> {
                 HTMLResult.classList.add('card', 'shadow', 'search-result')
                 HTMLResult.setAttribute('id', 'item-'.concat(result.id))
 
-                if (result.is_hidden) {
+                if (Number(result.is_hidden) == 1) {
                     HTMLResult.classList.add('opacity-50')
                 }
 
@@ -252,9 +274,31 @@ const searchItems = ()=> {
     
 }
 
+const popularItemsSliders = ()=> {
+    document.querySelectorAll('#caps-popularity .swiper').forEach(slider => {
+        new Swiper(slider, {
+            // Optional parameters
+            loop: false,
+            slidesPerView: 2,
+            spaceBetween: '10px',
+        
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+            },
+
+            keyboard: {
+                enabled: true,
+                onlyInViewport: false,
+            }
+        })
+    })
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     enableItemSwiper()
     handleItemVisibility()
     handleCategories()
     searchItems()
+    popularItemsSliders()
 })

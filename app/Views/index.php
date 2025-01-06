@@ -1,10 +1,19 @@
 <?php
+
+use CodeIgniter\I18n\Time;
 use Config\Contact;
 
-helper(['text', 'number']);
+helper(['text', 'number', 'description']);
 ?>
 
 <?php $this->extend('base') ?>
+
+<?php $this->section('meta-description') ?>
+  <meta 
+   name="description" 
+   content="<?= esc(get_desc(needle: 'meta', haystack: $descriptions) ?? 'Création, vente de chapeaux, sacs et bijoux au cameroun et yaoundé en particulier.') ?>"
+  >
+<?php $this->endSection('meta-description') ?>
 
 <?php $this->section('title') ?>
   <title>
@@ -28,130 +37,73 @@ helper(['text', 'number']);
          data-aos="fade-up" 
          data-aos-delay="300"
         >
-          <p><?= esc(lang('Text.desc')) ?></p>
+          <p><?= esc(get_desc(needle: 'main', haystack: $descriptions)) ?></p>
         </div>
       </div>
 
-      <div class="row">
-        <div 
-         class="swiper main-swiper py-4" 
-         data-aos="fade-up" 
-         data-aos-delay="600"
-        >
-          <div class="swiper-wrapper d-flex border-animation-left">
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                      src="/assets/images/items/presentation-cap-1.jpg" 
-                      alt="product"
-                      class="img-fluid"
-                    />
-                  </a>
+      <?php if(count($header_items) > 0): ?>
+        <div class="row">
+          <div 
+           class="swiper main-swiper py-4" 
+           data-aos="fade-up" 
+           data-aos-delay="600"
+          >
+            <div class="swiper-wrapper d-flex border-animation-left">
+              <?php foreach ($header_items as $item): ?>
+                <div class="swiper-slide">
+                  <div class="banner-item image-zoom-effect">
+                    <div class="image-holder">
+                      <a href="<?= route_to('item.show', $item->id) ?>">
+                        <img 
+                          src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
+                          alt="product"
+                          class="img-fluid"
+                        />
+                      </a>
+                    </div>
+    
+                    <div class="banner-content py-4">
+                      <h5 class="element-title text-uppercase">
+                        <?= esc($item->name) ?>
+                      </h5>
+    
+                      <p><?= esc($item->description) ?></p>
+                    </div>
+                  </div>
                 </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Des chapeaux sophistiqués
-                  </h5>
-
-                  <p>
-                    Nous sommes habitué à créer des chapeaux aux finissions impéccables.
-                  </p>
-                </div>
-              </div>
+              <?php endforeach ?>
             </div>
+            
+            <div class="swiper-pagination"></div>
+          </div>
+  
+          <div class="icon-arrow icon-arrow-left">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-left"></use>
+            </svg>
+          </div>
+  
+          <div class="icon-arrow icon-arrow-right">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-right"></use>
+            </svg></div>
+        </div>
+      <?php else: ?>
+        <?php if (auth()->loggedIn()): ?>
+          <div class="container">
+            <div class="alert alert-info text-center">
+              <p>
+                Veuillez ajouter des articles
+              </p>
 
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                     src="/assets/images/items/presentation-cap-2.jpg" 
-                     alt="product" 
-                     class="img-fluid"
-                    >
-                  </a>
-                </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Des chapeaux de hautes haute-qualités
-                  </h5>
-
-                  <p>
-                    Confectionnez chez nous des chapeaux soigneusement 
-                    conçus
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                     src="/assets/images/items/presentation-cap-3.jpg" 
-                     alt="product" 
-                     class="img-fluid"
-                    >
-                  </a>
-                </div>
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Vos mariages et évènements
-                  </h5>
-
-                  <p>
-                    pour vos dotes, marriages ou funérailles, nous saurons vous 
-                    satisfaire.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="swiper-slide">
-              <div class="banner-item image-zoom-effect">
-                <div class="image-holder">
-                  <a href="<?= route_to('item.show', 'abc-123-efg') ?>">
-                    <img 
-                      src="/assets/images/items/chapeaux-12.jpg" 
-                      alt="product" 
-                      class="img-fluid"
-                    >
-                  </a>
-                </div>
-
-                <div class="banner-content py-4">
-                  <h5 class="element-title text-uppercase">
-                    Pour vos soirées et fetes
-                  </h5>
-
-                  <p>
-                    Démarquez vous dans les soirées, fetes avec un chapeau éclatant et 
-                    authentique.
-                  </p>
-                </div>
-              </div>
+              <a href="<?= route_to('admin.item.create') ?>" role="button" class="btn btn-dark">
+                Ajouter 
+                <i class="fa fa-circle-plus"></i>
+              </a>
             </div>
           </div>
-          
-          <div class="swiper-pagination"></div>
-        </div>
-
-        <div class="icon-arrow icon-arrow-left">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-left"></use>
-          </svg>
-        </div>
-
-        <div class="icon-arrow icon-arrow-right">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-right"></use>
-          </svg></div>
-      </div>
+        <?php endif ?>
+      <?php endif ?>
     </div>
   </section>
 
@@ -205,623 +157,94 @@ helper(['text', 'number']);
     </div>
   </section>
 
-  <?php $i = 0 ?>
-  <?php foreach(array_chunk($items, 7) as $chuncked_item): ?>
-    <section 
-     <?= attrs([
-      'id="our-collections"' => $i == 0,
-      'id="caps-collection-2"' => $i == 1,
-      'id="caps-collection-3"' => $i == 2
-     ]) ?>
-     class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden"
-    >
-      <div class="container">
-        <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-          <h4 class="text-uppercase">
-            Notre Collection de chapeaux
-          </h4>
-  
-          <a href="/" class="btn-link">
-            Me Confectionner un chapeau
-            <i class="fa fa-arrow-right"></i>
-          </a>
-        </div>
-  
-        <div class="swiper product-swiper open-up" data-aos="zoom-out">
-          <div class="swiper-wrapper d-flex">
-            <?php foreach($chuncked_item as $item): ?>
-              <div class="swiper-slide">
-                <div class="product-item image-zoom-effect link-effect" liked>
-                  <div class="image-holder position-relative">
-                    <a href="<?= route_to('item.show', $item->id) ?>">
-                      <img 
-                      src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
-                      alt="<?= esc(character_limiter($item->name, 18, '...')) ?>" 
-                      class="product-image img-fluid"
-                      >
-                    </a>
+  <?php if (count($items) > 0): ?>
+    <?php $i = 0 ?>
+    <?php foreach(array_chunk($items, 7) as $chuncked_item): ?>
+      <section 
+       <?= attrs([
+        'id="our-collections"' => $i == 0,
+        'id="caps-collection-2"' => $i == 1,
+        'id="caps-collection-3"' => $i == 2
+       ]) ?>
+       class="new-arrival product-carousel pt-5 pb-2 position-relative overflow-hidden"
+      >
+        <div class="container">
+          <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
+            <h4 class="text-uppercase">
+              Notre Collection de chapeaux
+            </h4>
     
-                    <a href="/" class="btn-icon btn-wishlist">
-                      <i class="fs-5 fa fa-heart"></i>
-                    </a>
+            <a href="/" class="btn-link">
+              Me Confectionner un chapeau
+              <i class="fa fa-arrow-right"></i>
+            </a>
+          </div>
     
-                    <div class="product-content">
-                      <h5 class="text-uppercase fs-5 mt-3">
-                        <a href="/">
-                          <?= esc(number_to_currency($item->price, XAF)) ?>
-                        </a>
-                      </h5>
+          <div class="swiper product-swiper open-up" data-aos="zoom-out">
+            <div class="swiper-wrapper d-flex">
+              <?php foreach($chuncked_item as $item): ?>
+                <div class="swiper-slide">
+                  <div class="product-item image-zoom-effect link-effect" liked>
+                    <div class="image-holder position-relative">
+                      <a href="<?= route_to('item.show', $item->id) ?>">
+                        <img 
+                        src="<?= route_to('item.pic', $item->item_pic_id) ?>" 
+                        alt="<?= esc(character_limiter($item->name, 18, '...')) ?>" 
+                        class="product-image img-fluid"
+                        >
+                      </a>
+      
+                      <div class="product-content">
+                        <h5 class="text-uppercase fs-5 mt-3">
+                          <a href="/">
+                            <?= esc(number_to_currency($item->price, XAF)) ?>
+                          </a>
+                        </h5>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            <?php endforeach ?>
-  
-            <!-- <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-2.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-                  <a href="#" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/details-item.html">
-                        15.000 F 
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
+              <?php endforeach ?>
             </div>
-  
-            <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-3.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-                  <a href="#" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/">
-                        15.000 F
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-4.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-  
-                  <a href="#" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-  
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/details-item.html">
-                        15.000 F
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-5.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-                  <a href="#" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/details-item.html">
-                        15.000 F
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-8.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-                  <a href="#" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/details-item.html">
-                        15.000 F
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="swiper-slide">
-              <div class="product-item image-zoom-effect link-effect">
-                <div class="image-holder position-relative">
-                  <a href="details-item.html">
-                    <img 
-                     src="/assets/images/items/chapeaux-7.jpg" 
-                     alt="categories" 
-                     class="product-image img-fluid"
-                    >
-                  </a>
-                  <a href="/" class="btn-icon btn-wishlist">
-                    <i class="fa fa-heart fs-5" ></i>
-                  </a>
-                  <div class="product-content">
-                    <h5 class="text-uppercase fs-5 mt-3">
-                      <a href="/">
-                        15.000 F
-                      </a>
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+    
+            <div class="swiper-pagination"></div>
           </div>
-  
-          <div class="swiper-pagination"></div>
+    
+          <div class="icon-arrow icon-arrow-left blur-effet">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-left"></use>
+            </svg>
+          </div>
+    
+          <div class="icon-arrow icon-arrow-right">
+            <svg width="50" height="50" viewBox="0 0 24 24">
+              <use xlink:href="#arrow-right"></use>
+            </svg>
+          </div>
         </div>
-  
-        <div class="icon-arrow icon-arrow-left blur-effet">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-left"></use>
-          </svg>
-        </div>
-  
-        <div class="icon-arrow icon-arrow-right">
-          <svg width="50" height="50" viewBox="0 0 24 24">
-            <use xlink:href="#arrow-right"></use>
-          </svg>
-        </div>
-      </div>
-    </section>
-    <?php $i++ ?>
-  <?php endforeach ?>
+      </section>
+      <?php $i++ ?>
+    <?php endforeach ?>
+  <?php else: ?>
+    <?php if (auth()->loggedIn()): ?>
+      <section class="container my-5">
+        <p class="alert alert-info text-center">
+          <i class="fa fa-circle-info fs-1 text-left"></i>
+          <br>
 
+          <span>
+            Aucun article enrégistré.
+          </span>
+          <br>
 
-  <!-- <section id="caps-collection-2" class="new-arrival product-carousel pt-2 pb-5 position-relative overflow-hidden">
-    <div class="container">
-      <div class="d-flex flex-wrap justify-content-between align-items-center mt-5 mb-3">
-        <h4 class="text-uppercase">
-          Des chapeaux de haute-qualités
-        </h4>
-
-        <a href="/" class="btn-link">
-          Me Confectionner un chapeau
-          <i class="fa fa-arrow-right"></i>
-        </a>
-      </div>
-
-      <div class="swiper product-swiper open-up" data-aos="zoom-out">
-        <div class="swiper-wrapper d-flex">
-          
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-9.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="element-title text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-10.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-11-.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      10.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-12.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-15.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-16.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">Crop sweater</a>
-                  </h5>
-                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$70.00</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-17.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">Crop sweater</a>
-                  </h5>
-                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$70.00</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="swiper-pagination"></div>
-      </div>
-
-      <div class="icon-arrow icon-arrow-left">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-left"></use>
-        </svg>
-      </div>
-
-      <div class="icon-arrow icon-arrow-right">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-right"></use>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <section id="caps-collection-3" class="new-arrival product-carousel pt-2 pb-5 position-relative overflow-hidden">
-    <div class="container">
-      <div class="swiper product-swiper open-up" data-aos="zoom-out">
-        <div class="swiper-wrapper d-flex">
-          
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-9.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="element-title text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-10.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-11-.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      10.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-12.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-15.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">
-                      15.000 F
-                    </a>
-                  </h5>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-16.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">Crop sweater</a>
-                  </h5>
-                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$70.00</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="product-item image-zoom-effect link-effect">
-              <div class="image-holder position-relative">
-                <a href="details-item.html">
-                  <img 
-                   src="/assets/images/items/chapeaux-17.jpg" 
-                   alt="categories" 
-                   class="product-image img-fluid"
-                  >
-                </a>
-                <a href="/" class="btn-icon btn-wishlist">
-                  <i class="fa fa-heart fs-5" ></i>
-                </a>
-                <div class="product-content">
-                  <h5 class="text-uppercase fs-5 mt-3">
-                    <a href="/">Crop sweater</a>
-                  </h5>
-                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>$70.00</span></a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="swiper-pagination"></div>
-      </div>
-
-      <div class="icon-arrow icon-arrow-left">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-left"></use>
-        </svg>
-      </div>
-
-      <div class="icon-arrow icon-arrow-right">
-        <svg width="50" height="50" viewBox="0 0 24 24">
-          <use xlink:href="#arrow-right"></use>
-        </svg>
-      </div>
-    </div>
-  </section> -->
+          <a href="<?= route_to('admin.item.create') ?>" class="btn btn-dark">
+            Créer un article
+            <i class="fa fa-circle-plus"></i>
+          </a>
+        </p>
+      </section>
+    <?php endif ?>
+  <?php endif ?>
 
   <section class="collection bg-light position-relative py-5">
     <div class="container">
@@ -850,12 +273,7 @@ helper(['text', 'number']);
               <br>
 
               <p>
-                Chez Charel Chapeaux, nous mettons l'accent sur le détail. Chaque fil, 
-                chaque tissu est soigneusement posé pour un résultat impeccable. 
-                
-                <br><br>
-                Pour tous vos événements, mariages, soirées, nous créons des chapeaux 
-                uniques et sur-mesure. 
+                <?= nl2br(esc(get_desc(needle: 'main', haystack: $descriptions))) ?>
               </p>
               <br><br>
 
@@ -881,61 +299,62 @@ helper(['text', 'number']);
     </div>
   </section>
 
-  <section class="testimonials py-5 bg-light">
-    <div class="section-header text-center mt-5">
-      <h3 class="section-title text-uppercase">
-        Des Clients Satisfaits
-      </h3>
-    </div>
+  <?php if (count($testimonials) > 0): ?>
+    <section class="testimonials py-5 bg-light">
+      <div class="section-header text-center mt-5">
+        <h3 class="section-title text-uppercase">
+          Des Clients Satisfaits
+        </h3>
+      </div>
+      
+      <div class="swiper testimonial-swiper overflow-hidden my-5">
+        <div class="swiper-wrapper d-flex">
+          <?php foreach($testimonials as $testimonial): ?>
+            <div class="swiper-slide">
+              <div class="testimonial-item text-center">
+                <blockquote>
+                  <p>
+                    “<?= esc($testimonial->content) ?>”
+                  </p>
     
-    <div class="swiper testimonial-swiper overflow-hidden my-5">
-      <div class="swiper-wrapper d-flex">
-        <div class="swiper-slide">
-          <div class="testimonial-item text-center">
-            <blockquote>
-              <p>
-                “Les finissions de mon chapeau de marriage étaient impéccables.
-                Je suis une cliente satisfaite”
-              </p>
+                  <div class="review-title text-uppercase">
+                    <?= esc($testimonial->name) ?>
+                  </div>
 
-              <div class="review-title text-uppercase">
-                Chrystelle
+                  <?php if (auth()->loggedIn()): ?>
+                    <div class="review-title text-uppercase">
+                      <?= esc(Time::createFromFormat('Y-m-d H:i:s', $testimonial->created_at)->humanize()) ?>
+                    </div>
+                  <?php endif ?>
+                </blockquote>
               </div>
-            </blockquote>
-          </div>
-        </div>
-
-        <div class="swiper-slide">
-          <div class="testimonial-item text-center">
-            <blockquote>
-              <p>
-                “Ma femme et moi avons confectionné un chapeau chez Charel Chapeaux. C'était 
-                très jolie."
-              </p>
-              <div class="review-title text-uppercase">
-                Steve
-              </div>
-            </blockquote>
-          </div>
-        </div>
-        <div class="swiper-slide">
-          <div class="testimonial-item text-center">
-            <blockquote>
-              <p>
-                “On sent l'amour du détail dans tout ce qu'ils produisent. Je devenu 
-                une fidèle cliente.”
-              </p>
-              
-              <div class="review-title text-uppercase">
-                Mama Thérèse
-              </div>
-            </blockquote>
-          </div>
+            </div>
+          <?php endforeach ?>
         </div>
       </div>
-    </div>
-    <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
-  </section>
+
+      <div class="testimonial-swiper-pagination d-flex justify-content-center mb-5"></div>
+    </section>
+  <?php else: ?>
+    <?php if (auth()->loggedIn()): ?>
+      <section class="container my-5">
+        <p class="alert alert-info text-center">
+          <i class="fa fa-circle-info fs-1 text-left"></i>
+          <br>
+
+          <span>
+            Aucun Témoignage enrégistré.
+          </span>
+          <br>
+
+          <a href="<?= route_to('admin.testimonial.create') ?>" class="btn btn-dark">
+            Créer une 
+            <i class="fa fa-circle-plus"></i>
+          </a>
+        </p>
+      </section>
+    <?php endif ?>
+  <?php endif ?>
 
   <section id="contact-us" class="newsletter bg-light" style="background: url(/assets/img/pattern-bg.png) no-repeat;">
     <div class="container">
@@ -966,7 +385,7 @@ helper(['text', 'number']);
                target="_blank"
               >
                 <i class="fa fa-phone"></i>
-                Appel : <?= esc(get_contact('phone') ?? Contact::$phone) ?>
+                Appel : <?= esc(get_contact('phone', Contact::$phone)) ?>
               </a>
             </div>
           </div>
@@ -994,64 +413,83 @@ helper(['text', 'number']);
             </div>
           </div>
 
-          <form id="contact-us" class="d-flex flex-wrap justify-content-center">
-            <div class="row w-100">
-              <div class="col-md-6">
-                <div class="input-group has-validation mb-3">
-                  <span class="input-group-text">
-                    Nom
-                  </span>
-
-                  <input 
-                    type="text"
-                    placeholder="Ex: Chrystelle" 
-                    aria-label="Votre nom" 
-                    id="name"
-                    class="form-control form-control-lg"
-                    minlength="3"
-                    maxlength="24"
-                    required
-                  >
-
-                  <span class="invalid-feedback"></span>
+          <?php if(session()->get(CONTACT_SENT) !== true): ?>
+            <form 
+             method="post" 
+             action="<?= route_to('contact.store') ?>"
+             id="contact-us" 
+             <?= classes([
+              'd-flex',
+              'flex-wrap',
+              'justify-content-center',
+              'mb-3'
+             ]) ?>
+            >
+              <p class="alert alert-danger d-none"></p>
+  
+              <div class="row w-100">
+                <div class="col-md-6">
+                  <div class="input-group has-validation mb-3">
+                    <span class="input-group-text">
+                      Nom
+                    </span>
+  
+                    <input 
+                      type="text"
+                      placeholder="Ex: Chrystelle" 
+                      aria-label="Votre nom" 
+                      id="name"
+                      class="form-control form-control-lg"
+                      minlength="3"
+                      maxlength="24"
+                      required
+                    >
+  
+                    <p class="invalid-feedback"></p>
+                  </div>
+                </div>
+  
+                <div class="col-md-6">
+                  <div class="input-group has-validation mb-3">
+                    <span class="input-group-text">
+                      237
+                    </span>
+  
+                    <input 
+                      type="text"
+                      placeholder="Votre numéro" 
+                      aria-label="Votre numéro" 
+                      id="phone"
+                      class="form-control form-control-lg"
+                      required
+                    >
+  
+                    <p class="invalid-feedback"></p>
+                  </div>
                 </div>
               </div>
+  
+              <button type="submit" class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
+                Nous Contacter
+              </button>
+            </form>
+          <?php endif ?>
 
-              <div class="col-md-6">
-                <div class="input-group has-validation mb-3">
-                  <span class="input-group-text">
-                    237
-                  </span>
-
-                  <input 
-                    type="text"
-                    placeholder="Votre numéro" 
-                    aria-label="Votre numéro" 
-                    id="phone"
-                    class="form-control form-control-lg"
-                    required
-                  >
-
-                  <span class="invalid-feedback"></span>
-                </div>
-              </div>
-            </div>
-
-            <button class="btn btn-dark btn-lg text-uppercase w-100 mt-2">
-              Nous Contacter
-            </button>
-          </form>
-
-          <div id="success-contact" class="d-flex w-100 flex-column align-items-center bg-white p-3 h-auto d-none">
-            <p>
-              <i class="fs-1 fa fa-headphones-alt"></i>
-              <i class="fs-1 fa fa-check-circle text-success"></i>
+            <p 
+             id="contact-sent-success"
+             <?= classes([
+              'alert',
+              'alert-success',
+              'd-none' => session()->get(CONTACT_SENT) !== true
+             ]) ?>
+            >
+              <i class="fa fa-circle-check fs-2"></i>
+              <br>
+              Notre equipe a été contacté avec succès et ils vous ferons signe 
+              dans quelques minutes.
+              <br>
+              Merci
             </p>
-            <p class="text-center">
-              Notre service client à été notifié, vous serez contacté dans quelques 
-              minutes.
-            </p>
-          </div>
         </div>
       </div>
     </div>

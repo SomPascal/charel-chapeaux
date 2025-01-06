@@ -52,8 +52,7 @@ class CategoryModel extends Model
             'category.name',
             'COUNT(item.id) AS num_items'
         ])
-        ->join('item', 'item.code_category = category.code', 'left')
-        ->where('item.deleted_at', null)
+        ->join('item', 'item.code_category = category.code AND item.deleted_at IS NULL', 'left')
         ->groupBy('category.code')
         ->findAll(limit: 50);
     }

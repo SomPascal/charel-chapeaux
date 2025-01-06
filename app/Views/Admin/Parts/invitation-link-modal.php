@@ -27,7 +27,7 @@
             <form 
              id="invite-link-form"
              method="post" 
-             action="<?= route_to('invite.get') ?>"
+             action="<?= route_to('admin.invite.get') ?>"
              class="modal-body"
             >
                 <p class="alert alert-danger d-none"></p>

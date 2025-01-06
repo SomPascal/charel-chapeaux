@@ -15,9 +15,10 @@
                 </h5>
 
                 <button 
-                 class="close" 
+                 class="close btn-close" 
                  type="button" 
                  data-dismiss="modal" 
+                 data-bs-dismiss="modal" 
                  aria-label="Close"
                 >
                     <span aria-hidden="true">×</span>
@@ -45,6 +46,7 @@
                  class="btn btn-secondary" 
                  type="button" 
                  data-dismiss="modal"
+                 data-bs-dismiss="modal"
                 >
                     Fermer
                 </button>

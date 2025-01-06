@@ -1,9 +1,24 @@
+import { setVisibility } from "../Admin/js/Utils/admin.js"
+import { checkField, disable, setAlert, setErrMsg } from "../Admin/js/Utils/form.js"
+import { copyLink, enableCopyLink, env, getCsrfToken, setCsrfToken, setNotification } from "../Admin/js/Utils/util.js"
+
 const handleCookiePopUp = ()=> {
     const cookiePopUp = document.querySelector('.cookies-info')
 
-    if (! cookiePopUp) return
+    if (! cookiePopUp) {
+        return
+    }
 
     cookiePopUp.querySelector('button').addEventListener('click', ()=> {
+        fetch(cookiePopUp.getAttribute('action'), {
+            'method': cookiePopUp.getAttribute('method'),
+            'cache': 'no-cache',
+            'headers': {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': getCsrfToken()
+            },
+        })
+        
         cookiePopUp.classList.add('cookies-accepted')
     })
 }
@@ -19,108 +34,98 @@ const manageLikes = ()=> {
 }
 
 const handleContactUs = ()=> {
-
-    validate.validators.phone = (
-        value, 
-        attrs, 
-        attrName, 
-        options, 
-        constraints
-    )=> {
-        return (/^(((\+)?(237))?6[2456789][0-9]{7})$/.test(value)) 
-        ? null : '^Veuillez entrer un vrai numero'
-    }
-
     const phone = document.querySelector('#phone')
-    const phoneConstraints = {
-        'phone': {
-            presence: {
-                allowEmpty: false,
-                message: '^Veuillez entrer votre numero'
-            },
-            phone: {}
-        }
-    }
-
     const name = document.querySelector('#name')
-    const nameConstraints = {
-        name: {
-            presence: {
-                allowEmpty: false,
-                message: '^Veuillez entrer votre nom'
-            },
-            length: {
-                minimum: 3,
-                message: '^Votre nom doit avoir au moins 03 caracteres'
-            }
-        }
-    }
 
-    const contactUsForm = document.querySelector('#contact-us')
-    const contactSuccess = document.querySelector('#success-contact')
+    const contactSentSuccess = document.querySelector('#contact-sent-success')
+    const contactUsForm = document.querySelector('#contact-us form')
 
     if (! contactUsForm) return
 
     name.addEventListener('blur', function nameBlur() {
-        let errors = validate(
-            {name: (this.value ?? '').replaceAll(' ', '')},
-            nameConstraints,
-            {format: 'flat'}
-        )
-        let result
-
-        if (errors == undefined) {
-            name.parentNode.querySelector('.invalid-feedback')
-            .innerHTML = ''
-            name.classList.remove('is-invalid')
-
-            result = false
-        }
-        else {
-            name.parentNode.querySelector('.invalid-feedback')
-            .innerHTML = errors[0]
-            name.classList.add('is-invalid')
-
-            result = true
-        }
-
-        return result
+        checkField(name, 'name')
     })
 
     phone.addEventListener('blur', function phoneBlur() {
-        let errors = validate(
-            {phone: (this.value ?? '').replaceAll(' ', '')},
-            phoneConstraints,
-            {format: 'flat'}
-        )
-        let result
-
-        if (errors == undefined) {
-            phone.parentNode.querySelector('.invalid-feedback')
-            .innerHTML = ''
-            phone.classList.remove('is-invalid')
-
-            result = false 
-        }
-        else {
-            phone.parentNode.querySelector('.invalid-feedback')
-            .innerHTML = errors[0]
-            phone.classList.add('is-invalid')
-
-            result = true 
-        }
-
-        return result
+        checkField(phone, 'phone')
     })
 
     contactUsForm.addEventListener('submit', (e)=> {
-        e.preventDefault()
-    
-        phone.blur()
-        name.blur()
-        contactUsForm.classList.add('d-none')
-        contactSuccess.classList.remove('d-none')
+        e.preventDefault()        
+
+        console.log(checkField(name, 'name'), checkField(phone, 'phone'));
         
+        if (! (checkField(name, 'name') && checkField(phone, 'phone'))) 
+        {
+            return
+        }                
+
+        disable(contactUsForm)
+        setAlert(contactUsForm, '', false)
+
+        let data = {
+            name: name.value,
+            phone: phone.value
+        }
+        
+        fetch(contactUsForm.getAttribute('action'), {
+            'method': 'post',
+            'cache': 'no-cache',
+            'headers': {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+
+            'body': JSON.stringify(data)
+        })
+        .then(response => {
+            setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
+            disable(contactUsForm, false)
+            let sec
+
+            if (response.ok) {
+                setNotification('Notre équipe à été contacté avec succès!')
+
+                contactUsForm.classList.add('d-none')
+                contactSentSuccess.classList.remove('d-none')
+
+                contactUsForm.remove()
+                return
+            }
+            else if (response.status == env.HTTP_TOO_MANY_REQUEST) {
+                sec = response.headers.get(env.X_RETRY_AFTER)
+
+                setAlert(
+                    contactUsForm,
+                    `Trop d\'essaies. veuillez essayez de nouveau dans ${sec} secondes`
+                )
+            }
+            else if (response.status == env.HTTP_BAD_REQUEST) {
+                return response.json()
+            }
+            else {
+                setAlert(
+                    contactUsForm,
+                    'Une erreur est survenue, veuillez essayer de nouveau.'
+                )
+            }
+        })
+        .then(json => {
+            if (! (json != undefined && json.status == env.HTTP_BAD_REQUEST)) {
+                return
+            }
+
+            for (const id in json.messages) {
+                if (Object.prototype.hasOwnProperty.call(json.messages, id)) {
+                    setErrMsg(
+                        document.querySelector('#' + id),
+                        json.messages[id]
+                    )
+                }
+            }
+        })
     })
 
 }
@@ -136,9 +141,7 @@ const handleItemsDetails = ()=> {
         pagination: {
             el: '.swiper-pagination'
         }
-    })
-    console.log(swiper);
-    
+    })    
 }
 
 const enlargeImages = ()=> {
@@ -146,9 +149,7 @@ const enlargeImages = ()=> {
     const enlargeWallImg = enlargeWall.querySelector('.img-box img')
     const closeBtn = enlargeWall.querySelector('button')
 
-    document.querySelectorAll('[enlarge] img').forEach(img => {
-        console.log(img);
-        
+    document.querySelectorAll('[enlarge] img').forEach(img => {        
         img.addEventListener('click', ()=> {
             enlargeWallImg.setAttribute('src', img.getAttribute('src'))
             enlargeWall.classList.add('show')
@@ -163,10 +164,75 @@ const enlargeImages = ()=> {
     enlargeWall.addEventListener('click', ()=> closeBtn.click())
 }
 
+const handleItemVisibility = ()=> {
+    const showItemBtn = document.querySelector('#show-item-btn')
+    const showItemForm = document.querySelector('#show-item-modal form')
+    
+    const hideItemBtn = document.querySelector('#hide-item-btn')
+    const hideItemForm = document.querySelector('#hide-item-modal form')
+
+    const deleteItemBtn = document.querySelector('#delete-item-btn')
+    const deleteItemForm = document.querySelector('#delete-item-modal form')
+
+    const item_id = window.location.pathname.split('/').at(3)
+
+    if (hideItemBtn) {
+        hideItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+        
+            hideItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+        
+                setVisibility(
+                    hideItemForm,
+                    item_id, 
+                    'item_id',
+                )
+            })
+        })
+    }
+    
+    if (showItemBtn) {
+        showItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+
+            showItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+                
+                setVisibility(
+                    showItemForm,
+                    item_id, 
+                    'item_id',
+                )
+            })
+        })
+    }
+
+    if (deleteItemBtn) {
+        deleteItemBtn.addEventListener('click', (e)=> {
+            e.preventDefault()
+            
+            deleteItemForm.querySelector('button[type="submit"]').addEventListener('click', (e)=> {
+                e.preventDefault()
+
+                setVisibility(
+                    deleteItemForm,
+                    item_id,
+                    'item_id',
+                    ()=> window.location = '/admin'
+                )
+            })
+        })
+    }
+
+}
+
 document.addEventListener('DOMContentLoaded', ()=> {
     handleCookiePopUp()
     manageLikes()
     handleContactUs()
     handleItemsDetails()
     enlargeImages()
+    enableCopyLink()
+    handleItemVisibility()
 })

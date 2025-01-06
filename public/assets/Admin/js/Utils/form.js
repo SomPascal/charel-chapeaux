@@ -24,6 +24,32 @@ v.validators.username = function (value) {
     return res
 }
 
+v.validators.phone = (value)=> {
+    let patterns = [
+        /^(((\+)?(237))?6[2456789][0-9]{7})$/,
+        /^(?:\+33|0033|0)[1-9]\d{8}$/,
+        /^((?:\+225|00225)?\d{8})$/,
+        /^(?:\+?49|0)[1-9]\d{1,4}\d{1,7}$/,
+        /^(?:\+?44)?(?:\d{2})?(?:\d{4}|\d{3})\d{6}$/,
+        /^(?:\+?32)?(?:[2-9]\d{1,2})[2-9]\d{6}$/,
+    ]
+    
+    if (! value) {
+        return
+    }
+
+    let flag = false
+
+    for (let i = 0; i < patterns.length; i++) {                        
+        if (patterns[i].test(value.replace(/\s{1,}/g, ''))) {
+            flag = true
+            break
+        }
+    }
+
+    return flag ? null : '^Veuillez entrer un vrai numero'
+}
+
 v.validators.image = function (value) {
     let res = undefined
     let data
@@ -140,6 +166,53 @@ const rules = {
             'maximum': 200
         }
     },
+    
+    'autor': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
+    'testimonial': {
+        'presence': {'allowEmpty': false},
+        'length': {
+            'minimum': 6,
+            'maximum': 200
+        }
+    },
+
+    'phone': {
+        'presence': {
+            'allowEmpty': false,
+            'message': '^Veuillez entrer votre numero'
+        },
+        'phone': {}
+    },
+
+    'name': {
+        'presence': {
+            'allowEmpty': false,
+            'message': '^Veuillez entrer votre nom'
+        },
+        'length': {
+            'minimum': 3,
+            'maximum': 124
+        }
+    },
+
+    'desc-content': {
+        'presence': {
+            'allowEmpty': false,
+            'message': '^Veuillez entrer la description'
+        },
+
+        'length': {
+            'minimum': 6,
+            'maximum': 200
+        }
+    }
 }
 
 /**
@@ -155,6 +228,31 @@ const setErrMsg = (field, message, flag=true)=> {
     } else {
         field.classList.remove('is-invalid')
         field.parentNode.querySelector('p').innerHTML = ''
+    }
+}
+
+/**
+ * 
+ * @param {String} messages 
+ * @param {HTMLFormElement} form 
+ */
+const setErrMsgFromServer = (messages, form=undefined)=> {
+    let input
+
+    for (const id in messages) {
+        if (Object.prototype.hasOwnProperty.call(messages, id)) {
+            input = document.querySelector('#' + id)
+
+            if (input) {
+                setErrMsg(
+                    input,
+                    messages[id]
+                )
+            }
+            else if (form != undefined) {
+                setAlert(form, messages[id])
+            }
+        }
     }
 }
 
@@ -292,6 +390,7 @@ export {
     checkFileField,
     setAlert,
     setErrMsg,
+    setErrMsgFromServer,
     disable,
     clearPassword
 }

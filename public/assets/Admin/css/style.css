@@ -46,10 +46,9 @@ textarea {
     height: 300px;
 }
 
-#most-popular-caps .swiper {
-    width: 100%;
-    height: auto;
-    padding: 20px;
+#caps-popularity {
+    /* background: red; */
+    /* max-width: 450px; */
 }
 
 .see-website {
@@ -88,8 +87,9 @@ textarea {
 }
 
 .pagination {
+    gap: 15px;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .pagination .active a {

@@ -8,14 +8,17 @@ use CodeIgniter\HTTP\ResponseInterface;
 
 class DraftController extends BaseController
 {
+    protected $helpers = ['mailjet'];
+    
     public function index()
     {
-        dd(attrs([
-            'id="hello"' => 1+7 == 8,
-            'id="hi"' => 1*7 == 8,
-            'id="good morning"' => 1-7 == 8,
-        ]));
+        dd(session()->get(ACCEPTED_COOKIE));
 
-        dd(model(AdminModel::class)->amount());
+        return view('Mail/contact_form', [
+            'visitor' => [
+                'name' => 'John Doe',
+                'phone' => '656 06 35 55'
+            ]
+        ]);
     }
 }

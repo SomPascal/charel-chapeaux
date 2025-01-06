@@ -56,12 +56,32 @@ class ItemModel extends Model
 
     public function search(string $term, int $limit=15): array
     {
-        return $this->get_items()
+        $builder = db_connect()->table('item')->select([
+            'item.id AS id',
+            'item.name AS name',
+            'item.price AS price',
+            'item.description AS description',
+            'item.is_hidden AS is_hidden',
+            'item.created_at AS created_at',
+
+            'category.name AS category',
+            'category.code AS category_code',
+
+            'item_pics.id AS item_pic_id'
+        ])
+        ->join('category', 'category.code = item.code_category', 'left')
+        ->join('item_pics', 'item_pics.item_id = item.id', 'left')
+        ->groupBy('item.id')
+        ->where('item.deleted_at', null)
+        ->groupStart()
+
         ->like('item.name', $term)
         ->orLike('item.description', $term)
         ->orLike('category.name', $term)
         ->orderBy('item.created_at', 'DESC')
-        ->findAll(limit: $limit);
+        ->groupEnd();
+        
+        return $builder->get(limit: $limit)->getResultArray();
     }
 
     public function unhided(): self
@@ -123,6 +143,33 @@ class ItemModel extends Model
         ->join('item_pics', 'item_pics.item_id = item.id', 'left')
         ->groupBy('item.id')
         ->asObject();
+    }
+
+    public function getHomeItems(string $direction='DESC'): array
+    {
+        return $this->get_items()->unhided()
+        ->orderByPopularity($direction)->asObject()->findAll();
+    }
+
+    public function orderByPopularity(string $direction='DESC'): self
+    {
+        return $this->join('items_visits', 'items_visits.item_id = item.id', 'left')
+        ->join('visitor', 'items_visits.visitor_id = visitor.id', 'left')
+        ->orderBy('COUNT(visitor.id)', $direction);
+    }
+
+    public function mostPopular(int $limit=3): array
+    {
+        return $this->get_items()
+        ->orderByPopularity('DESC')
+        ->findAll(limit: $limit);
+    }
+
+    public function lessPopular(int $limit=3)
+    {
+        return $this->get_items()
+        ->orderByPopularity('ASC')
+        ->findAll(limit: $limit);
     }
 
     public function get_item(string $item_id): ?object

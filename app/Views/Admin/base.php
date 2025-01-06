@@ -67,6 +67,7 @@
     <?= $this->include('Admin/Parts/scroll-to-top') ?>
     <?= $this->include('Admin/Parts/logout-modal') ?>
     <?= $this->include('Admin/Parts/ban-admin-modal') ?>
+    <?= $this->include('Admin/Parts/invitation-link-modal') ?>
     <?= $this->include('Admin/Parts/see-website') ?>
     <?= $this->include('Admin/Parts/notification') ?>
 

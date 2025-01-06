@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Ajouter une categorie
+                    Gérer les catégories
                 </h5>
 
                 <button 
@@ -49,10 +49,11 @@
 
                     <p class="invalid-feedback"></p>
                 </div>
+                <input type="hidden" id="category_code">
 
                 <button type="submit" class="btn btn-primary w-100">
-                    Ajouter 
-                    <i class="fa fa-plus"></i>
+                    Continuer 
+                    <i class="fa fa-arrow-right"></i>
                 </button>
             </form>
 

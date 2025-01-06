@@ -43,7 +43,7 @@ class CreateRedirectionTable extends Migration
             ],
 
             'created_at' => [
-                'type' => 'varchar',
+                'type' => 'datetime',
                 'default' => new RawSql('CURRENT_TIMESTAMP')
             ]
         ])

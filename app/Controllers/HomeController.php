@@ -4,8 +4,10 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ContactModel;
+use App\Models\DescriptionModel;
 use App\Models\ItemModel;
 use App\Models\RedirectionModel;
+use App\Models\TestimonialModel;
 use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
@@ -14,11 +16,17 @@ class HomeController extends BaseController
     public function home()
     {
         $item_model = model(ItemModel::class);
-        // dd($item_model->get_items()->asObject()->findAll());
+
+        $items = $item_model->getHomeItems();
+        $header_items = array_slice($items, 0, 4);
+        $remaining_items = array_slice($items, 4);
 
         return view('index', [
-            'items' => $item_model->get_items()->unhided()->asObject()->findAll(),
-            'redirections' => model(RedirectionModel::class)->todayRedirections()
+            'header_items' => $header_items,
+            'items' => $remaining_items,
+            'redirections' => model(RedirectionModel::class)->todayRedirections(),
+            'testimonials' => model(TestimonialModel::class)->asObject()->getAll(),
+            'descriptions' =>   model(DescriptionModel::class)->asObject()->getAll()
         ]);
     }
 

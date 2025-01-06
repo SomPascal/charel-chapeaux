@@ -21,13 +21,13 @@ class CreateSocialMediaTable extends Migration
 
             'name' => [
                 'type' => 'varchar',
-                'constraint' => 30,
+                'constraint' => 125,
                 'unique' => true
             ],
 
             'content' => [
                 'type' => 'varchar',
-                'constraint' => 30,
+                'constraint' => 125,
             ],
 
             'created_at' => [
@@ -36,7 +36,7 @@ class CreateSocialMediaTable extends Migration
                 'default' => new RawSql('CURRENT_TIMESTAMP')
             ]
         ])
-        ->createTable('contact');
+        ->createTable('contact', true);
 
         $config = config('Config\Contact');
 
@@ -75,15 +75,19 @@ class CreateSocialMediaTable extends Migration
         $social_table = $this->db->table('contact');
 
         foreach ($data as $social) {
-            $social_table->insert(array_merge($social, [
-                'id' => uid(),
-                'created_at' => Time::now()
-            ]));
+            try {
+                $social_table->insert(array_merge($social, [
+                    'id' => uid(),
+                    'created_at' => Time::now()
+                ]));
+            } catch (\Throwable) {
+                //throw $th;
+            }
         }
     }
 
     public function down()
     {
-        $this->forge->dropTable('contact');
+        $this->forge->dropTable('contact', true);
     }
 }

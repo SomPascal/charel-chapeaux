@@ -5,37 +5,44 @@ import { env, getCsrfToken, setCsrfToken, setNotification } from "./util.js"
  * 
  * @param {CallableFunction} success 
  */
-const addCategory = (success)=> {
-    const categories = document.querySelector('#categories')
-    const addCategoryModal = document.querySelector('#add-category')
-    const addCategoryForm = addCategoryModal.querySelector('form')
-    const addCategoryDismiss = addCategoryModal.querySelector('[data-dismiss]')
-    const categoryName = document.querySelector('#category_name')
+const setCategory = ({success=undefined, modal, name, action, update=false})=> {
+    const setCategoryForm = modal.querySelector('form')
+    const setCategoryCode = document.querySelector('#category_code')
+    const setCategoryDismiss = modal.querySelector('[data-dismiss]')
     
-    categoryName.addEventListener('blur', ()=> {
-        checkField(categoryName, 'category_name')
+    setCategoryDismiss.addEventListener('click', ()=> {
+        setCategoryCode.value = ''
+        name.value = ''
     })
 
-    addCategoryModal.querySelectorAll('[data-dismiss]').forEach(btn => {
+    name.addEventListener('blur', ()=> {
+        checkField(name, 'category_name')
+    })
+
+    modal.querySelectorAll('[data-dismiss]').forEach(btn => {
         btn.addEventListener('click', ()=> {
-            categoryName.value = ''
-            setErrMsg(categoryName, '', false)
+            name.value = ''
+            setErrMsg(name, '', false)
         })
     })
 
-    addCategoryForm.addEventListener('submit', (e)=> {
+    setCategoryForm.onsubmit = (e)=> {
         e.preventDefault()
 
-        if (! checkField(categoryName, 'category_name')) 
+        if (! checkField(name, 'category_name')) 
         {
             return     
         }
 
-        disable(addCategoryForm)
-        let data = { 'category_name': categoryName.value }
+        disable(setCategoryForm)
+        let data = { 'category_name': name.value }
 
-        fetch(addCategoryForm.getAttribute('action'), {
-            'method': addCategoryForm.getAttribute('method') ?? 'post',
+        if (update == true) {
+            data['category_code'] = setCategoryCode.value
+        }
+
+        fetch(action, {
+            'method': 'post',
             'cache': 'no-cache',
             'headers': {
                 'X-Requested-With': 'XMLHttpRequest',
@@ -46,12 +53,12 @@ const addCategory = (success)=> {
             'body': JSON.stringify(data)
         })
         .then(response => {
-            disable(addCategoryForm, false)
+            disable(setCategoryForm, false)
             setCsrfToken(response.headers.get(env.X_CSRF_TOKEN))
             let sec
 
             if (response.ok) {
-                addCategoryDismiss.click()
+                setCategoryDismiss.click()
 
                 return response.json()
             }
@@ -62,50 +69,69 @@ const addCategory = (success)=> {
                 sec = response.headers.get(env.X_RETRY_AFTER)
 
                 setAlert(
-                    addCategoryForm,
+                    setCategoryForm,
                     `Trop d\'essaies, essayez dans ${sec ?? 5} secondes`
                 )
             }
             else if (response.status == env.HTTP_BAD_REQUEST) {
                 setAlert(
-                    addCategoryForm, 
+                    setCategoryForm, 
                     'Une erreur c\'est produite. Essayez de nouveau'
                 )
             }
         })
         .then(json => {
+            let message, input
+
             if (json == undefined) {
                 return
             }
             
-            if (json.status == env.HTTP_CREATED)
+            if (json.status == env.HTTP_CREATED || json.status == env.HTTP_OK)
             {                
-                success(json)
+                if (success == undefined) {
+                    window.location.reload()
+                }
+                else {
+                    success(json)
+                }
+                return
             }
             else if (json.status == env.HTTP_BAD_REQUEST && json.messages != undefined)
             {
                 for (const id in json.messages) {
                     if (Object.prototype.hasOwnProperty.call(json.messages, id)) {
-                        setErrMsg(
-                            document.querySelector('#' + id),
-                            json.messages[id]
-                        )
+                        input = document.querySelector('#' + id)
+                        message = json.messages[id]
+
+                        if (input) {
+                            setErrMsg(
+                                input,
+                                message
+                            )
+                        }
+                        else {
+                            setAlert(
+                                setCategoryForm, 
+                                message
+                            )
+                        }
                     }
                 }
             }
             
         })
-    })
+    }
 }
 
 /**
-     * 
-     * @param {HTMLFormElement} form 
-     * @param {String} item_id
-     * @param {String} key_name
-     * @param {CallableFunction|null} success
-     */
-const setVisibility = (form, id, key_name, success=null)=> {
+ * 
+ * @param {HTMLFormElement} form 
+ * @param {String} item_id
+ * @param {String} key_name
+ * @param {CallableFunction|null} success
+ */
+const setVisibility = (form, id, key_name='id', success=null)=> {
     disable(form)
 
     let data = {}
@@ -131,7 +157,7 @@ const setVisibility = (form, id, key_name, success=null)=> {
             disable(form, true)
             form.parentNode.querySelector('[data-dismiss]')?.click()
             
-            if (success == null) {
+            if (success == undefined) {
                 window.location.reload()
             }
             else {
@@ -148,6 +174,6 @@ const setVisibility = (form, id, key_name, success=null)=> {
 }
 
 export {
-    addCategory,
+    setCategory,
     setVisibility
 }
