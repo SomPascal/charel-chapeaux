@@ -62,7 +62,7 @@ class InviteAdminController extends BaseController
 
         return $this->respondCreated([
             'status' => Response::HTTP_CREATED,
-            'url' => url_to('invite.use', $link_id)
+            'url' => url_to('admin.invite.use', $link_id)
         ]);
     }
 

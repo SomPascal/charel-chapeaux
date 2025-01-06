@@ -28,7 +28,7 @@ class SearchController extends BaseController
 
     public function search(): Response
     {
-        $term = $this->request->getGet(index: 'term', filter: FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $term = $this->request->getGet(index: 'term');
         $category = (int) $this->request->getGet(index: 'category', filter: FILTER_SANITIZE_NUMBER_INT);
 
         try {

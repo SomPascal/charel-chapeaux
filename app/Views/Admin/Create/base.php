@@ -54,7 +54,6 @@
     <?= $this->include('Admin/Parts/add-category-modal') ?>
     <?= $this->include('Admin/Parts/notification') ?>
     <?= $this->include('Admin/Parts/scripts') ?>
-    <script type="module" src="<?= base_url('assets/Admin/js/handle-description.js') ?>"></script>
 
     <?= $this->renderSection('script') ?>
 

@@ -5,7 +5,9 @@
 <?php $this->section('form') ?>
     <?= form_open(action: route_to('admin.item.store'), attributes: [
         'method' => 'post',
-        'enctype' => 'multipart/form-data'
+        'enctype' => 'multipart/form-data',
+        'id' => 'handle-item-form',
+        'role' => 'create'
     ]) ?>
 <?php $this->endSection('form') ?>
 

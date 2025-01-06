@@ -6,7 +6,8 @@
     <?= form_open(action: route_to('admin.item.update'), attributes: [
         'method' => 'post',
         'enctype' => 'multipart/form-data',
-        'id' => 'update-item-form'
+        'id' => 'handle-item-form',
+        'role' => 'update'
     ]) ?>
 <?php $this->endSection('form') ?>
 
@@ -45,6 +46,8 @@
     </h3>
 
     <div class="pb-5 mb-5">
+        <input type="hidden" id="item-id" value="<?= esc($item->id) ?>">
+
         <div class="mb-3">
             <label for="images" class="form-label">
                 Image

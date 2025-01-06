@@ -80,6 +80,15 @@ use App\Models\ItemsVisitsModel;
                                             <p>
                                                 <?= esc(number_to_currency($popular_item->price, XAF)) ?> 
                                             </p>
+
+                                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                                <a 
+                                                 href="<?= route_to('admin.item.modify', $popular_item->id) ?>"
+                                                 class="btn btn-sm btn-primary m-1"
+                                                >
+                                                    Modifier
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -113,11 +122,13 @@ use App\Models\ItemsVisitsModel;
                             <?php foreach($unpopular_items as $unpopular_item): ?>
                                 <div class="swiper-slide">
                                     <div class="card shadow">
-                                        <img 
-                                        src="<?= route_to('item.pic', $unpopular_item->item_pic_id) ?>" 
-                                        class="card-img-top img-fluid img-fluid" 
-                                        alt="<?= esc(character_limiter($unpopular_item->description, 125, '...')) ?>"
-                                        />
+                                        <a href="<?= route_to('item.show', $unpopular_item->id) ?>">
+                                            <img 
+                                            src="<?= route_to('item.pic', $unpopular_item->item_pic_id) ?>" 
+                                            class="card-img-top img-fluid img-fluid" 
+                                            alt="<?= esc(character_limiter($unpopular_item->description, 125, '...')) ?>"
+                                            />
+                                        </a>
                                         
                                         <div class="card-body">
                                             <h5 class="card-title">
@@ -136,6 +147,15 @@ use App\Models\ItemsVisitsModel;
                                             <p>
                                                 <?= esc(number_to_currency($unpopular_item->price, XAF)) ?> 
                                             </p>
+
+                                            <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                                                <a 
+                                                 href="<?= route_to('admin.item.modify', $unpopular_item->id) ?>"
+                                                 class="btn btn-sm btn-primary m-1"
+                                                >
+                                                    Modifier
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -336,6 +356,13 @@ use App\Models\ItemsVisitsModel;
             
                                         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center">
                                             
+                                            <a 
+                                             href="<?= route_to('admin.item.modify', $item->id) ?>"
+                                             class="btn btn-sm btn-primary m-1"
+                                            >
+                                                Modifier
+                                            </a>
+
                                             <button 
                                              class="btn btn-sm btn-danger m-1"
                                              data-toggle="modal"

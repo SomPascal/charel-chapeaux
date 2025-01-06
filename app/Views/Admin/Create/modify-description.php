@@ -37,5 +37,5 @@
 <?php $this->endSection('content') ?>
 
 <?php $this->section('script') ?>
-    <script src=""></script>
+    <script type="module" src="<?= base_url('assets/Admin/js/handle-description.js') ?>"></script>
 <?php $this->endSection('script') ?>

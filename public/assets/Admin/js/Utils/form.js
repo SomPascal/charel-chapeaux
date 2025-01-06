@@ -231,7 +231,12 @@ const setErrMsg = (field, message, flag=true)=> {
     }
 }
 
-const setErrMsgFromServer = (messages)=> {
+/**
+ * 
+ * @param {String} messages 
+ * @param {HTMLFormElement} form 
+ */
+const setErrMsgFromServer = (messages, form=undefined)=> {
     let input
 
     for (const id in messages) {
@@ -243,6 +248,9 @@ const setErrMsgFromServer = (messages)=> {
                     input,
                     messages[id]
                 )
+            }
+            else if (form != undefined) {
+                setAlert(form, messages[id])
             }
         }
     }

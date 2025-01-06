@@ -27,6 +27,53 @@ class ItemController extends BaseController
         ]);
     }
 
+    protected function uploadPics(array $pics, string $item_id, string $extension='png', int $files_limit=10): void 
+    {
+        $i = 0;
+
+        foreach ($pics as $file)
+        {
+            /**
+             * @var UploadedFile $file
+             */
+            $i++;
+            
+            if ($i > $files_limit) {
+                break;
+            }
+    
+            $file_id = uid();
+            $file_path =  $file_id . '.' . $extension;
+
+            try {
+                if (model(ItemPicsModel::class)->insert(row: [
+                    'id' => $file_id,
+                    'item_id' => $item_id,
+                    'extension' => $extension,
+                    'created_at' => Time::now()
+                ], returnID: false))
+                {
+                    if ($file->isValid()) {
+                        $file->store('items', $file_path);
+                    }
+                }
+            } catch (\Throwable $e) {
+                log_message(
+                    level: LogLevel::ERROR,
+                    message: sprintf(
+                        "Could not save item pic due to: %s\n%s\n",
+                        $e->getMessage(),
+                        $e->getTraceAsString()
+                    ),
+                    context: [
+                        'item_id' => $item_id,
+                        'username' => auth()->user()->username
+                    ]
+                );
+            }
+        }
+    }
+
     public function store(): Response
     {
         if (! $this->validate('store_item'))
@@ -73,54 +120,12 @@ class ItemController extends BaseController
 
             return $this->failServerError();
         }
+
+        $this->uploadPics(
+            pics: $this->request->getFiles()['item-images'],
+            item_id: $item_id
+        );
         
-        $extension = 'png';
-        $i = 0;
-        $files_limit = 10;
-        
-        foreach ($this->request->getFiles()['item-images'] as $file)
-        {
-            /**
-             * @var UploadedFile $file
-             */
-            $i++;
-            
-            if ($i > $files_limit) {
-                break;
-            }
-    
-            $file_id = uid();
-            $file_path =  $file_id . '.' . $extension;
-
-            log_message('info', json_encode([
-                'file' => $file_path,
-                'file_id' => $file_id
-            ]));
-
-            try {
-                if (model(ItemPicsModel::class)->insert(row: [
-                    'id' => $file_id,
-                    'item_id' => $item_id,
-                    'extension' => $extension,
-                    'created_at' => Time::now()
-                ], returnID: false))
-                {
-                    if ($file->isValid()) {
-                        $file->store('items', $file_path);
-                    }
-                }
-            } catch (\Throwable $e) {
-                log_message(
-                    level: LogLevel::ERROR,
-                    message: 'Could not save item pic due to: ' . $e->getMessage(),
-                    context: [
-                        'item_id' => $item_id,
-                        'username' => $user->username
-                    ]
-                );
-            }
-        }
-
         session()->setTempdata(
             'success', 
             'Votre article a été enregistré avec succès.',
@@ -128,6 +133,102 @@ class ItemController extends BaseController
         );
 
         return $this->respondCreated()->setHeader(
+            X_REDIRECT_TO, 
+            url_to('admin.items')
+        );
+    }
+
+    public function update(): Response
+    {
+        if (! $this->validate('store_item'))
+        {
+            return $this->failValidationErrors(
+                $this->validator->getErrors()
+            );
+        }
+
+        $user = auth()->user();
+
+        $data = $this->validator->getValidated();
+        $data['item-id'] = $this->request->getPost('item-id');
+
+        $item_model = model(ItemModel::class);
+        $item_pics_model = model(ItemPicsModel::class);
+
+        try {
+            if (! $item_model->update(id: $data['item-id'], row: [
+                'code_category' => $data['categories'],
+                'name' => $data['item-name'],
+                'price' => $data['item-price'],
+                'description' => $data['item-description'],
+                'updated_at' => Time::now()
+            ])) 
+            {
+                log_message(
+                    level: LogLevel::ERROR,
+                    message: 'Could not update item',
+                    context: ['admin' => $user->username]
+                );
+
+                return $this->failServerError();
+            }
+        } 
+        catch (\Throwable $e) 
+        {
+            log_message(
+                level: LogLevel::ERROR,
+                message: sprintf(
+                    "Could not record item due to: %s\n%s", 
+                    $e->getMessage(),
+                    $e->getTraceAsString()
+                ),
+                context: ['admin' => $user->username]
+            );
+
+            return $this->failServerError();
+        }
+
+        $unselected_item_images = json_decode(
+            $this->request->getPost('unselected-item-images'),
+            true
+        );
+
+        if (json_last_error() != JSON_ERROR_SYNTAX && count($unselected_item_images) > 0)
+        {
+            foreach ($unselected_item_images as $pic_id)
+            {
+                try {
+                    $item_pics_model->update(id: $pic_id, row: [
+                        'deleted_at' => Time::now()
+                    ]);
+                } catch (\Throwable $e) {
+                    log_message(
+                        LogLevel::ERROR,
+                        sprintf(
+                            'Could delete item pic due to :%s\n%s',
+                            $e->getMessage(),
+                            $e->getTraceAsString()
+                        ),
+                        context: ['pic_id' => $pic_id]
+                    );
+                }
+            }
+        }
+
+        if (! empty($this->request->getFiles()['item-images'])) {
+            $this->uploadPics(
+                pics: $this->request->getFiles()['item-images'],
+                item_id: $data['item-id']
+            );
+        }
+
+        session()->setTempdata(
+            'success', 
+            'Votre article a été modifié avec succès.',
+            5*SECOND
+        );
+
+        return $this->respondUpdated()->setHeader(
             X_REDIRECT_TO, 
             url_to('admin.items')
         );
