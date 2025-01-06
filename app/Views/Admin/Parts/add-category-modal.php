@@ -27,7 +27,7 @@
             <form 
              id="add-category-form"
              method="post" 
-             action="#"
+             action="<?= route_to('admin.category.create') ?>"
              class="modal-body"
             >
                 <p class="alert alert-danger d-none"></p>

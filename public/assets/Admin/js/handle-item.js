@@ -10,10 +10,11 @@ const removePreview = ()=> {
     imagePreviewBox.querySelectorAll('li button').forEach(btn => {
         btn.onclick = (e)=> {
             e.preventDefault()
-            let previewId = btn.parentNode.getAttribute('id')
-            document.querySelector('#' + previewId).remove()
 
-            delete selectedFiles[previewId]
+            let previewId = btn.parentNode.getAttribute('id')
+            btn.parentNode.remove()
+            
+            delete selectedFiles[previewId.slice(8)]
         }
     })
 }
@@ -167,14 +168,22 @@ const recordItem = ()=> {
 }
 
 document.addEventListener('DOMContentLoaded', ()=> {
-    setCategory(({id, name})=> {
-        const category = document.createElement('option')
+    const categoryName = document.querySelector('#category_name')
+    const categoryModal = document.querySelector('#add-category')
 
-        category.value = id 
-        category.innerText = name
-        categories.appendChild(category)
-        
-        setNotification(`La catégories ${name} a été ajouté avec succès.`)
+    setCategory({
+        'modal': categoryModal,
+        'name': categoryName,
+        'action': document.querySelector('#add-category-form').getAttribute('action'),
+        'success': ({id, name})=> {
+            const category = document.createElement('option')
+    
+            category.value = id 
+            category.innerText = name
+            categories.appendChild(category)
+            
+            setNotification(`La catégories ${name} a été ajouté avec succès.`)
+        }
     })
     recordItem()
 })
