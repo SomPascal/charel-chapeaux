@@ -62,32 +62,6 @@
                 </div>
 
                 <ul id="search-results" class="flex-wrap justify-content-center align-items-start d-none" style="gap: 15px;">
-                    <!-- <li 
-                     class="carcd shadow search-result"
-                     id="r-0"
-                    >
-                        <a href="#" target="_blank">
-                            <img 
-                             src="..." 
-                             class="card-img-top img-fluid" 
-                             alt="..."
-                            />
-                        </a>
-
-                        <div class="card-body">
-                            <h6 class="card-title h6 fw-bold text-uppercase mb-0" style="font-weight: bold;">
-                                Chapeaux festif 
-                            </h6>
-
-                            <p class="mb-0">
-                                Categorie: Soirée
-                            </p>
-
-                            <p class="mb-0 fw-bold">
-                                10.000f
-                            </p>
-                        </div>
-                    </li> -->
                 </ul>
             </div>
         </div>

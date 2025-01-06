@@ -22,7 +22,6 @@
                   <a 
                    href="<?= route_to('goto', 'whatsapp') ?>" 
                    class="text-secondary fs-3"
-                   target="_blank"
                   >
                     <i class="fab fa-whatsapp"></i>
                   </a>
@@ -32,7 +31,6 @@
                   <a 
                    href="<?= route_to('goto', 'facebook') ?>" 
                    class="text-secondary fs-3"
-                   target="_blank"
                   >
                     <i class="fab fa-facebook"></i>
                   </a>
@@ -42,7 +40,6 @@
                   <a 
                    href="<?= route_to('goto', 'instagram') ?>" 
                    class="text-secondary fs-3"
-                   target="_blank"
                   >
                     <i class="fab fa-instagram"></i>
                   </a>
@@ -100,7 +97,6 @@
                 <a 
                  href="<?= route_to('goto', 'whatsapp') ?>" 
                  class="item-anchor"
-                 target="_blank"
                 >
                   WhatsApp
                 </a>
@@ -110,7 +106,6 @@
                 <a 
                  href="<?= route_to('goto', 'facebook') ?>" 
                  class="item-anchor"
-                 target="_blank"
                 >
                   Facebook
                 </a>
@@ -120,7 +115,6 @@
                 <a 
                  href="<?= route_to('goto', 'instagram') ?>" 
                  class="item-anchor"
-                 target="_blank"
                 >
                   Instagram
                 </a>
@@ -130,7 +124,6 @@
                 <a 
                  href="<?= route_to('goto', 'map') ?>" 
                  class="item-anchor"
-                 target="_blank"
                 >
                   Google MAPS
                 </a>

@@ -1,4 +1,4 @@
-<a href="<?= esc($link) ?>" id="clickable-link" target="_blank"></a>
+<a href="<?= esc($link) ?>" id="clickable-link"></a>
 
 <script>
     document.addEventListener('DOMContentLoaded', ()=> {

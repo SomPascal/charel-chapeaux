@@ -158,7 +158,6 @@ use Config\Contact;
           <div class="col-md-6">
             <a 
             href="<?= sprintf('%s?item=%s', route_to('goto', 'whatsapp'), $item->id) ?>" 
-            target="_blank" 
             class="btn btn-success text-uppercase w-100 m-1"
             >
               <i class="fab fa-whatsapp"></i>
@@ -190,10 +189,10 @@ use Config\Contact;
             Vous pouvez aussi aimer
           </h4>
   
-          <a href="/" class="btn-link">
+          <!-- <a href="/" class="btn-link">
             Me Confectionner un chapeau
             <i class="fa fa-arrow-right"></i>
-          </a>
+          </a> -->
         </div>
 
         <div class="swiper product-swiper open-up" data-aos="zoom-out">

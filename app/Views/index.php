@@ -174,10 +174,10 @@ helper(['text', 'number', 'description']);
               Notre Collection de chapeaux
             </h4>
     
-            <a href="/" class="btn-link">
+            <!-- <a href="/" class="btn-link">
               Me Confectionner un chapeau
               <i class="fa fa-arrow-right"></i>
-            </a>
+            </a> -->
           </div>
     
           <div class="swiper product-swiper open-up" data-aos="zoom-out">
@@ -279,7 +279,6 @@ helper(['text', 'number', 'description']);
 
               <a 
                href="<?= route_to('goto', 'map') ?>" 
-               target="_blank"
               >
                 <i class="fa fa-map-pin"></i>
                 <?= esc(get_contact('location')) ?>
@@ -371,7 +370,6 @@ helper(['text', 'number', 'description']);
               <a 
                href="<?= route_to('goto', 'whatsapp') ?>" 
                class="btn btn-dark w-100 m-2" 
-               target="_blank"
               >
                 <i class="fab fa-whatsapp"></i>
                 WhatsApp
@@ -382,7 +380,6 @@ helper(['text', 'number', 'description']);
               <a 
                href="<?= route_to('goto', 'phone') ?>" 
                class="btn btn-dark w-100 m-2" 
-               target="_blank"
               >
                 <i class="fa fa-phone"></i>
                 Appel : <?= esc(get_contact('phone', Contact::$phone)) ?>
@@ -395,7 +392,6 @@ helper(['text', 'number', 'description']);
               <a 
                href="<?= route_to('goto', 'facebook') ?>" 
                class="btn btn-dark w-100 m-2"
-               target="_blank"
               >
                 <i class="fab fa-facebook"></i>
                 Facebook
@@ -405,7 +401,6 @@ helper(['text', 'number', 'description']);
               <a 
                href="<?= route_to('goto', 'instagram') ?>" 
                class="btn btn-dark w-100 m-2"
-               target="_blank"
               >
                 <i class="fab fa-instagram"></i>
                 Instagram

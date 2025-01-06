@@ -88,7 +88,6 @@
                       <a 
                        href="<?= route_to('goto', 'whatsapp') ?>" 
                        class="dropdown-item item-anchor"
-                       target="_blank"
                       >
                       <i class="fab fa-whatsapp"></i>
                         WhatsApp
